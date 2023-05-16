@@ -19,6 +19,7 @@ jobs:
           script: |
             pkill -f procon34_CYBER_WARS_backend
             cd /var/www/procon34_CYBER_WARS_backend/
+            ls
             git pull origin main
             gradle clean build
             nohup java -jar build/libs/procon34_CYBER_WARS_backend-0.0.1-SNAPSHOT.jar &
