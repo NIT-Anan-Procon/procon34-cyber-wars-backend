@@ -17,7 +17,8 @@ jobs:
           proxy_username: ${{ secrets.USERNAME }}
           proxy_password: ${{ secrets.PROXY_PASSWORD }}
           script: |
-            sh killProcess.sh
+            PROCESS_ID=$(ps aux | grep procon34_CYBER_WARS_backend-0.0.1-SNAPSHOT.jar | awk '{print $2}')
+            kill $PROCESS_ID
             cd /var/www/procon34_CYBER_WARS_backend/
             git pull origin main
             gradle clean build
