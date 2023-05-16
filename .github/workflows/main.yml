@@ -1,13 +1,13 @@
-name: master
+name: main
 on:
   push:
     branches:
-      - master
+      - main
 jobs:
   build:
     runs-on: ubuntu-22.04
     steps:
-      - name: master
+      - name: main
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SERVER_HOST }}
