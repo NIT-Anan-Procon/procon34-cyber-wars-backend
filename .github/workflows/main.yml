@@ -17,6 +17,7 @@ jobs:
           proxy_username: ${{ secrets.USERNAME }}
           proxy_password: ${{ secrets.PROXY_PASSWORD }}
           script: |
+            sh killProcess.sh
             cd /var/www/procon34_CYBER_WARS_backend/
             git pull origin main
             gradle clean build
