@@ -19,3 +19,4 @@ jobs:
           script: |
             cd /var/www/procon34_CYBER_WARS_backend/
             git pull origin main
+            gradle clean build
