@@ -10,7 +10,7 @@ import com.example.procon34_CYBER_WARS_backend.dto.UsersRegisterRequest;
 import com.example.procon34_CYBER_WARS_backend.service.UsersService;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/users")
 public class UsersController {
 
     @Autowired
