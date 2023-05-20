@@ -5,4 +5,5 @@
 - [OpenJDK 19.0.2](https://openjdk.org/)
 - [Gradle 8.1.1](https://gradle.org/)
 - [Spring Boot CLI 3.0.6](https://spring.io/)
+- [MyBatis 3.0.0](https://blog.mybatis.org/)
 - [PHP 8.1.2](https://www.php.net/)
