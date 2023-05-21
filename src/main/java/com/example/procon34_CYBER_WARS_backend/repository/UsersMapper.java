@@ -10,6 +10,6 @@ import com.example.procon34_CYBER_WARS_backend.entity.Users;
 public interface UsersMapper {
 
     @Select("INSERT INTO users(name, password) VALUES(#{name}, #{password})")
-    Users registerUser(UsersRegisterRequest usersRegisterRequest);
+    Users register(UsersRegisterRequest usersRegisterRequest);
 
 }

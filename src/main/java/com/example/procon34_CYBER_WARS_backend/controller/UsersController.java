@@ -20,13 +20,13 @@ public class UsersController {
     @Autowired
     UsersService usersService;
 
-    @PostMapping("/register-user")
+    @PostMapping("/register")
     public ResponseEntity<?> registerUser(@Valid @RequestBody UsersRegisterRequest usersRegisterRequest,
             BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
         } else {
-            usersService.registerUser(usersRegisterRequest);
+            usersService.register(usersRegisterRequest);
             return ResponseEntity.ok("Success");
         }
     }
