@@ -14,7 +14,7 @@ public class UsersRegisterRequest implements Serializable {
     private String name;
 
     @NotBlank
-    @Size(max = 20)
+    @Size(max = 100)
     private String password;
 
     public String getName() {
