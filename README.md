@@ -14,6 +14,8 @@
 
 ## 実行方法
 
+「Database Password」にデータベースのパスワードを入れて実行
+
 ```
 gradle clean build
 ./gradlew bootRun -Pargs="--spring.datasource.password=「Database Password」"
