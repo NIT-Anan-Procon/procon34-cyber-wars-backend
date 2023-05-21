@@ -12,8 +12,8 @@ public class UsersService {
     @Autowired
     private UsersMapper usersMapper;
 
-    public void registerUser(UsersRegisterRequest userRegisterRequest) {
-        usersMapper.registerUser(userRegisterRequest);
+    public void registerUser(UsersRegisterRequest usersRegisterRequest) {
+        usersMapper.registerUser(usersRegisterRequest);
     }
 
 }
