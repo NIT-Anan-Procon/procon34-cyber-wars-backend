@@ -1,13 +1,11 @@
 package com.example.procon34_CYBER_WARS_backend.dto;
 
-import java.io.Serializable;
-
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
-public class UsersRegisterRequest implements Serializable {
+public class UsersRegisterRequest {
 
     @NotBlank
     @Size(max = 20)
