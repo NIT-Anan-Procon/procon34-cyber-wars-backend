@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.procon34_CYBER_WARS_backend.dto.UsersRegisterRequest;
+import com.example.procon34_CYBER_WARS_backend.dto.UsersCredentialsRequest;
 import com.example.procon34_CYBER_WARS_backend.service.UsersService;
 
 import jakarta.validation.Valid;
@@ -21,12 +21,23 @@ public class UsersController {
     UsersService usersService;
 
     @PostMapping("/register")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody UsersRegisterRequest usersRegisterRequest,
+    public ResponseEntity<?> register(@Valid @RequestBody UsersCredentialsRequest usersCredentialsRequest,
             BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
         } else {
-            usersService.register(usersRegisterRequest);
+            usersService.register(usersCredentialsRequest);
+            return ResponseEntity.ok("Success");
+        }
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@Valid @RequestBody UsersCredentialsRequest usersCredentialsRequest,
+            BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
+        } else {
+            usersService.login(usersCredentialsRequest);
             return ResponseEntity.ok("Success");
         }
     }
