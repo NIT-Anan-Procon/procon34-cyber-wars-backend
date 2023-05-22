@@ -9,10 +9,10 @@ public class UsersRegisterRequest {
 
     @NotBlank
     @Size(max = 20)
-    private String name;
+    public String name;
 
     @NotBlank
     @Size(max = 100)
-    private String password;
+    public String password;
 
 }
