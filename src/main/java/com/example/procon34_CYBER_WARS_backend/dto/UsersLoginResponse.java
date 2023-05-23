@@ -5,6 +5,6 @@ import lombok.Data;
 @Data
 public class UsersLoginResponse {
 
-    public boolean success;
+    private boolean success;
 
 }
