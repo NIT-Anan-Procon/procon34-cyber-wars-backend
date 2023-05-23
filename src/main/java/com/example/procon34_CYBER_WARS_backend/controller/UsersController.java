@@ -19,10 +19,10 @@ import jakarta.validation.Valid;
 public class UsersController {
 
     @Autowired
-    UsersService usersService;
+    private UsersService usersService;
 
     @Autowired
-    UsersLoginResponse usersLoginResponse;
+    private UsersLoginResponse usersLoginResponse;
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@Valid @RequestBody UsersCredentialsRequest usersCredentialsRequest,
@@ -41,7 +41,7 @@ public class UsersController {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
         } else {
-            UsersLoginResponse usersLoginResponse = usersService.login(usersCredentialsRequest);
+            usersLoginResponse = usersService.login(usersCredentialsRequest);
             return ResponseEntity.ok(usersLoginResponse);
         }
     }
