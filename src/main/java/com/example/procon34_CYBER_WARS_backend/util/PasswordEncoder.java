@@ -8,14 +8,14 @@ import org.springframework.stereotype.Component;
 public class PasswordEncoder {
 
     @Autowired
-    BCryptPasswordEncoder passwordEncoder;
+    BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public String encodePassword(String password) {
-        return passwordEncoder.encode(password);
+        return bCryptPasswordEncoder.encode(password);
     }
 
     public boolean checkPassword(String password, String hashedPassword) {
-        return passwordEncoder.matches(password, hashedPassword);
+        return bCryptPasswordEncoder.matches(password, hashedPassword);
     }
 
 }
