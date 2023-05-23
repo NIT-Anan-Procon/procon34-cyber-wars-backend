@@ -28,12 +28,10 @@ public class UsersService {
     }
 
     public UsersLoginResponse login(UsersCredentialsRequest usersCredentialsRequest) {
-        String hashedPassword = passwordEncoder.encodePassword(usersCredentialsRequest.getPassword());
-        usersCredentialsRequest.setPassword(hashedPassword);
+        String password = usersCredentialsRequest.getPassword();
         Users users = usersMapper.login(usersCredentialsRequest);
-        if (users != null) {
-            System.out.println("login");
-
+        String hashedPassword = users.getPassword();
+        if (passwordEncoder.checkPassword(password, hashedPassword)) {
             usersLoginResponse.setSuccess(true);
         } else {
             usersLoginResponse.setSuccess(false);
