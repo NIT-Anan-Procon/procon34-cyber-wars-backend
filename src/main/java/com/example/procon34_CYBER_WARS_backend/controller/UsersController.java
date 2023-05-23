@@ -21,9 +21,6 @@ public class UsersController {
     @Autowired
     private UsersService usersService;
 
-    @Autowired
-    private UsersLoginResponse usersLoginResponse;
-
     @PostMapping("/register")
     public ResponseEntity<?> register(@Valid @RequestBody UsersCredentialsRequest usersCredentialsRequest,
             BindingResult bindingResult) {
@@ -41,6 +38,7 @@ public class UsersController {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
         } else {
+            UsersLoginResponse usersLoginResponse = new UsersLoginResponse();
             usersLoginResponse = usersService.login(usersCredentialsRequest, usersLoginResponse);
             return ResponseEntity.ok(usersLoginResponse);
         }
