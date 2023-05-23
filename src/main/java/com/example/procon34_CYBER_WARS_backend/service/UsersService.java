@@ -26,10 +26,9 @@ public class UsersService {
 
     public UsersLoginResponse login(UsersCredentialsRequest usersCredentialsRequest,
             UsersLoginResponse usersLoginResponse) {
-        String password = usersCredentialsRequest.getPassword();
         Users users = usersMapper.login(usersCredentialsRequest);
-        String hashedPassword = users.getPassword();
-        if (passwordEncoder.checkPassword(password, hashedPassword)) {
+        if (users != null
+                && passwordEncoder.checkPassword(usersCredentialsRequest.getPassword(), users.getPassword())) {
             usersLoginResponse.setSuccess(true);
         } else {
             usersLoginResponse.setSuccess(false);

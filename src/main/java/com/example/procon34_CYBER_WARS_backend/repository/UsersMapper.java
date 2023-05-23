@@ -13,7 +13,7 @@ public interface UsersMapper {
     @Insert("INSERT INTO users(name, password) VALUES(#{name}, #{password})")
     void register(UsersCredentialsRequest usersCredentialsRequest);
 
-    @Select("SELECT password FROM users WHERE name = #{name}")
+    @Select("SELECT * FROM users WHERE name = #{name}")
     Users login(UsersCredentialsRequest usersCredentialsRequest);
 
 }
