@@ -18,16 +18,14 @@ public class UsersService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private UsersLoginResponse usersLoginResponse;
-
     public void register(UsersCredentialsRequest usersCredentialsRequest) {
         String hashedPassword = passwordEncoder.encodePassword(usersCredentialsRequest.getPassword());
         usersCredentialsRequest.setPassword(hashedPassword);
         usersMapper.register(usersCredentialsRequest);
     }
 
-    public UsersLoginResponse login(UsersCredentialsRequest usersCredentialsRequest) {
+    public UsersLoginResponse login(UsersCredentialsRequest usersCredentialsRequest,
+            UsersLoginResponse usersLoginResponse) {
         String password = usersCredentialsRequest.getPassword();
         Users users = usersMapper.login(usersCredentialsRequest);
         String hashedPassword = users.getPassword();

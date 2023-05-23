@@ -41,7 +41,7 @@ public class UsersController {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
         } else {
-            usersLoginResponse = usersService.login(usersCredentialsRequest);
+            usersLoginResponse = usersService.login(usersCredentialsRequest, usersLoginResponse);
             return ResponseEntity.ok(usersLoginResponse);
         }
     }
