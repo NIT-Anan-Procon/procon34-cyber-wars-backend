@@ -9,10 +9,10 @@ public class UsersCredentialsRequest {
 
     @NotBlank
     @Size(max = 20)
-    public String name;
+    private String name;
 
     @NotBlank
     @Size(max = 100)
-    public String password;
+    private String password;
 
 }
