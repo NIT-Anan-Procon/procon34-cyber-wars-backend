@@ -33,7 +33,7 @@ public class UsersService {
         Users users = usersMapper.login(usersCredentialsRequest);
         if (users != null) {
             System.out.println("login");
-            // Cookie追加
+
             usersLoginResponse.setSuccess(true);
         } else {
             usersLoginResponse.setSuccess(false);
