@@ -6,13 +6,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class PasswordEncoder {
 
-    BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-
     public String encodePassword(String password) {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         return passwordEncoder.encode(password);
     }
 
     public boolean checkPassword(String password, String hashedPassword) {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         return passwordEncoder.matches(password, hashedPassword);
     }
 
