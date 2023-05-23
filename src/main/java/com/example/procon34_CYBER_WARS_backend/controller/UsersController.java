@@ -37,8 +37,8 @@ public class UsersController {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
         } else {
-            usersService.login(usersCredentialsRequest);
-            return ResponseEntity.ok("Success");
+            boolean success = usersService.login(usersCredentialsRequest);
+            return ResponseEntity.ok(success);
         }
     }
 

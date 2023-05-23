@@ -23,13 +23,16 @@ public class UsersService {
         usersMapper.register(usersCredentialsRequest);
     }
 
-    public void login(UsersCredentialsRequest usersCredentialsRequest) {
+    public boolean login(UsersCredentialsRequest usersCredentialsRequest) {
         String hashedPassword = passwordEncoder.encodePassword(usersCredentialsRequest.getPassword());
         usersCredentialsRequest.setPassword(hashedPassword);
         Users users = usersMapper.login(usersCredentialsRequest);
         if (users != null) {
             System.out.println("login");
-            // セッション追加
+            // Cookie追加
+            return true;
+        } else {
+            return false;
         }
     }
 
