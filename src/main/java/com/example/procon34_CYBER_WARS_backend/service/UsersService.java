@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.procon34_CYBER_WARS_backend.dto.UsersCredentialsRequest;
-import com.example.procon34_CYBER_WARS_backend.dto.UsersLoginResponse;
+import com.example.procon34_CYBER_WARS_backend.dto.UsersCredentialsResponse;
 import com.example.procon34_CYBER_WARS_backend.entity.Users;
 import com.example.procon34_CYBER_WARS_backend.repository.UsersMapper;
 import com.example.procon34_CYBER_WARS_backend.util.PasswordEncoder;
@@ -18,22 +18,30 @@ public class UsersService {
     @Autowired
     PasswordEncoder passwordEncoder;
 
-    public void register(UsersCredentialsRequest usersCredentialsRequest) {
-        String hashedPassword = passwordEncoder.encodePassword(usersCredentialsRequest.getPassword());
-        usersCredentialsRequest.setPassword(hashedPassword);
-        usersMapper.register(usersCredentialsRequest);
+    public UsersCredentialsResponse register(UsersCredentialsRequest usersCredentialsRequest,
+            UsersCredentialsResponse usersCredentialsResponse) {
+        Users users = usersMapper.search(usersCredentialsRequest);
+        if (users == null) {
+            String hashedPassword = passwordEncoder.encodePassword(usersCredentialsRequest.getPassword());
+            usersCredentialsRequest.setPassword(hashedPassword);
+            usersMapper.register(usersCredentialsRequest);
+            usersCredentialsResponse.setSuccess(true);
+        } else {
+            usersCredentialsResponse.setSuccess(false);
+        }
+        return usersCredentialsResponse;
     }
 
-    public UsersLoginResponse login(UsersCredentialsRequest usersCredentialsRequest,
-            UsersLoginResponse usersLoginResponse) {
-        Users users = usersMapper.login(usersCredentialsRequest);
+    public UsersCredentialsResponse login(UsersCredentialsRequest usersCredentialsRequest,
+            UsersCredentialsResponse usersCredentialsResponse) {
+        Users users = usersMapper.search(usersCredentialsRequest);
         if (users != null
                 && passwordEncoder.checkPassword(usersCredentialsRequest.getPassword(), users.getPassword())) {
-            usersLoginResponse.setSuccess(true);
+            usersCredentialsResponse.setSuccess(true);
         } else {
-            usersLoginResponse.setSuccess(false);
+            usersCredentialsResponse.setSuccess(false);
         }
-        return usersLoginResponse;
+        return usersCredentialsResponse;
     }
 
 }

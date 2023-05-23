@@ -14,6 +14,6 @@ public interface UsersMapper {
     void register(UsersCredentialsRequest usersCredentialsRequest);
 
     @Select("SELECT * FROM users WHERE name = #{name}")
-    Users login(UsersCredentialsRequest usersCredentialsRequest);
+    Users search(UsersCredentialsRequest usersCredentialsRequest);
 
 }
