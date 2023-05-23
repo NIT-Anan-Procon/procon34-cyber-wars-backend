@@ -16,7 +16,7 @@ public class UsersService {
     private UsersMapper usersMapper;
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    PasswordEncoder passwordEncoder;
 
     public void register(UsersCredentialsRequest usersCredentialsRequest) {
         String hashedPassword = passwordEncoder.encodePassword(usersCredentialsRequest.getPassword());
