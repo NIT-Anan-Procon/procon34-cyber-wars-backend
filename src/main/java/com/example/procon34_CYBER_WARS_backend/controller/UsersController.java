@@ -34,4 +34,15 @@ public class UsersController {
         }
     }
 
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@Valid @RequestBody UsersCredentialsRequest usersCredentialsRequest,
+            BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
+        } else {
+            usersCredentialsResponse = usersService.login(usersCredentialsRequest, usersCredentialsResponse);
+            return ResponseEntity.ok(usersCredentialsResponse);
+        }
+    }
+
 }
