@@ -32,4 +32,16 @@ public class UsersService {
         return usersCredentialsResponse;
     }
 
+    public UsersCredentialsResponse login(UsersCredentialsRequest usersCredentialsRequest,
+            UsersCredentialsResponse usersCredentialsResponse) {
+        Users users = usersMapper.search(usersCredentialsRequest);
+        if (users != null
+                && passwordEncoder.checkPassword(usersCredentialsRequest.getPassword(), users.getPassword())) {
+            usersCredentialsResponse.setSuccess(true);
+        } else {
+            usersCredentialsResponse.setSuccess(false);
+        }
+        return usersCredentialsResponse;
+    }
+
 }
