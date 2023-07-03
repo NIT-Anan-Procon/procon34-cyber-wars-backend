@@ -23,6 +23,7 @@ public class UsersController {
 
     private UsersCredentialsResponse usersCredentialsResponse = new UsersCredentialsResponse();
 
+    // ユーザー登録
     @PostMapping("/register")
     public ResponseEntity<?> register(@Valid @RequestBody UsersCredentialsRequest usersCredentialsRequest,
             BindingResult bindingResult) {
@@ -34,6 +35,7 @@ public class UsersController {
         }
     }
 
+    // ユーザーログイン
     @PostMapping("/login")
     public ResponseEntity<?> login(@Valid @RequestBody UsersCredentialsRequest usersCredentialsRequest,
             BindingResult bindingResult) {

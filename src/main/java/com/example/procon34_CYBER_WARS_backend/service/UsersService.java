@@ -18,6 +18,7 @@ public class UsersService {
     @Autowired
     PasswordEncoder passwordEncoder;
 
+    // ユーザー登録
     public UsersCredentialsResponse register(UsersCredentialsRequest usersCredentialsRequest,
             UsersCredentialsResponse usersCredentialsResponse) {
         Users users = usersMapper.search(usersCredentialsRequest);
@@ -32,6 +33,9 @@ public class UsersService {
         return usersCredentialsResponse;
     }
 
+    // ユーザー情報変更
+
+    // ユーザーログイン
     public UsersCredentialsResponse login(UsersCredentialsRequest usersCredentialsRequest,
             UsersCredentialsResponse usersCredentialsResponse) {
         Users users = usersMapper.search(usersCredentialsRequest);
@@ -43,5 +47,7 @@ public class UsersService {
         }
         return usersCredentialsResponse;
     }
+
+    // ユーザーログアウト
 
 }
