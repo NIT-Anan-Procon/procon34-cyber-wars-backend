@@ -17,6 +17,8 @@ public class UsersService {
 
     @Autowired
     private UsersMapper usersMapper;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     // ユーザー登録
