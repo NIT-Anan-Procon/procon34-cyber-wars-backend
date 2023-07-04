@@ -20,11 +20,14 @@ import jakarta.validation.Valid;
 @RequestMapping("/users")
 public class UsersController {
 
-    @Autowired
     private UsersService usersService;
+    private UsersResponse usersResponse;
 
     @Autowired
-    private UsersResponse usersResponse;
+    public UsersController(UsersService usersService, UsersResponse usersResponse) {
+        this.usersService = usersService;
+        this.usersResponse = usersResponse;
+    }
 
     // ユーザー登録
     @PostMapping
