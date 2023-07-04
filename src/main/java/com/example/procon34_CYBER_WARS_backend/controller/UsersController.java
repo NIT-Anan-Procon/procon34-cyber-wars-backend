@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.procon34_CYBER_WARS_backend.dto.UsersRequest;
 import com.example.procon34_CYBER_WARS_backend.dto.UsersResponse;
 import com.example.procon34_CYBER_WARS_backend.service.UsersService;
+import com.example.procon34_CYBER_WARS_backend.util.LoginChecker;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -21,10 +22,12 @@ import jakarta.validation.Valid;
 public class UsersController {
 
     private UsersService usersService;
+    private LoginChecker loginChecker;
 
     @Autowired
-    public UsersController(UsersService usersService) {
+    public UsersController(UsersService usersService, LoginChecker loginChecker) {
         this.usersService = usersService;
+        this.loginChecker = loginChecker;
     }
 
     private UsersResponse usersResponse = new UsersResponse();
@@ -47,8 +50,12 @@ public class UsersController {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
         } else {
-            usersResponse = usersService.update(usersRequest, usersResponse, request);
-            return ResponseEntity.ok(usersResponse);
+            if (loginChecker.checkLogin(request)) {
+                usersResponse = usersService.update(usersRequest, usersResponse, request);
+                return ResponseEntity.ok(usersResponse);
+            } else {
+                return ResponseEntity.status(401).body("認証が必要です");
+            }
         }
     }
 
@@ -63,5 +70,7 @@ public class UsersController {
             return ResponseEntity.ok(usersResponse);
         }
     }
+
+    // ユーザーログアウト
 
 }
