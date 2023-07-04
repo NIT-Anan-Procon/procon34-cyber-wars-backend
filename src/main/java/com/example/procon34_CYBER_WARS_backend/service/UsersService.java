@@ -43,6 +43,7 @@ public class UsersService {
     public UsersResponse update(UsersUpdateRequest usersUpdateRequest, UsersResponse usersResponse,
             HttpServletRequest request) {
         HttpSession session = request.getSession(false);
+        usersUpdateRequest.setUserId((Long) session.getAttribute("key"));
         usersUpdateRequest.setName(usersUpdateRequest.getName().trim());
         usersUpdateRequest.setPassword(usersUpdateRequest.getPassword().trim());
         if (!usersUpdateRequest.getName().isEmpty()) {
@@ -50,7 +51,6 @@ public class UsersService {
             usersRequest.setName(usersUpdateRequest.getName());
             Users users = usersMapper.search(usersRequest);
             if (users == null) {
-                usersUpdateRequest.setUserId((Long) session.getAttribute("key"));
                 usersMapper.updateName(usersUpdateRequest);
                 usersResponse.setSuccess(true);
                 System.out.println("a");
