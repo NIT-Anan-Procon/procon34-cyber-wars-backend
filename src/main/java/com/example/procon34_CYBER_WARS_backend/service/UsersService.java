@@ -66,6 +66,7 @@ public class UsersService {
                 for (Cookie cookie1 : cookies) {
                     if (cookie1.getName().equals("JSESSIONID")) {
                         System.out.println(cookie1.getValue());
+                        System.out.println(session.getAttribute("key"));
                         break;
                     }
                 }
