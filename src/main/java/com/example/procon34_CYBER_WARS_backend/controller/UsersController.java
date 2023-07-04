@@ -22,7 +22,9 @@ public class UsersController {
 
     @Autowired
     private UsersService usersService;
-    private UsersResponse usersResponse = new UsersResponse();
+
+    @Autowired
+    private UsersResponse usersResponse;
 
     // ユーザー登録
     @PostMapping
