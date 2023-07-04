@@ -63,7 +63,12 @@ public class UsersService {
             response.addCookie(cookie);
             Cookie[] cookies = request.getCookies();
             if (cookies != null) {
-                System.out.println("cookie");
+                for (Cookie cookie1 : cookies) {
+                    if (cookie1.getName().equals("JSESSIONID")) {
+                        System.out.println(cookie1.getValue());
+                        break;
+                    }
+                }
             }
             usersResponse.setSuccess(true);
         } else {
