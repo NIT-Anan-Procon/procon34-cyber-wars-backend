@@ -59,7 +59,7 @@ public class UsersService {
             HttpSession session = request.getSession();
             session.setAttribute("key", users.getUserId());
             Cookie cookie = new Cookie("JSESSIONID", session.getId());
-            cookie.setMaxAge(60 * 60);
+            cookie.setMaxAge(60);
             response.addCookie(cookie);
             usersResponse.setSuccess(true);
         } else {
