@@ -22,7 +22,8 @@ public class UsersController {
 
     @Autowired
     private UsersService usersService;
-    private UsersResponse usersResponse;
+
+    private UsersResponse usersResponse = new UsersResponse();
 
     // ユーザー登録
     @PostMapping
