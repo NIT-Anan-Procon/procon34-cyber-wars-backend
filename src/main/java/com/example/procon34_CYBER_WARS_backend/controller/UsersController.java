@@ -1,5 +1,6 @@
 package com.example.procon34_CYBER_WARS_backend.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -14,14 +15,13 @@ import com.example.procon34_CYBER_WARS_backend.service.UsersService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/users")
-@RequiredArgsConstructor
 public class UsersController {
 
-    private final UsersService usersService;
+    @Autowired
+    private UsersService usersService;
     private UsersResponse usersResponse;
 
     // ユーザー登録
