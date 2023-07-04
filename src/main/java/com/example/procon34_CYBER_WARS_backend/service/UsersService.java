@@ -40,11 +40,11 @@ public class UsersService {
     public UsersResponse update(UsersRequest usersRequest, UsersResponse usersResponse, HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         System.out.println(session.getAttribute("key"));
-        if ((int) (session.getAttribute("key")) == 1) {
-            usersResponse.setSuccess(true);
-        } else {
-            usersResponse.setSuccess(false);
-        }
+        // if ((int) (session.getAttribute("key")) == 1) {
+        usersResponse.setSuccess(true);
+        // } else {
+        // usersResponse.setSuccess(false);
+        // }
         return usersResponse;
     }
 
