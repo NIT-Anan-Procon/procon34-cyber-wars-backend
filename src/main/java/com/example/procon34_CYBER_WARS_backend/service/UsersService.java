@@ -10,7 +10,6 @@ import com.example.procon34_CYBER_WARS_backend.repository.UsersMapper;
 import com.example.procon34_CYBER_WARS_backend.util.PasswordEncoder;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 @Service
@@ -18,8 +17,7 @@ public class UsersService {
 
     @Autowired
     private UsersMapper usersMapper;
-
-    @Autowired
+    private HttpServletRequest request;
     PasswordEncoder passwordEncoder;
 
     // ユーザー登録
@@ -37,28 +35,26 @@ public class UsersService {
     }
 
     // ユーザー情報変更
-    public UsersResponse update(UsersRequest usersRequest, UsersResponse usersResponse, HttpServletRequest request) {
+    public UsersResponse update(UsersRequest usersRequest, UsersResponse usersResponse) {
         HttpSession session = request.getSession(false);
-        System.out.println(session.getAttribute("key"));
-        // if ((int) (session.getAttribute("key")) == 1) {
-        usersResponse.setSuccess(true);
-        // } else {
-        // usersResponse.setSuccess(false);
-        // }
+        if (session != null) {
+            System.out.println(session.getAttribute("key"));
+            if (session.getAttribute("key") == "1") {
+                usersResponse.setSuccess(true);
+            } else {
+                usersResponse.setSuccess(false);
+            }
+        }
         return usersResponse;
     }
 
     // ユーザーログイン
-    public UsersResponse login(UsersRequest usersRequest, UsersResponse usersResponse, HttpServletRequest request,
-            HttpServletResponse response) {
+    public UsersResponse login(UsersRequest usersRequest, UsersResponse usersResponse) {
         Users users = usersMapper.search(usersRequest);
         if (users != null && passwordEncoder.checkPassword(usersRequest.getPassword(), users.getPassword())) {
             HttpSession session = request.getSession();
             session.setAttribute("key", users.getUserId());
             session.setMaxInactiveInterval(20);
-            // Cookie cookie = new Cookie("JSESSIONID", session.getId());
-            // cookie.setMaxAge(60);
-            // response.addCookie(cookie);
             System.out.println(session.getAttribute("key"));
             usersResponse.setSuccess(true);
         } else {

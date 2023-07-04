@@ -13,8 +13,6 @@ import com.example.procon34_CYBER_WARS_backend.dto.UsersRequest;
 import com.example.procon34_CYBER_WARS_backend.dto.UsersResponse;
 import com.example.procon34_CYBER_WARS_backend.service.UsersService;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 
 @RestController
@@ -23,8 +21,7 @@ public class UsersController {
 
     @Autowired
     private UsersService usersService;
-
-    private UsersResponse usersResponse = new UsersResponse();
+    private UsersResponse usersResponse;
 
     // ユーザー登録
     @PostMapping
@@ -39,24 +36,22 @@ public class UsersController {
 
     // ユーザー情報変更
     @PatchMapping
-    public ResponseEntity<?> update(@Valid @RequestBody UsersRequest usersRequest, BindingResult bindingResult,
-            HttpServletRequest request) {
+    public ResponseEntity<?> update(@Valid @RequestBody UsersRequest usersRequest, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
         } else {
-            usersResponse = usersService.update(usersRequest, usersResponse, request);
+            usersResponse = usersService.update(usersRequest, usersResponse);
             return ResponseEntity.ok(usersResponse);
         }
     }
 
     // ユーザーログイン
     @PostMapping("/credentials")
-    public ResponseEntity<?> login(@Valid @RequestBody UsersRequest usersRequest, BindingResult bindingResult,
-            HttpServletRequest request, HttpServletResponse response) {
+    public ResponseEntity<?> login(@Valid @RequestBody UsersRequest usersRequest, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
         } else {
-            usersResponse = usersService.login(usersRequest, usersResponse, request, response);
+            usersResponse = usersService.login(usersRequest, usersResponse);
             return ResponseEntity.ok(usersResponse);
         }
     }
