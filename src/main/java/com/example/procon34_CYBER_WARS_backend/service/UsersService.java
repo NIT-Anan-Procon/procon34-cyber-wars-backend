@@ -9,7 +9,6 @@ import com.example.procon34_CYBER_WARS_backend.entity.Users;
 import com.example.procon34_CYBER_WARS_backend.repository.UsersMapper;
 import com.example.procon34_CYBER_WARS_backend.util.PasswordEncoder;
 
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -58,19 +57,10 @@ public class UsersService {
         if (users != null && passwordEncoder.checkPassword(usersRequest.getPassword(), users.getPassword())) {
             HttpSession session = request.getSession();
             session.setAttribute("key", users.getUserId());
-            Cookie cookie = new Cookie("JSESSIONID", session.getId());
-            cookie.setMaxAge(60);
-            response.addCookie(cookie);
-            Cookie[] cookies = request.getCookies();
-            if (cookies != null) {
-                for (Cookie cookie1 : cookies) {
-                    if (cookie1.getName().equals("JSESSIONID")) {
-                        System.out.println(cookie1.getValue());
-                        System.out.println(session.getAttribute("key"));
-                        break;
-                    }
-                }
-            }
+            // Cookie cookie = new Cookie("JSESSIONID", session.getId());
+            // cookie.setMaxAge(60);
+            // response.addCookie(cookie);
+            System.out.println(session.getAttribute("key"));
             usersResponse.setSuccess(true);
         } else {
             usersResponse.setSuccess(false);
