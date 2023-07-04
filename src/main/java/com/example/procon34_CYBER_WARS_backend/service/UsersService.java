@@ -19,7 +19,7 @@ public class UsersService {
     private UsersMapper usersMapper;
 
     @Autowired
-    PasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
 
     // ユーザー登録
     public UsersResponse register(UsersRequest usersRequest, UsersResponse usersResponse) {
