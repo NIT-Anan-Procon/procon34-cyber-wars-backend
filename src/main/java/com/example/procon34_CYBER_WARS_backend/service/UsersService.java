@@ -59,10 +59,11 @@ public class UsersService {
             }
         } else if (!usersUpdateRequest.getPassword().isEmpty()) {
             String hashedPassword = passwordEncoder.encodePassword(usersUpdateRequest.getPassword());
+            System.out.println(usersUpdateRequest.getPassword());
             usersUpdateRequest.setPassword(hashedPassword);
             usersMapper.updatePassword(usersUpdateRequest);
             usersResponse.setSuccess(true);
-            System.out.println("b");
+            System.out.println(usersUpdateRequest.getPassword());
         } else {
             usersResponse.setSuccess(false);
         }
