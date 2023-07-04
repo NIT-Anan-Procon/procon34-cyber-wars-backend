@@ -15,11 +15,14 @@ import jakarta.servlet.http.HttpSession;
 @Service
 public class UsersService {
 
-    @Autowired
     private UsersMapper usersMapper;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    public UsersService(UsersMapper usersMapper, PasswordEncoder passwordEncoder) {
+        this.usersMapper = usersMapper;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     // ユーザー登録
     public UsersResponse register(UsersRequest usersRequest, UsersResponse usersResponse) {
