@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.procon34_CYBER_WARS_backend.dto.UsersRequest;
 import com.example.procon34_CYBER_WARS_backend.dto.UsersResponse;
+import com.example.procon34_CYBER_WARS_backend.dto.UsersUpdateRequest;
 import com.example.procon34_CYBER_WARS_backend.entity.Users;
 import com.example.procon34_CYBER_WARS_backend.repository.UsersMapper;
 import com.example.procon34_CYBER_WARS_backend.util.PasswordEncoder;
@@ -39,15 +40,27 @@ public class UsersService {
     }
 
     // ユーザー情報変更
-    public UsersResponse update(UsersRequest usersRequest, UsersResponse usersResponse, HttpServletRequest request) {
+    public UsersResponse update(UsersUpdateRequest usersUpdateRequest, UsersResponse usersResponse,
+            HttpServletRequest request) {
         HttpSession session = request.getSession(false);
-        if (session != null) {
-            System.out.println(session.getAttribute("key"));
-            if (session.getAttribute("key") == "1") {
+        usersUpdateRequest.setName(usersUpdateRequest.getName().trim());
+        usersUpdateRequest.setPassword(usersUpdateRequest.getPassword().trim());
+        if (!usersUpdateRequest.getName().isEmpty()) {
+            UsersRequest usersRequest = new UsersRequest();
+            usersRequest.setName(usersUpdateRequest.getName());
+            Users users = usersMapper.search(usersRequest);
+            if (users == null) {
+                usersUpdateRequest.setUserId((Long) session.getAttribute("key"));
+                usersMapper.updateName(usersUpdateRequest);
                 usersResponse.setSuccess(true);
             } else {
                 usersResponse.setSuccess(false);
             }
+        } else if (!usersUpdateRequest.getPassword().isEmpty()) {
+            String hashedPassword = passwordEncoder.encodePassword(usersUpdateRequest.getPassword());
+            usersUpdateRequest.setPassword(hashedPassword);
+            usersMapper.updatePassword(usersUpdateRequest);
+            usersResponse.setSuccess(true);
         }
         return usersResponse;
     }
