@@ -28,6 +28,7 @@ public class UsersController {
     }
 
     private UsersResponse usersResponse = new UsersResponse();
+    private HttpServletRequest request;
 
     // ユーザー登録
     @PostMapping
@@ -42,8 +43,7 @@ public class UsersController {
 
     // ユーザー情報変更
     @PatchMapping
-    public ResponseEntity<?> update(@Valid @RequestBody UsersRequest usersRequest, BindingResult bindingResult,
-            HttpServletRequest request) {
+    public ResponseEntity<?> update(@Valid @RequestBody UsersRequest usersRequest, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
         } else {
@@ -54,8 +54,7 @@ public class UsersController {
 
     // ユーザーログイン
     @PostMapping("/credentials")
-    public ResponseEntity<?> login(@Valid @RequestBody UsersRequest usersRequest, BindingResult bindingResult,
-            HttpServletRequest request) {
+    public ResponseEntity<?> login(@Valid @RequestBody UsersRequest usersRequest, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
         } else {
