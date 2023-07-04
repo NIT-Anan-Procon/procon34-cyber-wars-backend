@@ -39,11 +39,12 @@ public class UsersController {
 
     // ユーザー情報変更
     @PatchMapping
-    public ResponseEntity<?> update(@Valid @RequestBody UsersRequest usersRequest, BindingResult bindingResult) {
+    public ResponseEntity<?> update(@Valid @RequestBody UsersRequest usersRequest, BindingResult bindingResult,
+            HttpServletRequest request) {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
         } else {
-            usersResponse = usersService.update(usersRequest, usersResponse);
+            usersResponse = usersService.update(usersRequest, usersResponse, request);
             return ResponseEntity.ok(usersResponse);
         }
     }

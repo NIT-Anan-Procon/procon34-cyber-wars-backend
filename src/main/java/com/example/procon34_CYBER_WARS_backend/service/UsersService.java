@@ -37,12 +37,10 @@ public class UsersService {
     }
 
     // ユーザー情報変更
-    public UsersResponse update(UsersRequest usersRequest, UsersResponse usersResponse) {
-        Users users = usersMapper.search(usersRequest);
-        if (users == null) {
-            String hashedPassword = passwordEncoder.encodePassword(usersRequest.getPassword());
-            usersRequest.setPassword(hashedPassword);
-            usersMapper.register(usersRequest);
+    public UsersResponse update(UsersRequest usersRequest, UsersResponse usersResponse, HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        System.out.println(session.getAttribute("key"));
+        if ((int) (session.getAttribute("key")) == 1) {
             usersResponse.setSuccess(true);
         } else {
             usersResponse.setSuccess(false);
@@ -57,6 +55,7 @@ public class UsersService {
         if (users != null && passwordEncoder.checkPassword(usersRequest.getPassword(), users.getPassword())) {
             HttpSession session = request.getSession();
             session.setAttribute("key", users.getUserId());
+            session.setMaxInactiveInterval(20);
             // Cookie cookie = new Cookie("JSESSIONID", session.getId());
             // cookie.setMaxAge(60);
             // response.addCookie(cookie);
