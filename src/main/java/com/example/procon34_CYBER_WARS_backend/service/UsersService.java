@@ -56,17 +56,15 @@ public class UsersService {
             HttpServletResponse response) {
         Users users = usersMapper.search(usersRequest);
         if (users != null && passwordEncoder.checkPassword(usersRequest.getPassword(), users.getPassword())) {
-            System.out.println("0");
             HttpSession session = request.getSession();
-            System.out.println("1");
             session.setAttribute("key", users.getUserId());
-            System.out.println("2");
             Cookie cookie = new Cookie("JSESSIONID", session.getId());
-            System.out.println("3");
             cookie.setMaxAge(60);
-            System.out.println("4");
             response.addCookie(cookie);
-            System.out.println("5");
+            Cookie[] cookies = request.getCookies();
+            if (cookies != null) {
+                System.out.println("cookie");
+            }
             usersResponse.setSuccess(true);
         } else {
             usersResponse.setSuccess(false);
