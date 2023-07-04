@@ -21,13 +21,13 @@ import jakarta.validation.Valid;
 public class UsersController {
 
     private UsersService usersService;
-    private UsersResponse usersResponse;
 
     @Autowired
-    public UsersController(UsersService usersService, UsersResponse usersResponse) {
+    public UsersController(UsersService usersService) {
         this.usersService = usersService;
-        this.usersResponse = usersResponse;
     }
+
+    private UsersResponse usersResponse = new UsersResponse();
 
     // ユーザー登録
     @PostMapping
