@@ -22,18 +22,18 @@ public interface UsersMapper {
 
     // ユーザー名変更（ユーザー情報変更）
     @Update("UPDATE users SET name = #{name} WHERE user_id = #{userId}")
-    Users updateName(UsersUpdateRequest usersUpdateRequest);
+    void updateName(UsersUpdateRequest usersUpdateRequest);
 
     // ユーザーパスワード変更（ユーザー情報変更）
     @Update("UPDATE users SET password = #{password} WHERE user_id = #{userId}")
-    Users updatePassword(UsersUpdateRequest usersUpdateRequest);
+    void updatePassword(UsersUpdateRequest usersUpdateRequest);
 
     // セッション生成（ユーザーログイン）
     @Update("UPDATE users SET session_id = #{sessionId} WHERE user_id = #{userId}")
-    Users createSession(UsersRequest usersRequest);
+    void createSession(UsersRequest usersRequest);
 
     // セッション削除（ユーザーログアウト）
     @Update("UPDATE users SET session_id = NULL WHERE user_id = #{userId}")
-    Users deleteSession(UsersRequest usersRequest);
+    void deleteSession(UsersRequest usersRequest);
 
 }
