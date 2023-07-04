@@ -3,6 +3,7 @@ package com.example.procon34_CYBER_WARS_backend.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -47,8 +48,7 @@ public class UsersController {
     // ユーザー情報変更
     @PatchMapping
     public ResponseEntity<?> update(@Valid @RequestBody UsersUpdateRequest usersUpdateRequest,
-            BindingResult bindingResult,
-            HttpServletRequest request) {
+            BindingResult bindingResult, HttpServletRequest request) {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
         } else {
@@ -74,5 +74,14 @@ public class UsersController {
     }
 
     // ユーザーログアウト
+    @DeleteMapping("/credentials")
+    public ResponseEntity<?> logout(HttpServletRequest request) {
+        if (loginChecker.checkLogin(request)) {
+            usersService.logout(request);
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.status(401).body("認証が必要です");
+        }
+    }
 
 }

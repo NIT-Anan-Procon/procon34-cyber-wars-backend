@@ -53,17 +53,14 @@ public class UsersService {
             if (users == null) {
                 usersMapper.updateName(usersUpdateRequest);
                 usersResponse.setSuccess(true);
-                System.out.println("a");
             } else {
                 usersResponse.setSuccess(false);
             }
         } else if (!usersUpdateRequest.getPassword().isEmpty()) {
             String hashedPassword = passwordEncoder.encodePassword(usersUpdateRequest.getPassword());
-            System.out.println(usersUpdateRequest.getPassword());
             usersUpdateRequest.setPassword(hashedPassword);
             usersMapper.updatePassword(usersUpdateRequest);
             usersResponse.setSuccess(true);
-            System.out.println(usersUpdateRequest.getPassword());
         } else {
             usersResponse.setSuccess(false);
         }
@@ -85,5 +82,9 @@ public class UsersService {
     }
 
     // ユーザーログアウト
+    public void logout(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        session.invalidate();
+    }
 
 }
