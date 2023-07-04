@@ -23,7 +23,6 @@ public class UsersController {
     @Autowired
     private UsersService usersService;
     private UsersResponse usersResponse;
-    private HttpServletRequest request;
 
     // ユーザー登録
     @PostMapping
@@ -38,7 +37,8 @@ public class UsersController {
 
     // ユーザー情報変更
     @PatchMapping
-    public ResponseEntity<?> update(@Valid @RequestBody UsersRequest usersRequest, BindingResult bindingResult) {
+    public ResponseEntity<?> update(@Valid @RequestBody UsersRequest usersRequest, BindingResult bindingResult,
+            HttpServletRequest request) {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
         } else {
@@ -49,7 +49,8 @@ public class UsersController {
 
     // ユーザーログイン
     @PostMapping("/credentials")
-    public ResponseEntity<?> login(@Valid @RequestBody UsersRequest usersRequest, BindingResult bindingResult) {
+    public ResponseEntity<?> login(@Valid @RequestBody UsersRequest usersRequest, BindingResult bindingResult,
+            HttpServletRequest request) {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
         } else {
