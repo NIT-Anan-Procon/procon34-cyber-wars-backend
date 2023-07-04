@@ -27,15 +27,16 @@ public class UsersController {
     private UsersResponse usersResponse = new UsersResponse();
 
     // ユーザー登録
-    @PostMapping
-    public ResponseEntity<?> register(@Valid @RequestBody UsersRequest usersRequest, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
-        } else {
-            usersResponse = usersService.register(usersRequest, usersResponse);
-            return ResponseEntity.ok(usersResponse);
-        }
-    }
+    // @PostMapping
+    // public ResponseEntity<?> register(@Valid @RequestBody UsersRequest
+    // usersRequest, BindingResult bindingResult) {
+    // if (bindingResult.hasErrors()) {
+    // return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
+    // } else {
+    // usersResponse = usersService.register(usersRequest, usersResponse);
+    // return ResponseEntity.ok(usersResponse);
+    // }
+    // }
 
     // ユーザー情報変更
     @PutMapping
