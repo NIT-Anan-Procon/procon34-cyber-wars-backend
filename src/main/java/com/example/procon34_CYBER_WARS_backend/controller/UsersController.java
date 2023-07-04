@@ -3,8 +3,8 @@ package com.example.procon34_CYBER_WARS_backend.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,19 +27,18 @@ public class UsersController {
     private UsersResponse usersResponse = new UsersResponse();
 
     // ユーザー登録
-    // @PostMapping
-    // public ResponseEntity<?> register(@Valid @RequestBody UsersRequest
-    // usersRequest, BindingResult bindingResult) {
-    // if (bindingResult.hasErrors()) {
-    // return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
-    // } else {
-    // usersResponse = usersService.register(usersRequest, usersResponse);
-    // return ResponseEntity.ok(usersResponse);
-    // }
-    // }
+    @PostMapping
+    public ResponseEntity<?> register(@Valid @RequestBody UsersRequest usersRequest, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
+        } else {
+            usersResponse = usersService.register(usersRequest, usersResponse);
+            return ResponseEntity.ok(usersResponse);
+        }
+    }
 
     // ユーザー情報変更
-    @PutMapping
+    @PatchMapping
     public ResponseEntity<?> update(@Valid @RequestBody UsersRequest usersRequest, BindingResult bindingResult,
             HttpServletRequest request) {
         if (bindingResult.hasErrors()) {
