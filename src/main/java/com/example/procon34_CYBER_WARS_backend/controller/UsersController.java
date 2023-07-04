@@ -23,8 +23,8 @@ import jakarta.validation.Valid;
 @RequestMapping("/users")
 public class UsersController {
 
-    private UsersService usersService;
-    private LoginChecker loginChecker;
+    private final UsersService usersService;
+    private final LoginChecker loginChecker;
 
     @Autowired
     public UsersController(UsersService usersService, LoginChecker loginChecker) {

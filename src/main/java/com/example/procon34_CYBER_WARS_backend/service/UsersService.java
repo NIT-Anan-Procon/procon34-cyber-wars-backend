@@ -16,8 +16,8 @@ import jakarta.servlet.http.HttpSession;
 @Service
 public class UsersService {
 
-    private UsersMapper usersMapper;
-    private PasswordEncoder passwordEncoder;
+    private final UsersMapper usersMapper;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
     public UsersService(UsersMapper usersMapper, PasswordEncoder passwordEncoder) {
