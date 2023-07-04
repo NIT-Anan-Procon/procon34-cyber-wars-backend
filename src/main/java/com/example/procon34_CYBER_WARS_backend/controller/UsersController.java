@@ -13,6 +13,7 @@ import com.example.procon34_CYBER_WARS_backend.dto.UsersRequest;
 import com.example.procon34_CYBER_WARS_backend.dto.UsersResponse;
 import com.example.procon34_CYBER_WARS_backend.service.UsersService;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 @RestController
@@ -22,6 +23,7 @@ public class UsersController {
     @Autowired
     private UsersService usersService;
     private UsersResponse usersResponse;
+    private HttpServletRequest request;
 
     // ユーザー登録
     @PostMapping
@@ -40,7 +42,7 @@ public class UsersController {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
         } else {
-            usersResponse = usersService.update(usersRequest, usersResponse);
+            usersResponse = usersService.update(usersRequest, usersResponse, request);
             return ResponseEntity.ok(usersResponse);
         }
     }
@@ -51,7 +53,7 @@ public class UsersController {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
         } else {
-            usersResponse = usersService.login(usersRequest, usersResponse);
+            usersResponse = usersService.login(usersRequest, usersResponse, request);
             return ResponseEntity.ok(usersResponse);
         }
     }

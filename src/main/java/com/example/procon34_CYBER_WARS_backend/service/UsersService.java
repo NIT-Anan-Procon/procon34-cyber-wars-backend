@@ -17,7 +17,6 @@ public class UsersService {
 
     @Autowired
     private UsersMapper usersMapper;
-    private HttpServletRequest request;
     PasswordEncoder passwordEncoder;
 
     // ユーザー登録
@@ -35,7 +34,7 @@ public class UsersService {
     }
 
     // ユーザー情報変更
-    public UsersResponse update(UsersRequest usersRequest, UsersResponse usersResponse) {
+    public UsersResponse update(UsersRequest usersRequest, UsersResponse usersResponse, HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         if (session != null) {
             System.out.println(session.getAttribute("key"));
@@ -49,7 +48,7 @@ public class UsersService {
     }
 
     // ユーザーログイン
-    public UsersResponse login(UsersRequest usersRequest, UsersResponse usersResponse) {
+    public UsersResponse login(UsersRequest usersRequest, UsersResponse usersResponse, HttpServletRequest request) {
         Users users = usersMapper.search(usersRequest);
         if (users != null && passwordEncoder.checkPassword(usersRequest.getPassword(), users.getPassword())) {
             HttpSession session = request.getSession();
