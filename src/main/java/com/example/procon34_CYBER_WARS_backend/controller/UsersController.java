@@ -3,8 +3,8 @@ package com.example.procon34_CYBER_WARS_backend.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,7 +38,7 @@ public class UsersController {
     }
 
     // ユーザー情報変更
-    @PatchMapping
+    @PutMapping
     public ResponseEntity<?> update(@Valid @RequestBody UsersRequest usersRequest, BindingResult bindingResult,
             HttpServletRequest request) {
         if (bindingResult.hasErrors()) {
