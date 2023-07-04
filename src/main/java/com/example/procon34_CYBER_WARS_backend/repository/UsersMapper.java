@@ -28,12 +28,4 @@ public interface UsersMapper {
     @Update("UPDATE users SET password = #{password} WHERE user_id = #{userId}")
     void updatePassword(UsersUpdateRequest usersUpdateRequest);
 
-    // セッション生成（ユーザーログイン）
-    @Update("UPDATE users SET session_id = #{sessionId} WHERE user_id = #{userId}")
-    void createSession(UsersRequest usersRequest);
-
-    // セッション削除（ユーザーログアウト）
-    @Update("UPDATE users SET session_id = NULL WHERE user_id = #{userId}")
-    void deleteSession(UsersRequest usersRequest);
-
 }

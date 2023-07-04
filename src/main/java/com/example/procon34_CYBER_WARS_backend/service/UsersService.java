@@ -53,6 +53,7 @@ public class UsersService {
                 usersUpdateRequest.setUserId((Long) session.getAttribute("key"));
                 usersMapper.updateName(usersUpdateRequest);
                 usersResponse.setSuccess(true);
+                System.out.println("a");
             } else {
                 usersResponse.setSuccess(false);
             }
@@ -61,6 +62,9 @@ public class UsersService {
             usersUpdateRequest.setPassword(hashedPassword);
             usersMapper.updatePassword(usersUpdateRequest);
             usersResponse.setSuccess(true);
+            System.out.println("b");
+        } else {
+            usersResponse.setSuccess(false);
         }
         return usersResponse;
     }
@@ -72,7 +76,6 @@ public class UsersService {
             HttpSession session = request.getSession();
             session.setAttribute("key", users.getUserId());
             session.setMaxInactiveInterval(20);
-            System.out.println(session.getAttribute("key"));
             usersResponse.setSuccess(true);
         } else {
             usersResponse.setSuccess(false);
