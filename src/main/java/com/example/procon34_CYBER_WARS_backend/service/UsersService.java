@@ -9,10 +9,8 @@ import com.example.procon34_CYBER_WARS_backend.entity.Users;
 import com.example.procon34_CYBER_WARS_backend.repository.UsersMapper;
 import com.example.procon34_CYBER_WARS_backend.util.PasswordEncoder;
 
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 
 @Service
 public class UsersService {
@@ -56,11 +54,11 @@ public class UsersService {
             HttpServletResponse response) {
         Users users = usersMapper.search(usersRequest);
         if (users != null && passwordEncoder.checkPassword(usersRequest.getPassword(), users.getPassword())) {
-            HttpSession session = request.getSession();
-            session.setAttribute("key", users.getUserId());
-            Cookie cookie = new Cookie("JSESSIONID", session.getId());
-            cookie.setMaxAge(60);
-            response.addCookie(cookie);
+            // HttpSession session = request.getSession();
+            // session.setAttribute("key", users.getUserId());
+            // Cookie cookie = new Cookie("JSESSIONID", session.getId());
+            // cookie.setMaxAge(60);
+            // response.addCookie(cookie);
             usersResponse.setSuccess(true);
         } else {
             usersResponse.setSuccess(false);
