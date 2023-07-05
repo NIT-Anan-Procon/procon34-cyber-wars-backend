@@ -14,18 +14,18 @@ public interface UsersMapper {
 
     // ユーザー登録
     @Insert("INSERT INTO users(name, password) VALUES(#{name}, #{password})")
-    void register(UsersRequest usersRequest);
+    void registerUser(UsersRequest usersRequest);
 
-    // ユーザー検索（ユーザー登録・ユーザー情報変更・ユーザーログイン）
+    // ユーザー名検索（ユーザー登録・ユーザー名変更・ユーザーログイン）
     @Select("SELECT * FROM users WHERE name = #{name}")
-    Users search(UsersRequest usersRequest);
+    Users searchUserByName(UsersRequest usersRequest);
 
-    // ユーザー名変更（ユーザー情報変更）
+    // ユーザー名変更
     @Update("UPDATE users SET name = #{name} WHERE user_id = #{userId}")
-    void updateName(UsersUpdateRequest usersUpdateRequest);
+    void updateUserName(UsersUpdateRequest usersUpdateRequest);
 
-    // ユーザーパスワード変更（ユーザー情報変更）
+    // ユーザーパスワード変更
     @Update("UPDATE users SET password = #{password} WHERE user_id = #{userId}")
-    void updatePassword(UsersUpdateRequest usersUpdateRequest);
+    void updateUserPassword(UsersUpdateRequest usersUpdateRequest);
 
 }

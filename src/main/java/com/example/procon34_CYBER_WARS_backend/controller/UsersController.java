@@ -36,17 +36,17 @@ public class UsersController {
 
     // ユーザー登録
     @PostMapping
-    public ResponseEntity<?> register(@Valid @RequestBody UsersRequest usersRequest, BindingResult bindingResult) {
+    public ResponseEntity<?> registerUser(@Valid @RequestBody UsersRequest usersRequest, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
         }
-        usersResponse = usersService.register(usersRequest, usersResponse);
+        usersResponse = usersService.registerUser(usersRequest, usersResponse);
         return ResponseEntity.ok(usersResponse);
     }
 
     // ユーザー名変更
     @PatchMapping("/name")
-    public ResponseEntity<?> updateName(@Valid @RequestBody UsersUpdateRequest usersUpdateRequest,
+    public ResponseEntity<?> updateUserName(@Valid @RequestBody UsersUpdateRequest usersUpdateRequest,
             BindingResult bindingResult, HttpServletRequest request) {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
@@ -54,13 +54,13 @@ public class UsersController {
         if (!loginChecker.checkLogin(request)) {
             return ResponseEntity.status(401).body("認証が必要です");
         }
-        usersResponse = usersService.updateName(usersUpdateRequest, usersResponse, request);
+        usersResponse = usersService.updateUserName(usersUpdateRequest, usersResponse, request);
         return ResponseEntity.ok(usersResponse);
     }
 
     // ユーザーパスワード変更
     @PatchMapping("/password")
-    public ResponseEntity<?> updatePassword(@Valid @RequestBody UsersUpdateRequest usersUpdateRequest,
+    public ResponseEntity<?> updateUserPassword(@Valid @RequestBody UsersUpdateRequest usersUpdateRequest,
             BindingResult bindingResult, HttpServletRequest request) {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
@@ -68,28 +68,28 @@ public class UsersController {
         if (!loginChecker.checkLogin(request)) {
             return ResponseEntity.status(401).body("認証が必要です");
         }
-        usersResponse = usersService.updatePassword(usersUpdateRequest, usersResponse, request);
+        usersResponse = usersService.updateUserPassword(usersUpdateRequest, usersResponse, request);
         return ResponseEntity.ok(usersResponse);
     }
 
     // ユーザーログイン
     @PostMapping("/credentials")
-    public ResponseEntity<?> login(@Valid @RequestBody UsersRequest usersRequest, BindingResult bindingResult,
+    public ResponseEntity<?> loginUser(@Valid @RequestBody UsersRequest usersRequest, BindingResult bindingResult,
             HttpServletRequest request) {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
         }
-        usersResponse = usersService.login(usersRequest, usersResponse, request);
+        usersResponse = usersService.loginUser(usersRequest, usersResponse, request);
         return ResponseEntity.ok(usersResponse);
     }
 
     // ユーザーログアウト
     @DeleteMapping("/credentials")
-    public ResponseEntity<?> logout(HttpServletRequest request) {
+    public ResponseEntity<?> logoutUser(HttpServletRequest request) {
         if (!loginChecker.checkLogin(request)) {
             return ResponseEntity.status(401).body("認証が必要です");
         }
-        usersService.logout(request);
+        usersService.logoutUser(request);
         return ResponseEntity.ok().build();
     }
 

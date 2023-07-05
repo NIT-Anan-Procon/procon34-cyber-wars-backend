@@ -10,11 +10,11 @@ public class LoginChecker {
 
     public boolean checkLogin(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
-        if (session != null) {
-            return true;
-        } else {
+        // セッションが存在しない場合
+        if (session == null) {
             return false;
         }
+        return true;
     }
 
 }
