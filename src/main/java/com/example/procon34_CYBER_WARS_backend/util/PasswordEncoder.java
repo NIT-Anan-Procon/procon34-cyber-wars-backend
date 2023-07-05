@@ -14,10 +14,12 @@ public class PasswordEncoder {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
+    // パスワードエンコード
     public String encodePassword(String password) {
         return bCryptPasswordEncoder.encode(password);
     }
 
+    // パスワードチェック
     public boolean checkPassword(String password, String hashedPassword) {
         return bCryptPasswordEncoder.matches(password, hashedPassword);
     }

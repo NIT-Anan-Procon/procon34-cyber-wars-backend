@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpSession;
 @Component
 public class LoginChecker {
 
+    // ログインチェック
     public boolean checkLogin(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         // セッションが存在しない場合
