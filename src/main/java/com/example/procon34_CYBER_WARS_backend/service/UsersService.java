@@ -28,41 +28,52 @@ public class UsersService {
     // ユーザー登録
     public UsersResponse register(UsersRequest usersRequest, UsersResponse usersResponse) {
         Users users = usersMapper.search(usersRequest);
-        if (users == null) {
+        if (users != null) {
+            usersResponse.setSuccess(false);
+        } else {
             String hashedPassword = passwordEncoder.encodePassword(usersRequest.getPassword());
             usersRequest.setPassword(hashedPassword);
             usersMapper.register(usersRequest);
             usersResponse.setSuccess(true);
-        } else {
-            usersResponse.setSuccess(false);
         }
         return usersResponse;
     }
 
-    // ユーザー情報変更
-    public UsersResponse update(UsersUpdateRequest usersUpdateRequest, UsersResponse usersResponse,
+    // ユーザー名変更
+    public UsersResponse updateName(UsersUpdateRequest usersUpdateRequest, UsersResponse usersResponse,
             HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-        usersUpdateRequest.setUserId((Long) session.getAttribute("key"));
         usersUpdateRequest.setName(usersUpdateRequest.getName().trim());
-        usersUpdateRequest.setPassword(usersUpdateRequest.getPassword().trim());
-        if (!usersUpdateRequest.getName().isEmpty()) {
+        if (usersUpdateRequest.getName().isEmpty()) {
+            usersResponse.setSuccess(false);
+        } else {
             UsersRequest usersRequest = new UsersRequest();
             usersRequest.setName(usersUpdateRequest.getName());
             Users users = usersMapper.search(usersRequest);
-            if (users == null) {
+            if (users != null) {
+                usersResponse.setSuccess(false);
+            } else {
+                HttpSession session = request.getSession(false);
+                usersUpdateRequest.setUserId((Long) session.getAttribute("sessionId"));
                 usersMapper.updateName(usersUpdateRequest);
                 usersResponse.setSuccess(true);
-            } else {
-                usersResponse.setSuccess(false);
             }
-        } else if (!usersUpdateRequest.getPassword().isEmpty()) {
+        }
+        return usersResponse;
+    }
+
+    // ユーザーパスワード変更
+    public UsersResponse updatePassword(UsersUpdateRequest usersUpdateRequest, UsersResponse usersResponse,
+            HttpServletRequest request) {
+        usersUpdateRequest.setPassword(usersUpdateRequest.getPassword().trim());
+        if (usersUpdateRequest.getPassword().isEmpty()) {
+            usersResponse.setSuccess(false);
+        } else {
+            HttpSession session = request.getSession(false);
+            usersUpdateRequest.setUserId((Long) session.getAttribute("sessionId"));
             String hashedPassword = passwordEncoder.encodePassword(usersUpdateRequest.getPassword());
             usersUpdateRequest.setPassword(hashedPassword);
             usersMapper.updatePassword(usersUpdateRequest);
             usersResponse.setSuccess(true);
-        } else {
-            usersResponse.setSuccess(false);
         }
         return usersResponse;
     }
@@ -70,13 +81,15 @@ public class UsersService {
     // ユーザーログイン
     public UsersResponse login(UsersRequest usersRequest, UsersResponse usersResponse, HttpServletRequest request) {
         Users users = usersMapper.search(usersRequest);
-        if (users != null && passwordEncoder.checkPassword(usersRequest.getPassword(), users.getPassword())) {
+        if (users == null) {
+            usersResponse.setSuccess(false);
+        } else if (!passwordEncoder.checkPassword(usersRequest.getPassword(), users.getPassword())) {
+            usersResponse.setSuccess(false);
+        } else {
             HttpSession session = request.getSession();
-            session.setAttribute("key", users.getUserId());
+            session.setAttribute("sessionId", users.getUserId());
             session.setMaxInactiveInterval(20);
             usersResponse.setSuccess(true);
-        } else {
-            usersResponse.setSuccess(false);
         }
         return usersResponse;
     }
