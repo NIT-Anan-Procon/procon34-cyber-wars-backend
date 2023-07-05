@@ -9,6 +9,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class Config {
 
+    // CSRF対策無効化
     @Bean
     public SecurityFilterChain configureHttp(HttpSecurity http) throws Exception {
         http.csrf().disable();
