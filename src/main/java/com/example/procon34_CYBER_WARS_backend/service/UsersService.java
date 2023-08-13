@@ -44,7 +44,7 @@ public class UsersService {
     public UsersResponse updateUserName(UsersUpdateRequest usersUpdateRequest, UsersResponse usersResponse,
             HttpServletRequest request) {
         usersUpdateRequest.setName(usersUpdateRequest.getName().trim());
-        // 名前が空の場合
+        // ユーザー名が空の場合
         if (usersUpdateRequest.getName().isEmpty()) {
             usersResponse.setSuccess(false);
             return usersResponse;
@@ -68,7 +68,7 @@ public class UsersService {
     public UsersResponse updateUserPassword(UsersUpdateRequest usersUpdateRequest, UsersResponse usersResponse,
             HttpServletRequest request) {
         usersUpdateRequest.setPassword(usersUpdateRequest.getPassword().trim());
-        // パスワードが空の場合
+        // ユーザーパスワードが空の場合
         if (usersUpdateRequest.getPassword().isEmpty()) {
             usersResponse.setSuccess(false);
             return usersResponse;
@@ -90,7 +90,7 @@ public class UsersService {
             usersResponse.setSuccess(false);
             return usersResponse;
         }
-        // パスワードが異なる場合
+        // ユーザーパスワードが異なる場合
         if (!passwordEncoder.checkPassword(usersRequest.getPassword(), users.getPassword())) {
             usersResponse.setSuccess(false);
             return usersResponse;
