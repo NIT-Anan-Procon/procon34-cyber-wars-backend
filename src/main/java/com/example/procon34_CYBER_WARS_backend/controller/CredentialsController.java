@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.procon34_CYBER_WARS_backend.dto.Users.RegisterUserRequest;
-import com.example.procon34_CYBER_WARS_backend.dto.Users.UpdateUserNameResponse;
+import com.example.procon34_CYBER_WARS_backend.dto.Users.Credentials.LoginUserResponse;
 import com.example.procon34_CYBER_WARS_backend.service.UsersCredentialsService;
 import com.example.procon34_CYBER_WARS_backend.util.LoginChecker;
 
@@ -30,27 +30,25 @@ public class CredentialsController {
         this.loginChecker = loginChecker;
     }
 
-    private UpdateUserNameResponse usersResponse = new UpdateUserNameResponse();
-
     // ユーザーログイン
     @PostMapping
     public ResponseEntity<?> loginUser(@Valid @RequestBody RegisterUserRequest usersRequest,
-            BindingResult bindingResult,
-            HttpServletRequest request) {
+            HttpServletRequest httpServletRequest,
+            BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
         }
-        usersResponse = usersCredentialsService.loginUser(usersRequest, usersResponse, request);
-        return ResponseEntity.ok(usersResponse);
+        LoginUserResponse loginUserResponse = usersCredentialsService.loginUser(usersRequest, httpServletRequest);
+        return ResponseEntity.ok(loginUserResponse);
     }
 
     // ユーザーログアウト
     @DeleteMapping
-    public ResponseEntity<?> logoutUser(HttpServletRequest request) {
-        if (!loginChecker.checkLogin(request)) {
+    public ResponseEntity<?> logoutUser(HttpServletRequest httpServletRequest) {
+        if (!loginChecker.checkLogin(httpServletRequest)) {
             return ResponseEntity.status(401).body("認証が必要です");
         }
-        usersCredentialsService.logoutUser(request);
+        usersCredentialsService.logoutUser(httpServletRequest);
         return ResponseEntity.ok().build();
     }
 
