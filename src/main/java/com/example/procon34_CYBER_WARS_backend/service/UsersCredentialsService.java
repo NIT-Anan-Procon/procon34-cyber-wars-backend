@@ -1,6 +1,7 @@
 package com.example.procon34_CYBER_WARS_backend.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.example.procon34_CYBER_WARS_backend.dto.Users.SearchUserByNameRequest;
 import com.example.procon34_CYBER_WARS_backend.dto.Users.Credentials.LoginUserRequest;
@@ -12,6 +13,7 @@ import com.example.procon34_CYBER_WARS_backend.util.PasswordEncoder;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
+@Service
 public class UsersCredentialsService {
 
     private final UsersMapper usersMapper;
