@@ -33,8 +33,7 @@ public class CredentialsController {
     // ユーザーログイン
     @PostMapping
     public ResponseEntity<?> loginUser(@Valid @RequestBody LoginUserRequest loginUserRequest,
-            HttpServletRequest httpServletRequest,
-            BindingResult bindingResult) {
+            HttpServletRequest httpServletRequest, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
         }
