@@ -6,11 +6,16 @@ import org.springframework.stereotype.Service;
 import com.example.procon34_CYBER_WARS_backend.dto.Users.RegisterUserRequest;
 import com.example.procon34_CYBER_WARS_backend.dto.Users.RegisterUserResponse;
 import com.example.procon34_CYBER_WARS_backend.dto.Users.SearchUserByNameRequest;
+import com.example.procon34_CYBER_WARS_backend.dto.Users.UpdateUserNameRequest;
 import com.example.procon34_CYBER_WARS_backend.dto.Users.UpdateUserNameResponse;
+import com.example.procon34_CYBER_WARS_backend.dto.Users.UpdateUserPasswordRequest;
 import com.example.procon34_CYBER_WARS_backend.dto.Users.UpdateUserPasswordResponse;
 import com.example.procon34_CYBER_WARS_backend.entity.Users;
 import com.example.procon34_CYBER_WARS_backend.repository.UsersMapper;
 import com.example.procon34_CYBER_WARS_backend.util.PasswordEncoder;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 @Service
 public class UsersService {
@@ -53,49 +58,44 @@ public class UsersService {
     }
 
     // ユーザー名更新
-    // public UpdateUserNameResponse updateUserName(UpdateUserNameRequest
-    // updateUserNameRequest,
-    // HttpServletRequest httpServletRequest) {
-    // updateUserNameRequest.setName(updateUserNameRequest.getName().trim());
-    // // ユーザー名が空の場合
-    // if (updateUserNameRequest.getName().isEmpty()) {
-    // updateUserNameResponse.setSuccess(false);
-    // return updateUserNameResponse;
-    // }
-    // searchUserByNameRequest.setName(updateUserNameRequest.getName());
-    // Users users = usersMapper.searchUserByName(searchUserByNameRequest);
-    // // ユーザーが存在する場合
-    // if (users != null) {
-    // updateUserNameResponse.setSuccess(false);
-    // return updateUserNameResponse;
-    // }
-    // HttpSession httpSession = httpServletRequest.getSession(false);
-    // updateUserNameRequest.setUserId((Long)
-    // httpSession.getAttribute("sessionId"));
-    // usersMapper.updateUserName(updateUserNameRequest);
-    // updateUserNameResponse.setSuccess(true);
-    // return updateUserNameResponse;
-    // }
+    public UpdateUserNameResponse updateUserName(UpdateUserNameRequest updateUserNameRequest,
+            HttpServletRequest httpServletRequest) {
+        updateUserNameRequest.setName(updateUserNameRequest.getName().trim());
+        // ユーザー名が空の場合
+        if (updateUserNameRequest.getName().isEmpty()) {
+            updateUserNameResponse.setSuccess(false);
+            return updateUserNameResponse;
+        }
+        searchUserByNameRequest.setName(updateUserNameRequest.getName());
+        Users users = usersMapper.searchUserByName(searchUserByNameRequest);
+        // ユーザーが存在する場合
+        if (users != null) {
+            updateUserNameResponse.setSuccess(false);
+            return updateUserNameResponse;
+        }
+        HttpSession httpSession = httpServletRequest.getSession(false);
+        updateUserNameRequest.setUserId((Long) httpSession.getAttribute("sessionId"));
+        usersMapper.updateUserName(updateUserNameRequest);
+        updateUserNameResponse.setSuccess(true);
+        return updateUserNameResponse;
+    }
 
-    // // ユーザーパスワード更新
-    // public UpdateUserPasswordResponse
-    // updateUserPassword(UpdateUserPasswordRequest updateUserPasswordRequest,
-    // HttpServletRequest httpServletRequest) {
-    // updateUserPasswordRequest.setPassword(updateUserPasswordRequest.getPassword().trim());
-    // // ユーザーパスワードが空の場合
-    // if (updateUserPasswordRequest.getPassword().isEmpty()) {
-    // updateUserPasswordResponse.setSuccess(false);
-    // return updateUserPasswordResponse;
-    // }
-    // HttpSession httpSession = httpServletRequest.getSession(false);
-    // updateUserPasswordRequest.setUserId((Long)
-    // httpSession.getAttribute("sessionId"));
-    // String hashedPassword =
-    // passwordEncoder.encodePassword(updateUserPasswordRequest.getPassword());
-    // updateUserPasswordRequest.setPassword(hashedPassword);
-    // usersMapper.updateUserPassword(updateUserPasswordRequest);
-    // updateUserPasswordResponse.setSuccess(true);
-    // return updateUserPasswordResponse;
-    // }
+    // ユーザーパスワード更新
+    public UpdateUserPasswordResponse updateUserPassword(UpdateUserPasswordRequest updateUserPasswordRequest,
+            HttpServletRequest httpServletRequest) {
+        updateUserPasswordRequest.setPassword(updateUserPasswordRequest.getPassword().trim());
+        // ユーザーパスワードが空の場合
+        if (updateUserPasswordRequest.getPassword().isEmpty()) {
+            updateUserPasswordResponse.setSuccess(false);
+            return updateUserPasswordResponse;
+        }
+        HttpSession httpSession = httpServletRequest.getSession(false);
+        updateUserPasswordRequest.setUserId((Long) httpSession.getAttribute("sessionId"));
+        String hashedPassword = passwordEncoder.encodePassword(updateUserPasswordRequest.getPassword());
+        updateUserPasswordRequest.setPassword(hashedPassword);
+        usersMapper.updateUserPassword(updateUserPasswordRequest);
+        updateUserPasswordResponse.setSuccess(true);
+        return updateUserPasswordResponse;
+    }
 
 }
