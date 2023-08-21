@@ -19,13 +19,13 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/users/credentials")
-public class CredentialsController {
+public class UsersCredentialsController {
 
     private final UsersCredentialsService usersCredentialsService;
     private final LoginChecker loginChecker;
 
     @Autowired
-    public CredentialsController(UsersCredentialsService usersCredentialsService, LoginChecker loginChecker) {
+    public UsersCredentialsController(UsersCredentialsService usersCredentialsService, LoginChecker loginChecker) {
         this.usersCredentialsService = usersCredentialsService;
         this.loginChecker = loginChecker;
     }
