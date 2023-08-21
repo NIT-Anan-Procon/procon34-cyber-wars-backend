@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.procon34_CYBER_WARS_backend.dto.Users.RegisterUserRequest;
+import com.example.procon34_CYBER_WARS_backend.dto.Users.Credentials.LoginUserRequest;
 import com.example.procon34_CYBER_WARS_backend.dto.Users.Credentials.LoginUserResponse;
 import com.example.procon34_CYBER_WARS_backend.service.UsersCredentialsService;
 import com.example.procon34_CYBER_WARS_backend.util.LoginChecker;
@@ -32,13 +32,13 @@ public class CredentialsController {
 
     // ユーザーログイン
     @PostMapping
-    public ResponseEntity<?> loginUser(@Valid @RequestBody RegisterUserRequest usersRequest,
+    public ResponseEntity<?> loginUser(@Valid @RequestBody LoginUserRequest loginUserRequest,
             HttpServletRequest httpServletRequest,
             BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
         }
-        LoginUserResponse loginUserResponse = usersCredentialsService.loginUser(usersRequest, httpServletRequest);
+        LoginUserResponse loginUserResponse = usersCredentialsService.loginUser(loginUserRequest, httpServletRequest);
         return ResponseEntity.ok(loginUserResponse);
     }
 
