@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.procon34_CYBER_WARS_backend.dto.Users.RegisterUserRequest;
 import com.example.procon34_CYBER_WARS_backend.dto.Users.RegisterUserResponse;
-import com.example.procon34_CYBER_WARS_backend.dto.Users.SearchUserByName;
+import com.example.procon34_CYBER_WARS_backend.dto.Users.SearchUserByNameRequest;
 import com.example.procon34_CYBER_WARS_backend.dto.Users.UpdateUserNameRequest;
 import com.example.procon34_CYBER_WARS_backend.dto.Users.UpdateUserNameResponse;
 import com.example.procon34_CYBER_WARS_backend.dto.Users.UpdateUserPasswordRequest;
@@ -21,18 +21,18 @@ import jakarta.servlet.http.HttpSession;
 public class UsersService {
 
     private final UsersMapper usersMapper;
-    private final SearchUserByName searchUserByName;
+    private final SearchUserByNameRequest searchUserByNameRequest;
     private final RegisterUserResponse registerUserResponse;
     private final UpdateUserNameResponse updateUserNameResponse;
     private final UpdateUserPasswordResponse updateUserPasswordResponse;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UsersService(UsersMapper usersMapper, SearchUserByName searchUserByName,
+    public UsersService(UsersMapper usersMapper, SearchUserByNameRequest searchUserByNameRequest,
             RegisterUserResponse registerUserResponse, UpdateUserNameResponse updateUserNameResponse,
             UpdateUserPasswordResponse updateUserPasswordResponse, PasswordEncoder passwordEncoder) {
         this.usersMapper = usersMapper;
-        this.searchUserByName = searchUserByName;
+        this.searchUserByNameRequest = searchUserByNameRequest;
         this.registerUserResponse = registerUserResponse;
         this.updateUserNameResponse = updateUserNameResponse;
         this.updateUserPasswordResponse = updateUserPasswordResponse;
@@ -42,13 +42,14 @@ public class UsersService {
     // ユーザー登録
     public RegisterUserResponse registerUser(RegisterUserRequest registerUsersRequest) {
         registerUsersRequest.setName(registerUsersRequest.getName().trim());
-        searchUserByName.setName(registerUsersRequest.getName());
-        Users users = usersMapper.searchUserByName(searchUserByName);
+        searchUserByNameRequest.setName(registerUsersRequest.getName());
+        Users users = usersMapper.searchUserByName(searchUserByNameRequest);
         // ユーザーが存在する場合
         if (users != null) {
             registerUserResponse.setSuccess(false);
             return registerUserResponse;
         }
+        registerUsersRequest.setPassword(registerUsersRequest.getPassword().trim());
         String hashedPassword = passwordEncoder.encodePassword(registerUsersRequest.getPassword());
         registerUsersRequest.setPassword(hashedPassword);
         usersMapper.registerUser(registerUsersRequest);
@@ -65,8 +66,8 @@ public class UsersService {
             updateUserNameResponse.setSuccess(false);
             return updateUserNameResponse;
         }
-        searchUserByName.setName(updateUserNameRequest.getName());
-        Users users = usersMapper.searchUserByName(searchUserByName);
+        searchUserByNameRequest.setName(updateUserNameRequest.getName());
+        Users users = usersMapper.searchUserByName(searchUserByNameRequest);
         // ユーザーが存在する場合
         if (users != null) {
             updateUserNameResponse.setSuccess(false);

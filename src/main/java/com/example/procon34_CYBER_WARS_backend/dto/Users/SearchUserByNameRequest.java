@@ -5,7 +5,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
-public class SearchUserByName {
+public class SearchUserByNameRequest {
 
     @NotBlank
     @Size(max = 20)
