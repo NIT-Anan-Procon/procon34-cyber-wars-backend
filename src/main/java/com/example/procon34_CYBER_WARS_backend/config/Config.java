@@ -6,20 +6,13 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-import com.example.procon34_CYBER_WARS_backend.dto.Users.SearchUserByNameRequest;
-
 @Configuration
 public class Config {
 
     @Bean
-    public SecurityFilterChain configureHttp(HttpSecurity http) throws Exception {
-        http.csrf().disable();
-        return http.build();
-    }
-
-    @Bean
-    public SearchUserByNameRequest searchUserByNameRequest() {
-        return new SearchUserByNameRequest();
+    public SecurityFilterChain configureHttp(HttpSecurity httpSecurity) throws Exception {
+        httpSecurity.csrf().disable();
+        return httpSecurity.build();
     }
 
     @Bean
