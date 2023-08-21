@@ -3,9 +3,13 @@ package com.example.procon34_CYBER_WARS_backend.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.procon34_CYBER_WARS_backend.dto.UsersRequest;
-import com.example.procon34_CYBER_WARS_backend.dto.UsersResponse;
-import com.example.procon34_CYBER_WARS_backend.dto.UsersUpdateRequest;
+import com.example.procon34_CYBER_WARS_backend.dto.Users.RegisterUserRequest;
+import com.example.procon34_CYBER_WARS_backend.dto.Users.RegisterUserResponse;
+import com.example.procon34_CYBER_WARS_backend.dto.Users.SearchUserByNameRequest;
+import com.example.procon34_CYBER_WARS_backend.dto.Users.UpdateUserNameRequest;
+import com.example.procon34_CYBER_WARS_backend.dto.Users.UpdateUserNameResponse;
+import com.example.procon34_CYBER_WARS_backend.dto.Users.UpdateUserPasswordRequest;
+import com.example.procon34_CYBER_WARS_backend.dto.Users.UpdateUserPasswordResponse;
 import com.example.procon34_CYBER_WARS_backend.entity.Users;
 import com.example.procon34_CYBER_WARS_backend.repository.UsersMapper;
 import com.example.procon34_CYBER_WARS_backend.util.PasswordEncoder;
@@ -17,95 +21,80 @@ import jakarta.servlet.http.HttpSession;
 public class UsersService {
 
     private final UsersMapper usersMapper;
+    private final SearchUserByNameRequest searchUserByNameRequest;
+    private final RegisterUserResponse registerUserResponse;
+    private final UpdateUserNameResponse updateUserNameResponse;
+    private final UpdateUserPasswordResponse updateUserPasswordResponse;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UsersService(UsersMapper usersMapper, PasswordEncoder passwordEncoder) {
+    public UsersService(UsersMapper usersMapper, SearchUserByNameRequest searchUserByNameRequest,
+            RegisterUserResponse registerUserResponse, UpdateUserNameResponse updateUserNameResponse,
+            UpdateUserPasswordResponse updateUserPasswordResponse, PasswordEncoder passwordEncoder) {
         this.usersMapper = usersMapper;
+        this.searchUserByNameRequest = searchUserByNameRequest;
+        this.registerUserResponse = registerUserResponse;
+        this.updateUserNameResponse = updateUserNameResponse;
+        this.updateUserPasswordResponse = updateUserPasswordResponse;
         this.passwordEncoder = passwordEncoder;
     }
 
     // ユーザー登録
-    public UsersResponse registerUser(UsersRequest usersRequest, UsersResponse usersResponse) {
-        Users users = usersMapper.searchUserByName(usersRequest);
+    public RegisterUserResponse registerUser(RegisterUserRequest registerUsersRequest) {
+        registerUsersRequest.setName(registerUsersRequest.getName().trim());
+        searchUserByNameRequest.setName(registerUsersRequest.getName());
+        Users users = usersMapper.searchUserByName(searchUserByNameRequest);
         // ユーザーが存在する場合
         if (users != null) {
-            usersResponse.setSuccess(false);
-            return usersResponse;
+            registerUserResponse.setSuccess(false);
+            return registerUserResponse;
         }
-        String hashedPassword = passwordEncoder.encodePassword(usersRequest.getPassword());
-        usersRequest.setPassword(hashedPassword);
-        usersMapper.registerUser(usersRequest);
-        usersResponse.setSuccess(true);
-        return usersResponse;
+        String hashedPassword = passwordEncoder.encodePassword(registerUsersRequest.getPassword());
+        registerUsersRequest.setPassword(hashedPassword);
+        usersMapper.registerUser(registerUsersRequest);
+        registerUserResponse.setSuccess(true);
+        return registerUserResponse;
     }
 
-    // ユーザー名変更
-    public UsersResponse updateUserName(UsersUpdateRequest usersUpdateRequest, UsersResponse usersResponse,
-            HttpServletRequest request) {
-        usersUpdateRequest.setName(usersUpdateRequest.getName().trim());
+    // ユーザー名更新
+    public UpdateUserNameResponse updateUserName(UpdateUserNameRequest updateUserNameRequest,
+            HttpServletRequest httpServletRequest) {
+        updateUserNameRequest.setName(updateUserNameRequest.getName().trim());
         // ユーザー名が空の場合
-        if (usersUpdateRequest.getName().isEmpty()) {
-            usersResponse.setSuccess(false);
-            return usersResponse;
+        if (updateUserNameRequest.getName().isEmpty()) {
+            updateUserNameResponse.setSuccess(false);
+            return updateUserNameResponse;
         }
-        UsersRequest usersRequest = new UsersRequest();
-        usersRequest.setName(usersUpdateRequest.getName());
-        Users users = usersMapper.searchUserByName(usersRequest);
+        searchUserByNameRequest.setName(updateUserNameRequest.getName());
+        Users users = usersMapper.searchUserByName(searchUserByNameRequest);
         // ユーザーが存在する場合
         if (users != null) {
-            usersResponse.setSuccess(false);
-            return usersResponse;
+            updateUserNameResponse.setSuccess(false);
+            return updateUserNameResponse;
         }
-        HttpSession session = request.getSession(false);
-        usersUpdateRequest.setUserId((Long) session.getAttribute("sessionId"));
-        usersMapper.updateUserName(usersUpdateRequest);
-        usersResponse.setSuccess(true);
-        return usersResponse;
+        HttpSession httpSession = httpServletRequest.getSession(false);
+        updateUserNameRequest.setUserId((Long) httpSession.getAttribute("sessionId"));
+        usersMapper.updateUserName(updateUserNameRequest);
+        updateUserNameResponse.setSuccess(true);
+        return updateUserNameResponse;
     }
 
-    // ユーザーパスワード変更
-    public UsersResponse updateUserPassword(UsersUpdateRequest usersUpdateRequest, UsersResponse usersResponse,
-            HttpServletRequest request) {
-        usersUpdateRequest.setPassword(usersUpdateRequest.getPassword().trim());
+    // ユーザーパスワード更新
+    public UpdateUserPasswordResponse updateUserPassword(UpdateUserPasswordRequest updateUserPasswordRequest,
+            HttpServletRequest httpServletRequest) {
+        updateUserPasswordRequest.setPassword(updateUserPasswordRequest.getPassword().trim());
         // ユーザーパスワードが空の場合
-        if (usersUpdateRequest.getPassword().isEmpty()) {
-            usersResponse.setSuccess(false);
-            return usersResponse;
+        if (updateUserPasswordRequest.getPassword().isEmpty()) {
+            updateUserPasswordResponse.setSuccess(false);
+            return updateUserPasswordResponse;
         }
-        HttpSession session = request.getSession(false);
-        usersUpdateRequest.setUserId((Long) session.getAttribute("sessionId"));
-        String hashedPassword = passwordEncoder.encodePassword(usersUpdateRequest.getPassword());
-        usersUpdateRequest.setPassword(hashedPassword);
-        usersMapper.updateUserPassword(usersUpdateRequest);
-        usersResponse.setSuccess(true);
-        return usersResponse;
-    }
-
-    // ユーザーログイン
-    public UsersResponse loginUser(UsersRequest usersRequest, UsersResponse usersResponse, HttpServletRequest request) {
-        Users users = usersMapper.searchUserByName(usersRequest);
-        // ユーザーが存在しない場合
-        if (users == null) {
-            usersResponse.setSuccess(false);
-            return usersResponse;
-        }
-        // ユーザーパスワードが異なる場合
-        if (!passwordEncoder.checkPassword(usersRequest.getPassword(), users.getPassword())) {
-            usersResponse.setSuccess(false);
-            return usersResponse;
-        }
-        HttpSession session = request.getSession();
-        session.setAttribute("sessionId", users.getUserId());
-        session.setMaxInactiveInterval(60 * 60);
-        usersResponse.setSuccess(true);
-        return usersResponse;
-    }
-
-    // ユーザーログアウト
-    public void logoutUser(HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-        session.invalidate();
+        HttpSession httpSession = httpServletRequest.getSession(false);
+        updateUserPasswordRequest.setUserId((Long) httpSession.getAttribute("sessionId"));
+        String hashedPassword = passwordEncoder.encodePassword(updateUserPasswordRequest.getPassword());
+        updateUserPasswordRequest.setPassword(hashedPassword);
+        usersMapper.updateUserPassword(updateUserPasswordRequest);
+        updateUserPasswordResponse.setSuccess(true);
+        return updateUserPasswordResponse;
     }
 
 }
