@@ -69,7 +69,7 @@ public class UsersService {
             return updateUserNameResponse;
         }
         HttpSession httpSession = httpServletRequest.getSession(false);
-        updateUserNameRequest.setUserId((Long) httpSession.getAttribute("sessionId"));
+        updateUserNameRequest.setUserId((int) httpSession.getAttribute("sessionId"));
         usersMapper.updateUserName(updateUserNameRequest);
         updateUserNameResponse.setSuccess(true);
         return updateUserNameResponse;
@@ -85,7 +85,7 @@ public class UsersService {
             return updateUserPasswordResponse;
         }
         HttpSession httpSession = httpServletRequest.getSession(false);
-        updateUserPasswordRequest.setUserId((Long) httpSession.getAttribute("sessionId"));
+        updateUserPasswordRequest.setUserId((int) httpSession.getAttribute("sessionId"));
         String hashedPassword = passwordEncoder.encodePassword(updateUserPasswordRequest.getPassword());
         updateUserPasswordRequest.setPassword(hashedPassword);
         usersMapper.updateUserPassword(updateUserPasswordRequest);

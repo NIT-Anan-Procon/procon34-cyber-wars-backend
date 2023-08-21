@@ -8,7 +8,7 @@ import lombok.Data;
 public class Users {
 
     @NotBlank
-    private Long userId;
+    private int userId;
 
     @NotBlank
     @Size(max = 20)

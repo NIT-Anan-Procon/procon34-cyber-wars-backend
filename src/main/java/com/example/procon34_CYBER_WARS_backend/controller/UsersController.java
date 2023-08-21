@@ -16,7 +16,6 @@ import com.example.procon34_CYBER_WARS_backend.dto.Users.UpdateUserNameResponse;
 import com.example.procon34_CYBER_WARS_backend.dto.Users.UpdateUserPasswordRequest;
 import com.example.procon34_CYBER_WARS_backend.dto.Users.UpdateUserPasswordResponse;
 import com.example.procon34_CYBER_WARS_backend.service.UsersService;
-import com.example.procon34_CYBER_WARS_backend.util.LoginChecker;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -26,12 +25,10 @@ import jakarta.validation.Valid;
 public class UsersController {
 
     private final UsersService usersService;
-    private final LoginChecker loginChecker;
 
     @Autowired
-    public UsersController(UsersService usersService, LoginChecker loginChecker) {
+    public UsersController(UsersService usersService) {
         this.usersService = usersService;
-        this.loginChecker = loginChecker;
     }
 
     // ユーザー登録
@@ -48,12 +45,9 @@ public class UsersController {
     // ユーザー名更新
     @PatchMapping("/name")
     public ResponseEntity<?> updateUserName(@Valid @RequestBody UpdateUserNameRequest updateUserNameRequest,
-            HttpServletRequest httpServletRequest, BindingResult bindingResult) {
+            BindingResult bindingResult, HttpServletRequest httpServletRequest) {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
-        }
-        if (!loginChecker.checkLogin(httpServletRequest)) {
-            return ResponseEntity.status(401).body("認証が必要です");
         }
         UpdateUserNameResponse updateUserNameResponse = usersService.updateUserName(updateUserNameRequest,
                 httpServletRequest);
@@ -63,12 +57,9 @@ public class UsersController {
     // ユーザーパスワード更新
     @PatchMapping("/password")
     public ResponseEntity<?> updateUserPassword(@Valid @RequestBody UpdateUserPasswordRequest updateUserPasswordRequest,
-            HttpServletRequest httpServletRequest, BindingResult bindingResult) {
+            BindingResult bindingResult, HttpServletRequest httpServletRequest) {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
-        }
-        if (!loginChecker.checkLogin(httpServletRequest)) {
-            return ResponseEntity.status(401).body("認証が必要です");
         }
         UpdateUserPasswordResponse updateUserPasswordResponse = usersService
                 .updateUserPassword(updateUserPasswordRequest, httpServletRequest);
