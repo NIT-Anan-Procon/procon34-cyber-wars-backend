@@ -21,23 +21,18 @@ import jakarta.servlet.http.HttpSession;
 public class UsersService {
 
     private final UsersMapper usersMapper;
-    private final SearchUserByNameRequest searchUserByNameRequest;
-    private final RegisterUserResponse registerUserResponse;
-    private final UpdateUserNameResponse updateUserNameResponse;
-    private final UpdateUserPasswordResponse updateUserPasswordResponse;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UsersService(UsersMapper usersMapper, SearchUserByNameRequest searchUserByNameRequest,
-            RegisterUserResponse registerUserResponse, UpdateUserNameResponse updateUserNameResponse,
-            UpdateUserPasswordResponse updateUserPasswordResponse, PasswordEncoder passwordEncoder) {
+    public UsersService(UsersMapper usersMapper, PasswordEncoder passwordEncoder) {
         this.usersMapper = usersMapper;
-        this.searchUserByNameRequest = searchUserByNameRequest;
-        this.registerUserResponse = registerUserResponse;
-        this.updateUserNameResponse = updateUserNameResponse;
-        this.updateUserPasswordResponse = updateUserPasswordResponse;
         this.passwordEncoder = passwordEncoder;
     }
+
+    private final SearchUserByNameRequest searchUserByNameRequest = new SearchUserByNameRequest();
+    private final RegisterUserResponse registerUserResponse = new RegisterUserResponse();
+    private final UpdateUserNameResponse updateUserNameResponse = new UpdateUserNameResponse();
+    private final UpdateUserPasswordResponse updateUserPasswordResponse = new UpdateUserPasswordResponse();
 
     // ユーザー登録
     public RegisterUserResponse registerUser(RegisterUserRequest registerUsersRequest) {

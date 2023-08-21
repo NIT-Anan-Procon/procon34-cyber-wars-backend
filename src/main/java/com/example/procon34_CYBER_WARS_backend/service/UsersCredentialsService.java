@@ -15,18 +15,16 @@ import jakarta.servlet.http.HttpSession;
 public class UsersCredentialsService {
 
     private final UsersMapper usersMapper;
-    private final SearchUserByNameRequest searchUserByNameRequest;
-    private final LoginUserResponse loginUserResponse;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UsersCredentialsService(UsersMapper usersMapper, SearchUserByNameRequest searchUserByNameRequest,
-            LoginUserResponse loginUserResponse, PasswordEncoder passwordEncoder) {
+    public UsersCredentialsService(UsersMapper usersMapper, PasswordEncoder passwordEncoder) {
         this.usersMapper = usersMapper;
-        this.searchUserByNameRequest = searchUserByNameRequest;
-        this.loginUserResponse = loginUserResponse;
         this.passwordEncoder = passwordEncoder;
     }
+
+    private final SearchUserByNameRequest searchUserByNameRequest = new SearchUserByNameRequest();
+    private final LoginUserResponse loginUserResponse = new LoginUserResponse();
 
     // ユーザーログイン
     public LoginUserResponse loginUser(LoginUserRequest loginUserRequest, HttpServletRequest httpServletRequest) {
