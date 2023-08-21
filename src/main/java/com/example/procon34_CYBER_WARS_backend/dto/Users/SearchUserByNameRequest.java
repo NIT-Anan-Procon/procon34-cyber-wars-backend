@@ -1,11 +1,10 @@
 package com.example.procon34_CYBER_WARS_backend.dto.Users;
 
-import org.springframework.stereotype.Component;
-
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import lombok.Data;
 
-@Component
+@Data
 public class SearchUserByNameRequest {
 
     @NotBlank

@@ -6,6 +6,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import com.example.procon34_CYBER_WARS_backend.dto.Users.SearchUserByNameRequest;
+
 @Configuration
 public class Config {
 
@@ -16,7 +18,12 @@ public class Config {
     }
 
     @Bean
-    BCryptPasswordEncoder bCryptPasswordEncoder() {
+    public SearchUserByNameRequest searchUserByNameRequest() {
+        return new SearchUserByNameRequest();
+    }
+
+    @Bean
+    public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
