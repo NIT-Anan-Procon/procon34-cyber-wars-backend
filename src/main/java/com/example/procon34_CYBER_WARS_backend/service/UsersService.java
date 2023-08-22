@@ -3,33 +3,37 @@ package com.example.procon34_CYBER_WARS_backend.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.procon34_CYBER_WARS_backend.dto.Users.RegisterUserRequest;
-import com.example.procon34_CYBER_WARS_backend.dto.Users.RegisterUserResponse;
-import com.example.procon34_CYBER_WARS_backend.dto.Users.SearchUserByNameRequest;
-import com.example.procon34_CYBER_WARS_backend.dto.Users.UpdateUserNameRequest;
-import com.example.procon34_CYBER_WARS_backend.dto.Users.UpdateUserNameResponse;
-import com.example.procon34_CYBER_WARS_backend.dto.Users.UpdateUserPasswordRequest;
-import com.example.procon34_CYBER_WARS_backend.dto.Users.UpdateUserPasswordResponse;
+import com.example.procon34_CYBER_WARS_backend.dto.users.RegisterUserRequest;
+import com.example.procon34_CYBER_WARS_backend.dto.users.RegisterUserResponse;
+import com.example.procon34_CYBER_WARS_backend.dto.users.UpdateUserNameRequest;
+import com.example.procon34_CYBER_WARS_backend.dto.users.UpdateUserNameResponse;
+import com.example.procon34_CYBER_WARS_backend.dto.users.UpdateUserPasswordRequest;
+import com.example.procon34_CYBER_WARS_backend.dto.users.UpdateUserPasswordResponse;
 import com.example.procon34_CYBER_WARS_backend.entity.Users;
 import com.example.procon34_CYBER_WARS_backend.repository.UsersMapper;
-import com.example.procon34_CYBER_WARS_backend.util.PasswordEncoder;
+import com.example.procon34_CYBER_WARS_backend.utilities.PasswordEncoder;
+import com.example.procon34_CYBER_WARS_backend.utilities.UserIdGetter;
+import com.example.procon34_CYBER_WARS_backend.utilities.UserSearcherByName;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 
 @Service
 public class UsersService {
 
     private final UsersMapper usersMapper;
+    private final UserSearcherByName userSearcherByName;
     private final PasswordEncoder passwordEncoder;
+    private final UserIdGetter userIdGetter;
 
     @Autowired
-    public UsersService(UsersMapper usersMapper, PasswordEncoder passwordEncoder) {
+    public UsersService(UsersMapper usersMapper, UserSearcherByName userSearcherByName, PasswordEncoder passwordEncoder,
+            UserIdGetter userIdGetter) {
         this.usersMapper = usersMapper;
+        this.userSearcherByName = userSearcherByName;
         this.passwordEncoder = passwordEncoder;
+        this.userIdGetter = userIdGetter;
     }
 
-    private final SearchUserByNameRequest searchUserByNameRequest = new SearchUserByNameRequest();
     private final RegisterUserResponse registerUserResponse = new RegisterUserResponse();
     private final UpdateUserNameResponse updateUserNameResponse = new UpdateUserNameResponse();
     private final UpdateUserPasswordResponse updateUserPasswordResponse = new UpdateUserPasswordResponse();
@@ -37,8 +41,7 @@ public class UsersService {
     // ユーザー登録
     public RegisterUserResponse registerUser(RegisterUserRequest registerUsersRequest) {
         registerUsersRequest.setName(registerUsersRequest.getName().trim());
-        searchUserByNameRequest.setName(registerUsersRequest.getName());
-        Users users = usersMapper.searchUserByName(searchUserByNameRequest);
+        Users users = userSearcherByName.searchUserByName(registerUsersRequest.getName());
         // ユーザーが存在する場合
         if (users != null) {
             registerUserResponse.setSuccess(false);
@@ -61,15 +64,14 @@ public class UsersService {
             updateUserNameResponse.setSuccess(false);
             return updateUserNameResponse;
         }
-        searchUserByNameRequest.setName(updateUserNameRequest.getName());
-        Users users = usersMapper.searchUserByName(searchUserByNameRequest);
+        Users users = userSearcherByName.searchUserByName(updateUserNameRequest.getName());
         // ユーザーが存在する場合
         if (users != null) {
             updateUserNameResponse.setSuccess(false);
             return updateUserNameResponse;
         }
-        HttpSession httpSession = httpServletRequest.getSession(false);
-        updateUserNameRequest.setUserId((int) httpSession.getAttribute("sessionId"));
+        int userId = userIdGetter.getUserId(httpServletRequest);
+        updateUserNameRequest.setUserId(userId);
         usersMapper.updateUserName(updateUserNameRequest);
         updateUserNameResponse.setSuccess(true);
         return updateUserNameResponse;
@@ -84,8 +86,8 @@ public class UsersService {
             updateUserPasswordResponse.setSuccess(false);
             return updateUserPasswordResponse;
         }
-        HttpSession httpSession = httpServletRequest.getSession(false);
-        updateUserPasswordRequest.setUserId((int) httpSession.getAttribute("sessionId"));
+        int userId = userIdGetter.getUserId(httpServletRequest);
+        updateUserPasswordRequest.setUserId(userId);
         String hashedPassword = passwordEncoder.encodePassword(updateUserPasswordRequest.getPassword());
         updateUserPasswordRequest.setPassword(hashedPassword);
         usersMapper.updateUserPassword(updateUserPasswordRequest);

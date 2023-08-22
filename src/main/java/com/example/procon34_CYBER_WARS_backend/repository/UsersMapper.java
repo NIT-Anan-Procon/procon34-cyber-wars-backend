@@ -2,21 +2,14 @@ package com.example.procon34_CYBER_WARS_backend.repository;
 
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
-import com.example.procon34_CYBER_WARS_backend.dto.Users.RegisterUserRequest;
-import com.example.procon34_CYBER_WARS_backend.dto.Users.SearchUserByNameRequest;
-import com.example.procon34_CYBER_WARS_backend.dto.Users.UpdateUserNameRequest;
-import com.example.procon34_CYBER_WARS_backend.dto.Users.UpdateUserPasswordRequest;
-import com.example.procon34_CYBER_WARS_backend.entity.Users;
+import com.example.procon34_CYBER_WARS_backend.dto.users.RegisterUserRequest;
+import com.example.procon34_CYBER_WARS_backend.dto.users.UpdateUserNameRequest;
+import com.example.procon34_CYBER_WARS_backend.dto.users.UpdateUserPasswordRequest;
 
 @Mapper
 public interface UsersMapper {
-
-    // ユーザー検索 by ユーザー名
-    @Select("SELECT * FROM users WHERE name = #{name}")
-    Users searchUserByName(SearchUserByNameRequest searchUserByNameRequest);
 
     // ユーザー登録
     @Insert("INSERT INTO users(name, password) VALUES(#{name}, #{password})")

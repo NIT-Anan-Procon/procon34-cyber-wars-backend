@@ -1,4 +1,4 @@
-package com.example.procon34_CYBER_WARS_backend.dto.Users;
+package com.example.procon34_CYBER_WARS_backend.dto.users;
 
 import lombok.Data;
 

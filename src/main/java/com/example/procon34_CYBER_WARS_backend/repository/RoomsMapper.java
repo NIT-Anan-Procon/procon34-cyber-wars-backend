@@ -3,7 +3,7 @@ package com.example.procon34_CYBER_WARS_backend.repository;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 
-import com.example.procon34_CYBER_WARS_backend.dto.Rooms.CreateRoomRequest;
+import com.example.procon34_CYBER_WARS_backend.dto.rooms.CreateRoomRequest;
 
 @Mapper
 public interface RoomsMapper {

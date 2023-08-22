@@ -3,14 +3,13 @@ package com.example.procon34_CYBER_WARS_backend.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.procon34_CYBER_WARS_backend.dto.Users.SearchUserByNameRequest;
-import com.example.procon34_CYBER_WARS_backend.dto.Users.Credentials.CheckUserLoginResponse;
-import com.example.procon34_CYBER_WARS_backend.dto.Users.Credentials.LoginUserRequest;
-import com.example.procon34_CYBER_WARS_backend.dto.Users.Credentials.LoginUserResponse;
+import com.example.procon34_CYBER_WARS_backend.dto.users.Credentials.CheckUserLoginResponse;
+import com.example.procon34_CYBER_WARS_backend.dto.users.Credentials.LoginUserRequest;
+import com.example.procon34_CYBER_WARS_backend.dto.users.Credentials.LoginUserResponse;
 import com.example.procon34_CYBER_WARS_backend.entity.Users;
-import com.example.procon34_CYBER_WARS_backend.repository.UsersMapper;
-import com.example.procon34_CYBER_WARS_backend.util.LoginChecker;
-import com.example.procon34_CYBER_WARS_backend.util.PasswordEncoder;
+import com.example.procon34_CYBER_WARS_backend.utilities.PasswordEncoder;
+import com.example.procon34_CYBER_WARS_backend.utilities.UserIdGetter;
+import com.example.procon34_CYBER_WARS_backend.utilities.UserSearcherByName;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -18,27 +17,25 @@ import jakarta.servlet.http.HttpSession;
 @Service
 public class UsersCredentialsService {
 
-    private final UsersMapper usersMapper;
-    private final LoginChecker loginChecker;
+    private final UserSearcherByName userSearcherByName;
     private final PasswordEncoder passwordEncoder;
+    private final UserIdGetter userIdGetter;
 
     @Autowired
-    public UsersCredentialsService(UsersMapper usersMapper, LoginChecker loginChecker,
-            PasswordEncoder passwordEncoder) {
-        this.usersMapper = usersMapper;
-        this.loginChecker = loginChecker;
+    public UsersCredentialsService(UserSearcherByName userSearcherByName, PasswordEncoder passwordEncoder,
+            UserIdGetter userIdGetter) {
+        this.userSearcherByName = userSearcherByName;
         this.passwordEncoder = passwordEncoder;
+        this.userIdGetter = userIdGetter;
     }
 
-    private final SearchUserByNameRequest searchUserByNameRequest = new SearchUserByNameRequest();
     private final LoginUserResponse loginUserResponse = new LoginUserResponse();
     private final CheckUserLoginResponse checkUserLoginResponse = new CheckUserLoginResponse();
 
     // ユーザーログイン
     public LoginUserResponse loginUser(LoginUserRequest loginUserRequest, HttpServletRequest httpServletRequest) {
         loginUserRequest.setName(loginUserRequest.getName().trim());
-        searchUserByNameRequest.setName(loginUserRequest.getName());
-        Users users = usersMapper.searchUserByName(searchUserByNameRequest);
+        Users users = userSearcherByName.searchUserByName(loginUserRequest.getName());
         // ユーザーが存在しない場合
         if (users == null) {
             loginUserResponse.setSuccess(false);
@@ -51,7 +48,8 @@ public class UsersCredentialsService {
             return loginUserResponse;
         }
         HttpSession httpSession = httpServletRequest.getSession();
-        httpSession.setAttribute("sessionId", users.getUserId());
+        int userId = userIdGetter.getUserId(httpServletRequest);
+        httpSession.setAttribute("sessionId", userId);
         httpSession.setMaxInactiveInterval(60 * 60);
         loginUserResponse.setSuccess(true);
         return loginUserResponse;
@@ -59,14 +57,14 @@ public class UsersCredentialsService {
 
     // ユーザーログインチェック
     public CheckUserLoginResponse checkUserLogin(HttpServletRequest httpServletRequest) {
-        // ログインしている場合
-        if (loginChecker.checkLogin(httpServletRequest)) {
-            HttpSession httpSession = httpServletRequest.getSession();
-            httpSession.setMaxInactiveInterval(60 * 60);
-            checkUserLoginResponse.setLogged_in(true);
+        HttpSession httpSession = httpServletRequest.getSession(false);
+        // セッションが存在しない場合
+        if (httpSession == null) {
+            checkUserLoginResponse.setLogged_in(false);
             return checkUserLoginResponse;
         }
-        checkUserLoginResponse.setLogged_in(false);
+        httpSession.setMaxInactiveInterval(60 * 60);
+        checkUserLoginResponse.setLogged_in(true);
         return checkUserLoginResponse;
     }
 

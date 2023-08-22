@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.procon34_CYBER_WARS_backend.dto.Users.Credentials.CheckUserLoginResponse;
-import com.example.procon34_CYBER_WARS_backend.dto.Users.Credentials.LoginUserRequest;
-import com.example.procon34_CYBER_WARS_backend.dto.Users.Credentials.LoginUserResponse;
+import com.example.procon34_CYBER_WARS_backend.dto.users.Credentials.CheckUserLoginResponse;
+import com.example.procon34_CYBER_WARS_backend.dto.users.Credentials.LoginUserRequest;
+import com.example.procon34_CYBER_WARS_backend.dto.users.Credentials.LoginUserResponse;
 import com.example.procon34_CYBER_WARS_backend.service.UsersCredentialsService;
 
 import jakarta.servlet.http.HttpServletRequest;

@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.procon34_CYBER_WARS_backend.dto.Rooms.CreateRoomRequest;
-import com.example.procon34_CYBER_WARS_backend.dto.Rooms.CreateRoomResponse;
+import com.example.procon34_CYBER_WARS_backend.dto.rooms.CreateRoomRequest;
+import com.example.procon34_CYBER_WARS_backend.dto.rooms.CreateRoomResponse;
 import com.example.procon34_CYBER_WARS_backend.service.RoomsService;
 
 import jakarta.servlet.http.HttpServletRequest;

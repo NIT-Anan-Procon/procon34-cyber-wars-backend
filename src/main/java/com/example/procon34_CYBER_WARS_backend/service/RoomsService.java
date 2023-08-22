@@ -3,30 +3,36 @@ package com.example.procon34_CYBER_WARS_backend.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.procon34_CYBER_WARS_backend.dto.Rooms.CreateRoomRequest;
-import com.example.procon34_CYBER_WARS_backend.dto.Rooms.CreateRoomResponse;
+import com.example.procon34_CYBER_WARS_backend.dto.rooms.CreateRoomRequest;
+import com.example.procon34_CYBER_WARS_backend.dto.rooms.CreateRoomResponse;
 import com.example.procon34_CYBER_WARS_backend.repository.RoomsMapper;
+import com.example.procon34_CYBER_WARS_backend.utilities.Random4DigitNumberGenerator;
+import com.example.procon34_CYBER_WARS_backend.utilities.UserIdGetter;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 
 @Service
 public class RoomsService {
 
     private final RoomsMapper roomsMapper;
+    private final UserIdGetter userIdGetter;
+    private final Random4DigitNumberGenerator random4DigitNumberGenerator;
 
     @Autowired
-    public RoomsService(RoomsMapper roomsMapper) {
+    public RoomsService(RoomsMapper roomsMapper, UserIdGetter userIdGetter,
+            Random4DigitNumberGenerator random4DigitNumberGenerator) {
         this.roomsMapper = roomsMapper;
+        this.userIdGetter = userIdGetter;
+        this.random4DigitNumberGenerator = random4DigitNumberGenerator;
     }
 
     private final CreateRoomResponse createRoomResponse = new CreateRoomResponse();
 
     // ルーム作成
     public CreateRoomResponse createRoom(CreateRoomRequest createRoomRequest, HttpServletRequest httpServletRequest) {
-        HttpSession httpSession = httpServletRequest.getSession(false);
-        createRoomRequest.setUserId((int) httpSession.getAttribute("sessionId"));
-        short inviteId = 1234;
+        int userId = userIdGetter.getUserId(httpServletRequest);
+        createRoomRequest.setUserId(userId);
+        short inviteId = random4DigitNumberGenerator.generateRandom4DigitNumber();
         createRoomRequest.setInviteId(inviteId);
         createRoomResponse.setInvite_id(inviteId);
         roomsMapper.createRoom(createRoomRequest);

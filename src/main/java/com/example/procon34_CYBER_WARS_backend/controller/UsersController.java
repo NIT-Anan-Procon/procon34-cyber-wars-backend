@@ -9,12 +9,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.procon34_CYBER_WARS_backend.dto.Users.RegisterUserRequest;
-import com.example.procon34_CYBER_WARS_backend.dto.Users.RegisterUserResponse;
-import com.example.procon34_CYBER_WARS_backend.dto.Users.UpdateUserNameRequest;
-import com.example.procon34_CYBER_WARS_backend.dto.Users.UpdateUserNameResponse;
-import com.example.procon34_CYBER_WARS_backend.dto.Users.UpdateUserPasswordRequest;
-import com.example.procon34_CYBER_WARS_backend.dto.Users.UpdateUserPasswordResponse;
+import com.example.procon34_CYBER_WARS_backend.dto.users.RegisterUserRequest;
+import com.example.procon34_CYBER_WARS_backend.dto.users.RegisterUserResponse;
+import com.example.procon34_CYBER_WARS_backend.dto.users.UpdateUserNameRequest;
+import com.example.procon34_CYBER_WARS_backend.dto.users.UpdateUserNameResponse;
+import com.example.procon34_CYBER_WARS_backend.dto.users.UpdateUserPasswordRequest;
+import com.example.procon34_CYBER_WARS_backend.dto.users.UpdateUserPasswordResponse;
 import com.example.procon34_CYBER_WARS_backend.service.UsersService;
 
 import jakarta.servlet.http.HttpServletRequest;

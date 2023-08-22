@@ -1,4 +1,4 @@
-package com.example.procon34_CYBER_WARS_backend.dto.Users;
+package com.example.procon34_CYBER_WARS_backend.dto.users;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
