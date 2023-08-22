@@ -16,11 +16,11 @@ public interface UsersMapper {
     void registerUser(RegisterUserRequest registerUserRequest);
 
     // ユーザー名更新
-    @Update("UPDATE users SET name = #{name} WHERE user_id = #{userId}")
+    @Update("UPDATE users SET name = #{name} WHERE user_id = #{user_id}")
     void updateUserName(UpdateUserNameRequest updateUserNameRequest);
 
     // ユーザーパスワード更新
-    @Update("UPDATE users SET password = #{password} WHERE user_id = #{userId}")
+    @Update("UPDATE users SET password = #{password} WHERE user_id = #{user_id}")
     void updateUserPassword(UpdateUserPasswordRequest updateUserPasswordRequest);
 
 }
