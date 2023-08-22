@@ -9,7 +9,7 @@ public class CreateRoomRequest {
     private int userId;
 
     @NotBlank
-    private boolean isDifficult;
+    private boolean difficult;
 
     private short inviteId;
 
