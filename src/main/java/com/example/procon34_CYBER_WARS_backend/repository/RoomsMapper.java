@@ -10,7 +10,10 @@ public interface RoomsMapper {
 
     // ルーム作成
     @Insert("INSERT INTO rooms(invite_id, challenge_id) VALUES(#{invite_id}, SELECT challenge_id FROM vulnerabilities ORDER BY RAND() LIMIT 1)")
-    @Insert("INSERT INTO allocations(room_id, user_id) VALUES(SELECT MAX(room_id) FROM rooms,#{user_id})")
     void createRoom(CreateRoomRequest createRoomRequest);
+
+    // ルーム割り当て
+    @Insert("INSERT INTO allocations(room_id, user_id) VALUES(SELECT MAX(room_id) FROM rooms,#{user_id})")
+    void allocateRoom(CreateRoomRequest createRoomRequest);
 
 }
