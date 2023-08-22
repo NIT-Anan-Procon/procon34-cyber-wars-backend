@@ -61,10 +61,10 @@ public class UsersCredentialsService {
     public CheckUserLoginResponse checkUserLogin(HttpServletRequest httpServletRequest) {
         // ログインしている場合
         if (loginChecker.checkLogin(httpServletRequest)) {
-            checkUserLoginResponse.set_logged_in(true);
+            checkUserLoginResponse.setLogged_in(true);
             return checkUserLoginResponse;
         }
-        checkUserLoginResponse.set_logged_in(false);
+        checkUserLoginResponse.setLogged_in(false);
         return checkUserLoginResponse;
     }
 
