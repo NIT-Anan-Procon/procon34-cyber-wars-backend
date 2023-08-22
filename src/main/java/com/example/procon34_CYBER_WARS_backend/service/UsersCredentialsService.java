@@ -61,6 +61,8 @@ public class UsersCredentialsService {
     public CheckUserLoginResponse checkUserLogin(HttpServletRequest httpServletRequest) {
         // ログインしている場合
         if (loginChecker.checkLogin(httpServletRequest)) {
+            HttpSession httpSession = httpServletRequest.getSession();
+            httpSession.setMaxInactiveInterval(60 * 60);
             checkUserLoginResponse.setLogged_in(true);
             return checkUserLoginResponse;
         }

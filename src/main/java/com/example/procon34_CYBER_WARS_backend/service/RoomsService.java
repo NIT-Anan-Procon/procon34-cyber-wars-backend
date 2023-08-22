@@ -8,6 +8,7 @@ import com.example.procon34_CYBER_WARS_backend.dto.Rooms.CreateRoomResponse;
 import com.example.procon34_CYBER_WARS_backend.repository.RoomsMapper;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 @Service
 public class RoomsService {
@@ -21,10 +22,15 @@ public class RoomsService {
 
     private final CreateRoomResponse createRoomResponse = new CreateRoomResponse();
 
+    // ルーム作成
     public CreateRoomResponse createRoom(CreateRoomRequest createRoomRequest, HttpServletRequest httpServletRequest) {
+        HttpSession httpSession = httpServletRequest.getSession(false);
+        createRoomRequest.setUserId((int) httpSession.getAttribute("sessionId"));
+        short inviteId = 1234;
+        createRoomRequest.setInviteId(inviteId);
+        createRoomResponse.setInvite_id(inviteId);
         roomsMapper.createRoom(createRoomRequest);
         roomsMapper.allocateRoom(createRoomRequest);
-        createRoomResponse.setInvite_id(1234);
         return createRoomResponse;
     }
 
