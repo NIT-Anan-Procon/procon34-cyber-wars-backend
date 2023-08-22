@@ -48,8 +48,7 @@ public class UsersCredentialsService {
             return loginUserResponse;
         }
         HttpSession httpSession = httpServletRequest.getSession();
-        int userId = userIdGetter.getUserId(httpServletRequest);
-        httpSession.setAttribute("sessionId", userId);
+        httpSession.setAttribute("sessionId", users.getUserId());
         httpSession.setMaxInactiveInterval(60 * 60);
         loginUserResponse.setSuccess(true);
         return loginUserResponse;
