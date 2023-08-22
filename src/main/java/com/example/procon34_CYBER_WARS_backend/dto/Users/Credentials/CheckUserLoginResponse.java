@@ -5,6 +5,6 @@ import lombok.Data;
 @Data
 public class CheckUserLoginResponse {
 
-    private boolean is_logged_in;
+    private boolean logged_in;
 
 }
