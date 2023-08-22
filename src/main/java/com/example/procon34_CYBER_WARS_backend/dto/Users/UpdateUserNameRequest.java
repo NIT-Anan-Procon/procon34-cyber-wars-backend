@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 public class UpdateUserNameRequest {
 
-    private int userId;
+    private int user_id;
 
     @NotBlank
     @Size(max = 20)

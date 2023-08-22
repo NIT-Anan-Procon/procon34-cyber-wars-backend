@@ -71,7 +71,7 @@ public class UsersService {
             return updateUserNameResponse;
         }
         int userId = userIdGetter.getUserId(httpServletRequest);
-        updateUserNameRequest.setUserId(userId);
+        updateUserNameRequest.setUser_id(userId);
         usersMapper.updateUserName(updateUserNameRequest);
         updateUserNameResponse.setSuccess(true);
         return updateUserNameResponse;
@@ -87,7 +87,7 @@ public class UsersService {
             return updateUserPasswordResponse;
         }
         int userId = userIdGetter.getUserId(httpServletRequest);
-        updateUserPasswordRequest.setUserId(userId);
+        updateUserPasswordRequest.setUser_id(userId);
         String hashedPassword = passwordEncoder.encodePassword(updateUserPasswordRequest.getPassword());
         updateUserPasswordRequest.setPassword(hashedPassword);
         usersMapper.updateUserPassword(updateUserPasswordRequest);

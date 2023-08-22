@@ -8,7 +8,6 @@ import com.example.procon34_CYBER_WARS_backend.dto.users.Credentials.LoginUserRe
 import com.example.procon34_CYBER_WARS_backend.dto.users.Credentials.LoginUserResponse;
 import com.example.procon34_CYBER_WARS_backend.entity.Users;
 import com.example.procon34_CYBER_WARS_backend.utilities.PasswordEncoder;
-import com.example.procon34_CYBER_WARS_backend.utilities.UserIdGetter;
 import com.example.procon34_CYBER_WARS_backend.utilities.UserSearcherByName;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,14 +18,11 @@ public class UsersCredentialsService {
 
     private final UserSearcherByName userSearcherByName;
     private final PasswordEncoder passwordEncoder;
-    private final UserIdGetter userIdGetter;
 
     @Autowired
-    public UsersCredentialsService(UserSearcherByName userSearcherByName, PasswordEncoder passwordEncoder,
-            UserIdGetter userIdGetter) {
+    public UsersCredentialsService(UserSearcherByName userSearcherByName, PasswordEncoder passwordEncoder) {
         this.userSearcherByName = userSearcherByName;
         this.passwordEncoder = passwordEncoder;
-        this.userIdGetter = userIdGetter;
     }
 
     private final LoginUserResponse loginUserResponse = new LoginUserResponse();

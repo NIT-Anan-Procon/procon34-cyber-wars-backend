@@ -31,9 +31,9 @@ public class RoomsService {
     // ルーム作成
     public CreateRoomResponse createRoom(CreateRoomRequest createRoomRequest, HttpServletRequest httpServletRequest) {
         int userId = userIdGetter.getUserId(httpServletRequest);
-        createRoomRequest.setUserId(userId);
+        createRoomRequest.setUser_id(userId);
         short inviteId = random4DigitNumberGenerator.generateRandom4DigitNumber();
-        createRoomRequest.setInviteId(inviteId);
+        createRoomRequest.setInvite_id(inviteId);
         createRoomResponse.setInvite_id(inviteId);
         roomsMapper.createRoom(createRoomRequest);
         roomsMapper.allocateRoom(createRoomRequest);
