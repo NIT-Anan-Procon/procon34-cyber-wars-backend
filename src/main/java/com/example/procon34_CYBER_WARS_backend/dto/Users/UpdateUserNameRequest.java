@@ -7,7 +7,6 @@ import lombok.Data;
 @Data
 public class UpdateUserNameRequest {
 
-    @NotBlank
     private int userId;
 
     @NotBlank

@@ -7,7 +7,6 @@ import lombok.Data;
 @Data
 public class UpdateUserPasswordRequest {
 
-    @NotBlank
     private int userId;
 
     @NotBlank
