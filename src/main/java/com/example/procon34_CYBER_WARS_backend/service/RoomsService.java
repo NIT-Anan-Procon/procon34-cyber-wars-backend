@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import com.example.procon34_CYBER_WARS_backend.dto.rooms.CreateRoomRequest;
 import com.example.procon34_CYBER_WARS_backend.dto.rooms.CreateRoomResponse;
 import com.example.procon34_CYBER_WARS_backend.repository.RoomsMapper;
-import com.example.procon34_CYBER_WARS_backend.utilities.Random4DigitNumberGenerator;
+import com.example.procon34_CYBER_WARS_backend.utilities.FourDigitRandomNumberGenerator;
 import com.example.procon34_CYBER_WARS_backend.utilities.UserIdGetter;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -16,14 +16,14 @@ public class RoomsService {
 
     private final RoomsMapper roomsMapper;
     private final UserIdGetter userIdGetter;
-    private final Random4DigitNumberGenerator random4DigitNumberGenerator;
+    private final FourDigitRandomNumberGenerator fourDigitRandomNumberGenerator;
 
     @Autowired
     public RoomsService(RoomsMapper roomsMapper, UserIdGetter userIdGetter,
-            Random4DigitNumberGenerator random4DigitNumberGenerator) {
+            FourDigitRandomNumberGenerator fourDigitRandomNumberGenerator) {
         this.roomsMapper = roomsMapper;
         this.userIdGetter = userIdGetter;
-        this.random4DigitNumberGenerator = random4DigitNumberGenerator;
+        this.fourDigitRandomNumberGenerator = fourDigitRandomNumberGenerator;
     }
 
     private final CreateRoomResponse createRoomResponse = new CreateRoomResponse();
@@ -32,7 +32,7 @@ public class RoomsService {
     public CreateRoomResponse createRoom(CreateRoomRequest createRoomRequest, HttpServletRequest httpServletRequest) {
         int userId = userIdGetter.getUserId(httpServletRequest);
         createRoomRequest.setUser_id(userId);
-        short inviteId = random4DigitNumberGenerator.generateRandom4DigitNumber();
+        short inviteId = fourDigitRandomNumberGenerator.generateFourDigitRandomNumber();
         createRoomRequest.setInvite_id(inviteId);
         createRoomResponse.setInvite_id(inviteId);
         roomsMapper.createRoom(createRoomRequest);
