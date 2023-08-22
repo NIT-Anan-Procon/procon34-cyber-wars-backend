@@ -24,7 +24,7 @@ public class RoomsService {
     public CreateRoomResponse createRoom(CreateRoomRequest createRoomRequest, HttpServletRequest httpServletRequest) {
         roomsMapper.createRoom(createRoomRequest);
         roomsMapper.allocateRoom(createRoomRequest);
-        createRoomResponse.setInviteId(1234);
+        createRoomResponse.setInvite_id(1234);
         return createRoomResponse;
     }
 

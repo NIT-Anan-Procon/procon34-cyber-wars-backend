@@ -5,6 +5,6 @@ import lombok.Data;
 @Data
 public class CreateRoomResponse {
 
-    private int inviteId;
+    private int invite_id;
 
 }
