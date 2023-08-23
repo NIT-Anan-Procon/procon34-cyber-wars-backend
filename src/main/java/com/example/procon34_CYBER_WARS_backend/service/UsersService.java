@@ -1,6 +1,5 @@
 package com.example.procon34_CYBER_WARS_backend.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.procon34_CYBER_WARS_backend.dto.users.RegisterUserRequest;
@@ -17,8 +16,10 @@ import com.example.procon34_CYBER_WARS_backend.utility.UserGetterByName;
 import com.example.procon34_CYBER_WARS_backend.utility.UserIdGetter;
 
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 public class UsersService {
 
     private final UsersMapper usersMapper;
@@ -27,16 +28,18 @@ public class UsersService {
     private final PasswordEncoder passwordEncoder;
     private final UserIdGetter userIdGetter;
 
-    @Autowired
-    public UsersService(final UsersMapper usersMapper, final StringFormatter stringFormatter,
-            final UserGetterByName userGetterByName, final PasswordEncoder passwordEncoder,
-            final UserIdGetter userIdGetter) {
-        this.usersMapper = usersMapper;
-        this.stringFormatter = stringFormatter;
-        this.userGetterByName = userGetterByName;
-        this.passwordEncoder = passwordEncoder;
-        this.userIdGetter = userIdGetter;
-    }
+    // @Autowired
+    // public UsersService(final UsersMapper usersMapper, final StringFormatter
+    // stringFormatter,
+    // final UserGetterByName userGetterByName, final PasswordEncoder
+    // passwordEncoder,
+    // final UserIdGetter userIdGetter) {
+    // this.usersMapper = usersMapper;
+    // this.stringFormatter = stringFormatter;
+    // this.userGetterByName = userGetterByName;
+    // this.passwordEncoder = passwordEncoder;
+    // this.userIdGetter = userIdGetter;
+    // }
 
     private final RegisterUserResponse registerUserResponse = new RegisterUserResponse();
     private final UpdateNameResponse updateNameResponse = new UpdateNameResponse();
