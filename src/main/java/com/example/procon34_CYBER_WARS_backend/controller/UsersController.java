@@ -2,6 +2,7 @@ package com.example.procon34_CYBER_WARS_backend.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,19 +15,18 @@ import com.example.procon34_CYBER_WARS_backend.dto.users.UpdatePasswordRequest;
 import com.example.procon34_CYBER_WARS_backend.service.UsersService;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("/users")
+@RequiredArgsConstructor
 public class UsersController {
 
     private final UsersService usersService;
 
     // ユーザー登録
     @PostMapping
-    public ResponseEntity<?> registerUser(@Valid @RequestBody final RegisterUserRequest registerUserRequest,
+    public ResponseEntity<?> registerUser(@Validated @RequestBody final RegisterUserRequest registerUserRequest,
             final BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
@@ -36,7 +36,7 @@ public class UsersController {
 
     // ユーザー名更新
     @PatchMapping("/name")
-    public ResponseEntity<?> updateName(@Valid @RequestBody final UpdateNameRequest updateNameRequest,
+    public ResponseEntity<?> updateName(@Validated @RequestBody final UpdateNameRequest updateNameRequest,
             final BindingResult bindingResult, final HttpServletRequest httpServletRequest) {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
@@ -46,7 +46,7 @@ public class UsersController {
 
     // ユーザーパスワード更新
     @PatchMapping("/password")
-    public ResponseEntity<?> updatePassword(@Valid @RequestBody final UpdatePasswordRequest updatePasswordRequest,
+    public ResponseEntity<?> updatePassword(@Validated @RequestBody final UpdatePasswordRequest updatePasswordRequest,
             final BindingResult bindingResult, final HttpServletRequest httpServletRequest) {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
