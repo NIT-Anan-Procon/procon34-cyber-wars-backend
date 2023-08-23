@@ -22,7 +22,7 @@ public class UsersCredentialsService {
     private final StringFormatter stringFormatter;
     private final PasswordEncoder passwordEncoder;
 
-    private final LoginUserResponse loginUserResponse;// = new LoginUserResponse();
+    private final LoginUserResponse loginUserResponse = new LoginUserResponse();
     private final CheckUserLoginResponse checkUserLoginResponse = new CheckUserLoginResponse();
 
     // ユーザーログイン
