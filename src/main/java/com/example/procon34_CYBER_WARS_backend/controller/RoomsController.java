@@ -1,6 +1,5 @@
 package com.example.procon34_CYBER_WARS_backend.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,17 +12,14 @@ import com.example.procon34_CYBER_WARS_backend.service.RoomsService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/rooms")
 public class RoomsController {
 
     private final RoomsService roomsService;
-
-    @Autowired
-    public RoomsController(final RoomsService roomsService) {
-        this.roomsService = roomsService;
-    }
 
     // ルーム作成
     @PostMapping

@@ -28,19 +28,6 @@ public class UsersService {
     private final PasswordEncoder passwordEncoder;
     private final UserIdGetter userIdGetter;
 
-    // @Autowired
-    // public UsersService(final UsersMapper usersMapper, final StringFormatter
-    // stringFormatter,
-    // final UserGetterByName userGetterByName, final PasswordEncoder
-    // passwordEncoder,
-    // final UserIdGetter userIdGetter) {
-    // this.usersMapper = usersMapper;
-    // this.stringFormatter = stringFormatter;
-    // this.userGetterByName = userGetterByName;
-    // this.passwordEncoder = passwordEncoder;
-    // this.userIdGetter = userIdGetter;
-    // }
-
     private final RegisterUserResponse registerUserResponse = new RegisterUserResponse();
     private final UpdateNameResponse updateNameResponse = new UpdateNameResponse();
     private final UpdatePasswordResponse updatePasswordResponse = new UpdatePasswordResponse();

@@ -3,21 +3,18 @@ package com.example.procon34_CYBER_WARS_backend.utility;
 import java.util.List;
 import java.util.Random;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.example.procon34_CYBER_WARS_backend.entity.Rooms;
 import com.example.procon34_CYBER_WARS_backend.mapper.UtilityMapper;
 
+import lombok.RequiredArgsConstructor;
+
 @Component
+@RequiredArgsConstructor
 public class FourDigitRandomNumberGenerator {
 
     private final UtilityMapper utilityMapper;
-
-    @Autowired
-    public FourDigitRandomNumberGenerator(final UtilityMapper utilityMapper) {
-        this.utilityMapper = utilityMapper;
-    }
 
     // 4桁乱数生成
     public short generateFourDigitRandomNumber() {

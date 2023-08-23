@@ -1,6 +1,5 @@
 package com.example.procon34_CYBER_WARS_backend.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.procon34_CYBER_WARS_backend.dto.users.Credentials.CheckUserLoginResponse;
@@ -13,21 +12,15 @@ import com.example.procon34_CYBER_WARS_backend.utility.UserGetterByName;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 public class UsersCredentialsService {
 
     private final UserGetterByName userGetterByName;
     private final StringFormatter stringFormatter;
     private final PasswordEncoder passwordEncoder;
-
-    @Autowired
-    public UsersCredentialsService(final UserGetterByName userGetterByName, final StringFormatter stringFormatter,
-            final PasswordEncoder passwordEncoder) {
-        this.userGetterByName = userGetterByName;
-        this.stringFormatter = stringFormatter;
-        this.passwordEncoder = passwordEncoder;
-    }
 
     private final LoginUserResponse loginUserResponse = new LoginUserResponse();
     private final CheckUserLoginResponse checkUserLoginResponse = new CheckUserLoginResponse();

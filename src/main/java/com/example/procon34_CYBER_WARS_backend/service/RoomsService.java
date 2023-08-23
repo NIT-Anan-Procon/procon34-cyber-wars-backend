@@ -1,6 +1,5 @@
 package com.example.procon34_CYBER_WARS_backend.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.procon34_CYBER_WARS_backend.dto.rooms.CreateRoomRequest;
@@ -10,21 +9,15 @@ import com.example.procon34_CYBER_WARS_backend.utility.FourDigitRandomNumberGene
 import com.example.procon34_CYBER_WARS_backend.utility.UserIdGetter;
 
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 public class RoomsService {
 
     private final RoomsMapper roomsMapper;
     private final UserIdGetter userIdGetter;
     private final FourDigitRandomNumberGenerator fourDigitRandomNumberGenerator;
-
-    @Autowired
-    public RoomsService(final RoomsMapper roomsMapper, final UserIdGetter userIdGetter,
-            final FourDigitRandomNumberGenerator fourDigitRandomNumberGenerator) {
-        this.roomsMapper = roomsMapper;
-        this.userIdGetter = userIdGetter;
-        this.fourDigitRandomNumberGenerator = fourDigitRandomNumberGenerator;
-    }
 
     private final CreateRoomResponse createRoomResponse = new CreateRoomResponse();
 

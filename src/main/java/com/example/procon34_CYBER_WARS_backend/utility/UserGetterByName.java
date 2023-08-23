@@ -1,21 +1,18 @@
 package com.example.procon34_CYBER_WARS_backend.utility;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.example.procon34_CYBER_WARS_backend.dto.utility.GetUserByNameRequest;
 import com.example.procon34_CYBER_WARS_backend.entity.Users;
 import com.example.procon34_CYBER_WARS_backend.mapper.UtilityMapper;
 
+import lombok.RequiredArgsConstructor;
+
 @Component
+@RequiredArgsConstructor
 public class UserGetterByName {
 
     private final UtilityMapper utilityMapper;
-
-    @Autowired
-    public UserGetterByName(final UtilityMapper utilityMapper) {
-        this.utilityMapper = utilityMapper;
-    }
 
     private final GetUserByNameRequest getUserByNameRequest = new GetUserByNameRequest();
 
