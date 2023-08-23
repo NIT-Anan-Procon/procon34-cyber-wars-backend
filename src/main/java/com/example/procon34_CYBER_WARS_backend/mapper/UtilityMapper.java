@@ -17,7 +17,7 @@ public interface UtilityMapper {
     Users getUserByName(final GetUserByNameRequest getUserByNameRequest);
 
     // 有効招待ID取得
-    @Select("SELECT invite_id FROM rooms WHERE status IN(0, 1)")
+    @Select("SELECT * FROM rooms WHERE status IN(0, 1)")
     List<Rooms> getValidInviteIds();
 
 }
