@@ -1,20 +1,20 @@
-package com.example.procon34_CYBER_WARS_backend.repository;
+package com.example.procon34_CYBER_WARS_backend.mapper;
 
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
-import com.example.procon34_CYBER_WARS_backend.dto.utilities.SearchUserByNameRequest;
+import com.example.procon34_CYBER_WARS_backend.dto.utility.GetUserByNameRequest;
 import com.example.procon34_CYBER_WARS_backend.entity.Rooms;
 import com.example.procon34_CYBER_WARS_backend.entity.Users;
 
 @Mapper
-public interface UtilitiesMapper {
+public interface UtilityMapper {
 
-    // ユーザー検索 by ユーザー名
+    // ユーザー取得 by ユーザー名
     @Select("SELECT * FROM users WHERE name = #{name}")
-    Users searchUserByName(SearchUserByNameRequest searchUserByNameRequest);
+    Users getUserByName(final GetUserByNameRequest getUserByNameRequest);
 
     // 有効招待ID取得
     @Select("SELECT invite_id FROM rooms WHERE status IN(0, 1)")

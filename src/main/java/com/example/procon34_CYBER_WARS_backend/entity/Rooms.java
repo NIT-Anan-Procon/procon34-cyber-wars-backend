@@ -7,13 +7,13 @@ import lombok.Data;
 @Data
 public class Rooms {
 
-    private int roomId;
+    private int room_id;
 
-    private short inviteId;
+    private short invite_id;
 
-    private int challengeId;
+    private int challenge_id;
 
-    private Timestamp startedAt;
+    private Timestamp started_at;
 
     private byte status;
 

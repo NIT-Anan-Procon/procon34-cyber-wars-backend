@@ -5,11 +5,11 @@
 > .env
 >
 > ```dotenv:.env
-> DATABASE=「DATABASE NAME」
-> DB_HOST=「DB HOST」
-> DB_PORT=「DB PORT」
-> DB_USER=「DB USER」
-> OPENAI_API_KEY=「OPENAI API KEY」
+> DATABASE=「Database Name」
+> DB_HOST=「Database Host」
+> DB_PORT=「Database Port」
+> DB_USER=「Database User」
+> OPENAI_API_KEY=「OpenAI API Key」
 > ```
 
 ## 実行方法
@@ -29,5 +29,6 @@ gradle clean build
 - [Spring Boot CLI 3.0.6](https://spring.io/)
 - [MySQL Connector Java 8.0.33](https://www.mysql.com/jp/products/connector/)
 - [MyBatis 3.0.0](https://blog.mybatis.org/)
+- [Apache Commons Text 1.10.0](https://commons.apache.org/proper/commons-text/)
 - [MariaDB 10.6.12](https://mariadb.org/)
 - [PHP 8.1.2](https://www.php.net/)

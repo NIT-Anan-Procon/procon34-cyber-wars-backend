@@ -10,11 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.procon34_CYBER_WARS_backend.dto.users.RegisterUserRequest;
-import com.example.procon34_CYBER_WARS_backend.dto.users.RegisterUserResponse;
-import com.example.procon34_CYBER_WARS_backend.dto.users.UpdateUserNameRequest;
-import com.example.procon34_CYBER_WARS_backend.dto.users.UpdateUserNameResponse;
-import com.example.procon34_CYBER_WARS_backend.dto.users.UpdateUserPasswordRequest;
-import com.example.procon34_CYBER_WARS_backend.dto.users.UpdateUserPasswordResponse;
+import com.example.procon34_CYBER_WARS_backend.dto.users.UpdateNameRequest;
+import com.example.procon34_CYBER_WARS_backend.dto.users.UpdatePasswordRequest;
 import com.example.procon34_CYBER_WARS_backend.service.UsersService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -27,43 +24,38 @@ public class UsersController {
     private final UsersService usersService;
 
     @Autowired
-    public UsersController(UsersService usersService) {
+    public UsersController(final UsersService usersService) {
         this.usersService = usersService;
     }
 
     // ユーザー登録
     @PostMapping
-    public ResponseEntity<?> registerUser(@Valid @RequestBody RegisterUserRequest registerUserRequest,
-            BindingResult bindingResult) {
+    public ResponseEntity<?> registerUser(@Valid @RequestBody final RegisterUserRequest registerUserRequest,
+            final BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
         }
-        RegisterUserResponse registerUserResponse = usersService.registerUser(registerUserRequest);
-        return ResponseEntity.ok(registerUserResponse);
+        return ResponseEntity.ok(usersService.registerUser(registerUserRequest));
     }
 
     // ユーザー名更新
     @PatchMapping("/name")
-    public ResponseEntity<?> updateUserName(@Valid @RequestBody UpdateUserNameRequest updateUserNameRequest,
-            BindingResult bindingResult, HttpServletRequest httpServletRequest) {
+    public ResponseEntity<?> updateName(@Valid @RequestBody final UpdateNameRequest updateNameRequest,
+            final BindingResult bindingResult, final HttpServletRequest httpServletRequest) {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
         }
-        UpdateUserNameResponse updateUserNameResponse = usersService.updateUserName(updateUserNameRequest,
-                httpServletRequest);
-        return ResponseEntity.ok(updateUserNameResponse);
+        return ResponseEntity.ok(usersService.updateName(updateNameRequest, httpServletRequest));
     }
 
     // ユーザーパスワード更新
     @PatchMapping("/password")
-    public ResponseEntity<?> updateUserPassword(@Valid @RequestBody UpdateUserPasswordRequest updateUserPasswordRequest,
-            BindingResult bindingResult, HttpServletRequest httpServletRequest) {
+    public ResponseEntity<?> updatePassword(@Valid @RequestBody final UpdatePasswordRequest updatePasswordRequest,
+            final BindingResult bindingResult, final HttpServletRequest httpServletRequest) {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
         }
-        UpdateUserPasswordResponse updateUserPasswordResponse = usersService
-                .updateUserPassword(updateUserPasswordRequest, httpServletRequest);
-        return ResponseEntity.ok(updateUserPasswordResponse);
+        return ResponseEntity.ok(usersService.updatePassword(updatePasswordRequest, httpServletRequest));
     }
 
 }

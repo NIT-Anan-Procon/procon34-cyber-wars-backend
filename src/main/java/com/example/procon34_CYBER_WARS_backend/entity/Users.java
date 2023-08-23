@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 public class Users {
 
-    private int userId;
+    private int user_id;
 
     @Size(max = 20)
     private String name;

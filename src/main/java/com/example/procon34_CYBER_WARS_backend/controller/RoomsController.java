@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.procon34_CYBER_WARS_backend.dto.rooms.CreateRoomRequest;
-import com.example.procon34_CYBER_WARS_backend.dto.rooms.CreateRoomResponse;
 import com.example.procon34_CYBER_WARS_backend.service.RoomsService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,19 +21,18 @@ public class RoomsController {
     private final RoomsService roomsService;
 
     @Autowired
-    public RoomsController(RoomsService roomsService) {
+    public RoomsController(final RoomsService roomsService) {
         this.roomsService = roomsService;
     }
 
     // ルーム作成
     @PostMapping
-    public ResponseEntity<?> updateUserName(@Valid @RequestBody CreateRoomRequest createRoomRequest,
-            BindingResult bindingResult, HttpServletRequest httpServletRequest) {
+    public ResponseEntity<?> updateName(@Valid @RequestBody final CreateRoomRequest createRoomRequest,
+            final BindingResult bindingResult, final HttpServletRequest httpServletRequest) {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
         }
-        CreateRoomResponse createRoomResponse = roomsService.createRoom(createRoomRequest, httpServletRequest);
-        return ResponseEntity.ok(createRoomResponse);
+        return ResponseEntity.ok(roomsService.createRoom(createRoomRequest, httpServletRequest));
     }
 
 }

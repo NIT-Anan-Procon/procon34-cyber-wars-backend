@@ -5,7 +5,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
-public class UpdateUserPasswordRequest {
+public class UpdatePasswordRequest {
 
     private int user_id;
 

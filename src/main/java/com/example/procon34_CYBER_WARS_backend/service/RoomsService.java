@@ -5,9 +5,9 @@ import org.springframework.stereotype.Service;
 
 import com.example.procon34_CYBER_WARS_backend.dto.rooms.CreateRoomRequest;
 import com.example.procon34_CYBER_WARS_backend.dto.rooms.CreateRoomResponse;
-import com.example.procon34_CYBER_WARS_backend.repository.RoomsMapper;
-import com.example.procon34_CYBER_WARS_backend.utilities.FourDigitRandomNumberGenerator;
-import com.example.procon34_CYBER_WARS_backend.utilities.UserIdGetter;
+import com.example.procon34_CYBER_WARS_backend.mapper.RoomsMapper;
+import com.example.procon34_CYBER_WARS_backend.utility.FourDigitRandomNumberGenerator;
+import com.example.procon34_CYBER_WARS_backend.utility.UserIdGetter;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -19,8 +19,8 @@ public class RoomsService {
     private final FourDigitRandomNumberGenerator fourDigitRandomNumberGenerator;
 
     @Autowired
-    public RoomsService(RoomsMapper roomsMapper, UserIdGetter userIdGetter,
-            FourDigitRandomNumberGenerator fourDigitRandomNumberGenerator) {
+    public RoomsService(final RoomsMapper roomsMapper, final UserIdGetter userIdGetter,
+            final FourDigitRandomNumberGenerator fourDigitRandomNumberGenerator) {
         this.roomsMapper = roomsMapper;
         this.userIdGetter = userIdGetter;
         this.fourDigitRandomNumberGenerator = fourDigitRandomNumberGenerator;
@@ -29,14 +29,18 @@ public class RoomsService {
     private final CreateRoomResponse createRoomResponse = new CreateRoomResponse();
 
     // ルーム作成
-    public CreateRoomResponse createRoom(CreateRoomRequest createRoomRequest, HttpServletRequest httpServletRequest) {
-        int userId = userIdGetter.getUserId(httpServletRequest);
+    public CreateRoomResponse createRoom(final CreateRoomRequest createRoomRequest,
+            final HttpServletRequest httpServletRequest) {
+        final int userId = userIdGetter.getUserId(httpServletRequest);
         createRoomRequest.setUser_id(userId);
-        short inviteId = fourDigitRandomNumberGenerator.generateFourDigitRandomNumber();
+
+        final short inviteId = fourDigitRandomNumberGenerator.generateFourDigitRandomNumber();
         createRoomRequest.setInvite_id(inviteId);
         createRoomResponse.setInvite_id(inviteId);
+
         roomsMapper.createRoom(createRoomRequest);
         roomsMapper.allocateRoom(createRoomRequest);
+
         return createRoomResponse;
     }
 
