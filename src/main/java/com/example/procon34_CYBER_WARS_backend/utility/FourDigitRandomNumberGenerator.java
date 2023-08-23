@@ -25,11 +25,8 @@ public class FourDigitRandomNumberGenerator {
         while (true) {
             final Random random = new Random();
             inviteId = (short) (random.nextInt(9000) + 1000);
-            final List<Rooms> rooms = utilityMapper.getValidInviteIds();
+            final List<Rooms> rooms = utilityMapper.getActiveRooms();
             System.out.println(rooms);
-            // if (rooms == null) {
-            // break;
-            // }
             for (final Rooms room : rooms) {
                 // 招待IDが等しい場合
                 System.out.println(room);

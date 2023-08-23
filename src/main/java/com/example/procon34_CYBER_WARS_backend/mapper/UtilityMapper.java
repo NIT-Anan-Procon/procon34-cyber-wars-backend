@@ -16,8 +16,8 @@ public interface UtilityMapper {
     @Select("SELECT * FROM users WHERE name = #{name}")
     Users getUserByName(final GetUserByNameRequest getUserByNameRequest);
 
-    // 有効招待ID取得
+    // 動作中部屋取得
     @Select("SELECT * FROM rooms WHERE status IN(0, 1)")
-    List<Rooms> getValidInviteIds();
+    List<Rooms> getActiveRooms();
 
 }

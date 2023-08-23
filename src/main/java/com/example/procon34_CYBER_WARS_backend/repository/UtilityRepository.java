@@ -22,9 +22,9 @@ public class UtilityRepository {
         return utilityMapper.getUserByName(getUserByNameRequest);
     }
 
-    // 有効招待ID取得
-    List<Rooms> getValidInviteIds() {
-        return utilityMapper.getValidInviteIds();
+    // 動作中部屋取得
+    List<Rooms> getActiveRooms() {
+        return utilityMapper.getActiveRooms();
     }
 
 }
