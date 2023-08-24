@@ -65,7 +65,7 @@ public class UsersCredentialsService {
         // セッションが存在しない場合
         if (httpSession == null) {
             checkUserLoginResponse = CheckUserLoginResponse.builder()
-                    .logged_in(false)
+                    .loggedIn(false)
                     .build();
             return checkUserLoginResponse;
         }
@@ -73,7 +73,7 @@ public class UsersCredentialsService {
         httpSession.setMaxInactiveInterval(60 * 60);
 
         checkUserLoginResponse = CheckUserLoginResponse.builder()
-                .logged_in(true)
+                .loggedIn(true)
                 .build();
         return checkUserLoginResponse;
     }

@@ -20,32 +20,32 @@ import lombok.RequiredArgsConstructor;
 @Transactional
 public class RoomsService {
 
-    private final RoomsRepository roomsRepository;
-    private final UserIdGetter userIdGetter;
-    private final FourDigitRandomNumberGenerator fourDigitRandomNumberGenerator;
+        private final RoomsRepository roomsRepository;
+        private final UserIdGetter userIdGetter;
+        private final FourDigitRandomNumberGenerator fourDigitRandomNumberGenerator;
 
-    // ルーム作成
-    public CreateRoomResponse createRoom(final CreateRoomRequest createRoomRequest,
-            final HttpServletRequest httpServletRequest) {
-        final short inviteId = fourDigitRandomNumberGenerator.generateFourDigitRandomNumber();
+        // ルーム作成
+        public CreateRoomResponse createRoom(final CreateRoomRequest createRoomRequest,
+                        final HttpServletRequest httpServletRequest) {
+                final short inviteId = fourDigitRandomNumberGenerator.generateFourDigitRandomNumber();
 
-        final Rooms room = Rooms.builder()
-                .invite_id(inviteId)
-                .build();
-        final Vulnerabilities vulnerability = Vulnerabilities.builder()
-                .difficult(createRoomRequest.isDifficult())
-                .build();
-        roomsRepository.createRoom(room, vulnerability);
+                final Rooms room = Rooms.builder()
+                                .invite_id(inviteId)
+                                .build();
+                final Vulnerabilities vulnerability = Vulnerabilities.builder()
+                                .difficult(createRoomRequest.isDifficult())
+                                .build();
+                roomsRepository.createRoom(room, vulnerability);
 
-        final Allocations allocation = Allocations.builder()
-                .user_id(userIdGetter.getUserId(httpServletRequest))
-                .build();
-        roomsRepository.allocateRoom(allocation);
+                final Allocations allocation = Allocations.builder()
+                                .user_id(userIdGetter.getUserId(httpServletRequest))
+                                .build();
+                roomsRepository.allocateRoom(allocation);
 
-        final CreateRoomResponse createRoomResponse = CreateRoomResponse.builder()
-                .invite_id(inviteId)
-                .build();
-        return createRoomResponse;
-    }
+                final CreateRoomResponse createRoomResponse = CreateRoomResponse.builder()
+                                .inviteId(inviteId)
+                                .build();
+                return createRoomResponse;
+        }
 
 }
