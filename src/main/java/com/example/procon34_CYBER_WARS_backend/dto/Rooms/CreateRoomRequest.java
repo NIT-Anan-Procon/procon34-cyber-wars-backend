@@ -6,11 +6,7 @@ import lombok.Data;
 @Data
 public class CreateRoomRequest {
 
-    private int user_id;
-
     @NotNull
     private boolean difficult;
-
-    private short invite_id;
 
 }

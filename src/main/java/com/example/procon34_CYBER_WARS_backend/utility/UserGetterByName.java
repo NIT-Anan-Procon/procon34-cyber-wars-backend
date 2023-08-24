@@ -2,7 +2,6 @@ package com.example.procon34_CYBER_WARS_backend.utility;
 
 import org.springframework.stereotype.Component;
 
-import com.example.procon34_CYBER_WARS_backend.dto.utility.GetUserByNameRequest;
 import com.example.procon34_CYBER_WARS_backend.entity.Users;
 import com.example.procon34_CYBER_WARS_backend.repository.UtilityRepository;
 
@@ -14,13 +13,12 @@ public class UserGetterByName {
 
     private final UtilityRepository utilityRepository;
 
-    private final GetUserByNameRequest getUserByNameRequest = new GetUserByNameRequest();
-
     // ユーザー取得 by ユーザー名
     public Users getUserByName(final String name) {
-        getUserByNameRequest.setName(name);
-        final Users users = utilityRepository.getUserByName(getUserByNameRequest);
-        return users;
+        final Users user = Users.builder()
+                .name(name)
+                .build();
+        return utilityRepository.getUserByName(user);
     }
 
 }

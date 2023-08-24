@@ -1,6 +1,5 @@
 package com.example.procon34_CYBER_WARS_backend.utility;
 
-import java.util.List;
 import java.util.Random;
 
 import org.springframework.stereotype.Component;
@@ -20,14 +19,10 @@ public class FourDigitRandomNumberGenerator {
     public short generateFourDigitRandomNumber() {
         short inviteId;
         while (true) {
-            final Random random = new Random();
-            inviteId = (short) (random.nextInt(9000) + 1000);
-            final List<Rooms> rooms = utilityRepository.getActiveRooms();
-            System.out.println(rooms);
-            for (final Rooms room : rooms) {
+            inviteId = (short) (new Random().nextInt(9000) + 1000);
+            for (final Rooms room : utilityRepository.getActiveRooms()) {
                 // 招待IDが等しい場合
-                System.out.println(room);
-                if (room.getInvite_id() == inviteId) {
+                if (inviteId == room.getInvite_id()) {
                     continue;
                 }
             }

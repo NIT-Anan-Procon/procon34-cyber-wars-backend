@@ -8,9 +8,7 @@ public class StringFormatter {
 
     // 文字列フォーマット
     public String formatString(final String unformattedString) {
-        String formattedString = StringEscapeUtils.escapeHtml4(unformattedString);
-        formattedString = StringEscapeUtils.escapeEcmaScript(formattedString);
-        return formattedString;
+        return StringEscapeUtils.escapeEcmaScript(StringEscapeUtils.escapeHtml4(unformattedString));
     }
 
 }

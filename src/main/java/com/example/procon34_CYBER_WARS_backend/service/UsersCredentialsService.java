@@ -24,60 +24,63 @@ public class UsersCredentialsService {
     private final StringFormatter stringFormatter;
     private final PasswordEncoder passwordEncoder;
 
-    private final LoginUserResponse loginUserResponse = new LoginUserResponse();
-    private final CheckUserLoginResponse checkUserLoginResponse = new CheckUserLoginResponse();
-
     // ユーザーログイン
     public LoginUserResponse loginUser(final LoginUserRequest loginUserRequest,
             final HttpServletRequest httpServletRequest) {
-        final String formattedName = stringFormatter.formatString(loginUserRequest.getName());
-        loginUserRequest.setName(formattedName);
-
-        final Users users = userGetterByName.getUserByName(loginUserRequest.getName());
+        final Users user = userGetterByName.getUserByName(stringFormatter.formatString(loginUserRequest.getName()));
+        final LoginUserResponse loginUserResponse;
 
         // ユーザーが存在しない場合
-        if (users == null) {
-            loginUserResponse.setSuccess(false);
+        if (user == null) {
+            loginUserResponse = LoginUserResponse.builder()
+                    .success(false)
+                    .build();
             return loginUserResponse;
         }
 
-        final String formattedPassword = stringFormatter.formatString(loginUserRequest.getPassword());
-        loginUserRequest.setPassword(formattedPassword);
-
         // ユーザーパスワードが異なる場合
-        if (!passwordEncoder.matchPassword(loginUserRequest.getPassword(), users.getPassword())) {
-            loginUserResponse.setSuccess(false);
+        if (!passwordEncoder.matchPassword(stringFormatter.formatString(loginUserRequest.getPassword()),
+                user.getPassword())) {
+            loginUserResponse = LoginUserResponse.builder()
+                    .success(false)
+                    .build();
             return loginUserResponse;
         }
 
         final HttpSession httpSession = httpServletRequest.getSession();
-        httpSession.setAttribute("sessionId", users.getUser_id());
+        httpSession.setAttribute("sessionId", user.getUser_id());
         httpSession.setMaxInactiveInterval(60 * 60);
 
-        loginUserResponse.setSuccess(true);
+        loginUserResponse = LoginUserResponse.builder()
+                .success(true)
+                .build();
         return loginUserResponse;
     }
 
     // ユーザーログインチェック
     public CheckUserLoginResponse checkUserLogin(final HttpServletRequest httpServletRequest) {
         final HttpSession httpSession = httpServletRequest.getSession(false);
+        final CheckUserLoginResponse checkUserLoginResponse;
 
         // セッションが存在しない場合
         if (httpSession == null) {
-            checkUserLoginResponse.setLogged_in(false);
+            checkUserLoginResponse = CheckUserLoginResponse.builder()
+                    .logged_in(false)
+                    .build();
             return checkUserLoginResponse;
         }
 
         httpSession.setMaxInactiveInterval(60 * 60);
 
-        checkUserLoginResponse.setLogged_in(true);
+        checkUserLoginResponse = CheckUserLoginResponse.builder()
+                .logged_in(true)
+                .build();
         return checkUserLoginResponse;
     }
 
     // ユーザーログアウト
     public void logoutUser(final HttpServletRequest httpServletRequest) {
-        final HttpSession httpSession = httpServletRequest.getSession(false);
-        httpSession.invalidate();
+        httpServletRequest.getSession(false).invalidate();
     }
 
 }

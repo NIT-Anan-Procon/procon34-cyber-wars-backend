@@ -5,6 +5,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.procon34_CYBER_WARS_backend.dto.rooms.CreateRoomRequest;
 import com.example.procon34_CYBER_WARS_backend.dto.rooms.CreateRoomResponse;
+import com.example.procon34_CYBER_WARS_backend.entity.Allocations;
+import com.example.procon34_CYBER_WARS_backend.entity.Rooms;
 import com.example.procon34_CYBER_WARS_backend.repository.RoomsRepository;
 import com.example.procon34_CYBER_WARS_backend.utility.FourDigitRandomNumberGenerator;
 import com.example.procon34_CYBER_WARS_backend.utility.UserIdGetter;
@@ -21,21 +23,24 @@ public class RoomsService {
     private final UserIdGetter userIdGetter;
     private final FourDigitRandomNumberGenerator fourDigitRandomNumberGenerator;
 
-    private final CreateRoomResponse createRoomResponse = new CreateRoomResponse();
-
     // ルーム作成
     public CreateRoomResponse createRoom(final CreateRoomRequest createRoomRequest,
             final HttpServletRequest httpServletRequest) {
-        final int userId = userIdGetter.getUserId(httpServletRequest);
-        createRoomRequest.setUser_id(userId);
-
         final short inviteId = fourDigitRandomNumberGenerator.generateFourDigitRandomNumber();
-        createRoomRequest.setInvite_id(inviteId);
-        createRoomResponse.setInvite_id(inviteId);
 
-        roomsRepository.createRoom(createRoomRequest);
-        roomsRepository.allocateRoom(createRoomRequest);
+        final Rooms room = Rooms.builder()
+                .invite_id(inviteId)
+                .build();
+        roomsRepository.createRoom(room);
 
+        final Allocations allocation = Allocations.builder()
+                .user_id(userIdGetter.getUserId(httpServletRequest))
+                .build();
+        roomsRepository.allocateRoom(allocation);
+
+        final CreateRoomResponse createRoomResponse = CreateRoomResponse.builder()
+                .invite_id(inviteId)
+                .build();
         return createRoomResponse;
     }
 

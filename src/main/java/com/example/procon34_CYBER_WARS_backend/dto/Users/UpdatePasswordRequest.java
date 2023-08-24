@@ -7,8 +7,6 @@ import lombok.Data;
 @Data
 public class UpdatePasswordRequest {
 
-    private int user_id;
-
     @NotBlank
     @Size(max = 100)
     private String password;

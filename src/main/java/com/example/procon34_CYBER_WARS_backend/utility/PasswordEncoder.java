@@ -12,7 +12,7 @@ public class PasswordEncoder {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     // パスワードエンコード
-    public String encodePassword(final String unhashedPassword) {
+    public String hashPassword(final String unhashedPassword) {
         return bCryptPasswordEncoder.encode(unhashedPassword);
     }
 

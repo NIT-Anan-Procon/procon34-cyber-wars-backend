@@ -7,8 +7,6 @@ import lombok.Data;
 @Data
 public class UpdateNameRequest {
 
-    private int user_id;
-
     @NotBlank
     @Size(max = 20)
     private String name;

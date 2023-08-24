@@ -2,9 +2,7 @@ package com.example.procon34_CYBER_WARS_backend.repository;
 
 import org.springframework.stereotype.Repository;
 
-import com.example.procon34_CYBER_WARS_backend.dto.users.RegisterUserRequest;
-import com.example.procon34_CYBER_WARS_backend.dto.users.UpdateNameRequest;
-import com.example.procon34_CYBER_WARS_backend.dto.users.UpdatePasswordRequest;
+import com.example.procon34_CYBER_WARS_backend.entity.Users;
 import com.example.procon34_CYBER_WARS_backend.mapper.UsersMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -16,18 +14,18 @@ public class UsersRepository {
     private final UsersMapper usersMapper;
 
     // ユーザー登録
-    public void registerUser(final RegisterUserRequest registerUserRequest) {
-        usersMapper.registerUser(registerUserRequest);
+    public void registerUser(final Users user) {
+        usersMapper.registerUser(user);
     }
 
     // ユーザー名更新
-    public void updateName(final UpdateNameRequest updateNameRequest) {
-        usersMapper.updateName(updateNameRequest);
+    public void updateName(final Users user) {
+        usersMapper.updateName(user);
     }
 
     // ユーザーパスワード更新
-    public void updatePassword(final UpdatePasswordRequest updatePasswordRequest) {
-        usersMapper.updatePassword(updatePasswordRequest);
+    public void updatePassword(final Users user) {
+        usersMapper.updatePassword(user);
     }
 
 }
