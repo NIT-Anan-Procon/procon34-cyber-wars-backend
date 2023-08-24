@@ -7,16 +7,16 @@ import lombok.Data;
 @Builder
 public class Vulnerabilities {
 
-    private byte vulnerability_id;
+    private final byte vulnerability_id;
 
-    private String choice;
+    private final String choice;
 
-    private String hint;
+    private final String hint;
 
-    private String flag;
+    private final String flag;
 
-    private boolean difficult;
+    private final boolean difficult;
 
-    private int challenge_id;
+    private final int challenge_id;
 
 }

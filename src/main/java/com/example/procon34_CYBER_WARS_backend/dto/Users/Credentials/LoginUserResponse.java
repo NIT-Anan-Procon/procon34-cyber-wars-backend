@@ -7,6 +7,6 @@ import lombok.Data;
 @Builder
 public class LoginUserResponse {
 
-    private boolean success;
+    private final boolean success;
 
 }

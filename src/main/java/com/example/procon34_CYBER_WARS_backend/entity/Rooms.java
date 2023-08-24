@@ -9,14 +9,14 @@ import lombok.Data;
 @Builder
 public class Rooms {
 
-    private int room_id;
+    private final int room_id;
 
-    private short invite_id;
+    private final short invite_id;
 
-    private int challenge_id;
+    private final int challenge_id;
 
-    private Timestamp started_at;
+    private final Timestamp started_at;
 
-    private byte status;
+    private final byte status;
 
 }
