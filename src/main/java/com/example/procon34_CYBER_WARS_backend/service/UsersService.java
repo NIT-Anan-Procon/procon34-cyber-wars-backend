@@ -10,7 +10,7 @@ import com.example.procon34_CYBER_WARS_backend.dto.users.UpdateNameResponse;
 import com.example.procon34_CYBER_WARS_backend.dto.users.UpdatePasswordRequest;
 import com.example.procon34_CYBER_WARS_backend.dto.users.UpdatePasswordResponse;
 import com.example.procon34_CYBER_WARS_backend.entity.Users;
-import com.example.procon34_CYBER_WARS_backend.mapper.UsersMapper;
+import com.example.procon34_CYBER_WARS_backend.repository.UsersRepository;
 import com.example.procon34_CYBER_WARS_backend.utility.PasswordEncoder;
 import com.example.procon34_CYBER_WARS_backend.utility.StringFormatter;
 import com.example.procon34_CYBER_WARS_backend.utility.UserGetterByName;
@@ -24,7 +24,7 @@ import lombok.RequiredArgsConstructor;
 @Transactional
 public class UsersService {
 
-    private final UsersMapper usersMapper;
+    private final UsersRepository usersRepository;
     private final StringFormatter stringFormatter;
     private final UserGetterByName userGetterByName;
     private final PasswordEncoder passwordEncoder;
@@ -65,7 +65,7 @@ public class UsersService {
         final String hashedPassword = passwordEncoder.encodePassword(registerUserRequest.getPassword());
         registerUserRequest.setPassword(hashedPassword);
 
-        usersMapper.registerUser(registerUserRequest);
+        usersRepository.registerUser(registerUserRequest);
 
         registerUserResponse.setSuccess(true);
         return registerUserResponse;
@@ -94,7 +94,7 @@ public class UsersService {
         final int userId = userIdGetter.getUserId(httpServletRequest);
         updateNameRequest.setUser_id(userId);
 
-        usersMapper.updateName(updateNameRequest);
+        usersRepository.updateName(updateNameRequest);
 
         updateNameResponse.setSuccess(true);
         return updateNameResponse;
@@ -118,7 +118,7 @@ public class UsersService {
         final String hashedPassword = passwordEncoder.encodePassword(updatePasswordRequest.getPassword());
         updatePasswordRequest.setPassword(hashedPassword);
 
-        usersMapper.updatePassword(updatePasswordRequest);
+        usersRepository.updatePassword(updatePasswordRequest);
 
         updatePasswordResponse.setSuccess(true);
         return updatePasswordResponse;

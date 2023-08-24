@@ -6,7 +6,7 @@ import java.util.Random;
 import org.springframework.stereotype.Component;
 
 import com.example.procon34_CYBER_WARS_backend.entity.Rooms;
-import com.example.procon34_CYBER_WARS_backend.mapper.UtilityMapper;
+import com.example.procon34_CYBER_WARS_backend.repository.UtilityRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -14,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class FourDigitRandomNumberGenerator {
 
-    private final UtilityMapper utilityMapper;
+    private final UtilityRepository utilityRepository;
 
     // 4桁乱数生成
     public short generateFourDigitRandomNumber() {
@@ -22,7 +22,7 @@ public class FourDigitRandomNumberGenerator {
         while (true) {
             final Random random = new Random();
             inviteId = (short) (random.nextInt(9000) + 1000);
-            final List<Rooms> rooms = utilityMapper.getActiveRooms();
+            final List<Rooms> rooms = utilityRepository.getActiveRooms();
             System.out.println(rooms);
             for (final Rooms room : rooms) {
                 // 招待IDが等しい場合

@@ -5,7 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.procon34_CYBER_WARS_backend.dto.rooms.CreateRoomRequest;
 import com.example.procon34_CYBER_WARS_backend.dto.rooms.CreateRoomResponse;
-import com.example.procon34_CYBER_WARS_backend.mapper.RoomsMapper;
+import com.example.procon34_CYBER_WARS_backend.repository.RoomsRepository;
 import com.example.procon34_CYBER_WARS_backend.utility.FourDigitRandomNumberGenerator;
 import com.example.procon34_CYBER_WARS_backend.utility.UserIdGetter;
 
@@ -17,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 @Transactional
 public class RoomsService {
 
-    private final RoomsMapper roomsMapper;
+    private final RoomsRepository roomsRepository;
     private final UserIdGetter userIdGetter;
     private final FourDigitRandomNumberGenerator fourDigitRandomNumberGenerator;
 
@@ -33,8 +33,8 @@ public class RoomsService {
         createRoomRequest.setInvite_id(inviteId);
         createRoomResponse.setInvite_id(inviteId);
 
-        roomsMapper.createRoom(createRoomRequest);
-        roomsMapper.allocateRoom(createRoomRequest);
+        roomsRepository.createRoom(createRoomRequest);
+        roomsRepository.allocateRoom(createRoomRequest);
 
         return createRoomResponse;
     }

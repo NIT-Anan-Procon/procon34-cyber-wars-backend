@@ -18,12 +18,12 @@ public class UtilityRepository {
     private final UtilityMapper utilityMapper;
 
     // ユーザー取得 by ユーザー名
-    Users getUserByName(final GetUserByNameRequest getUserByNameRequest) {
+    public Users getUserByName(final GetUserByNameRequest getUserByNameRequest) {
         return utilityMapper.getUserByName(getUserByNameRequest);
     }
 
     // 動作中部屋取得
-    List<Rooms> getActiveRooms() {
+    public List<Rooms> getActiveRooms() {
         return utilityMapper.getActiveRooms();
     }
 
