@@ -9,7 +9,7 @@ public class RegisterUserRequest {
 
     @NotBlank
     @Size(max = 20)
-    private final String name;
+    private String name;
 
     @NotBlank
     @Size(max = 100)
