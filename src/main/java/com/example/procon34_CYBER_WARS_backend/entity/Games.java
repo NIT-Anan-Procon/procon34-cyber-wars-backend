@@ -7,15 +7,21 @@ import lombok.Builder;
 import lombok.Data;
 
 @Entity
-@Table(name = "allocations")
+@Table(name = "games")
 @Data
 @Builder
-public class Allocations {
+public class Games {
 
     @EmbeddedId
     private final int room_id;
 
     @EmbeddedId
     private final int user_id;
+
+    @EmbeddedId
+    private final byte vulnerability_id;
+
+    @EmbeddedId
+    private final byte score_type;
 
 }
