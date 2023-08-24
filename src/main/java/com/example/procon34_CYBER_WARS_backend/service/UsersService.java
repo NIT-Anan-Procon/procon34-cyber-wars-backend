@@ -1,6 +1,7 @@
 package com.example.procon34_CYBER_WARS_backend.service;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.procon34_CYBER_WARS_backend.dto.users.RegisterUserRequest;
 import com.example.procon34_CYBER_WARS_backend.dto.users.RegisterUserResponse;
@@ -20,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class UsersService {
 
     private final UsersMapper usersMapper;

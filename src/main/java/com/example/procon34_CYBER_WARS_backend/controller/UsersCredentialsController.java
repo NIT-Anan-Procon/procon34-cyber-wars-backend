@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.procon34_CYBER_WARS_backend.dto.users.Credentials.LoginUserRequest;
@@ -25,6 +26,7 @@ public class UsersCredentialsController {
 
     // ユーザーログイン
     @PostMapping
+    @ResponseBody
     public ResponseEntity<?> loginUser(@Validated @RequestBody final LoginUserRequest loginUserRequest,
             final BindingResult bindingResult, final HttpServletRequest httpServletRequest) {
         if (bindingResult.hasErrors()) {
@@ -35,13 +37,14 @@ public class UsersCredentialsController {
 
     // ユーザーログインチェック
     @GetMapping
-    public ResponseEntity<?> checkUserLogin(@Validated @RequestBody final HttpServletRequest httpServletRequest) {
+    @ResponseBody
+    public ResponseEntity<?> checkUserLogin(final HttpServletRequest httpServletRequest) {
         return ResponseEntity.ok(usersCredentialsService.checkUserLogin(httpServletRequest));
     }
 
     // ユーザーログアウト
     @DeleteMapping
-    public ResponseEntity<?> logoutUser(@Validated @RequestBody final HttpServletRequest httpServletRequest) {
+    public ResponseEntity<?> logoutUser(final HttpServletRequest httpServletRequest) {
         usersCredentialsService.logoutUser(httpServletRequest);
         return ResponseEntity.ok().build();
     }

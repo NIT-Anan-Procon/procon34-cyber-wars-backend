@@ -6,6 +6,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.procon34_CYBER_WARS_backend.dto.rooms.CreateRoomRequest;
@@ -23,6 +24,7 @@ public class RoomsController {
 
     // ルーム作成
     @PostMapping
+    @ResponseBody
     public ResponseEntity<?> updateName(@Validated @RequestBody final CreateRoomRequest createRoomRequest,
             final BindingResult bindingResult, final HttpServletRequest httpServletRequest) {
         if (bindingResult.hasErrors()) {

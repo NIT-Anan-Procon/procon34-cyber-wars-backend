@@ -1,6 +1,7 @@
 package com.example.procon34_CYBER_WARS_backend.service;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.procon34_CYBER_WARS_backend.dto.users.Credentials.CheckUserLoginResponse;
 import com.example.procon34_CYBER_WARS_backend.dto.users.Credentials.LoginUserRequest;
@@ -16,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class UsersCredentialsService {
 
     private final UserGetterByName userGetterByName;

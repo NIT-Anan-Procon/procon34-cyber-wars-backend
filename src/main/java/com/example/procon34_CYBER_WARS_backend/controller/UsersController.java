@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.procon34_CYBER_WARS_backend.dto.users.RegisterUserRequest;
@@ -26,6 +27,7 @@ public class UsersController {
 
     // ユーザー登録
     @PostMapping
+    @ResponseBody
     public ResponseEntity<?> registerUser(@Validated @RequestBody final RegisterUserRequest registerUserRequest,
             final BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -36,6 +38,7 @@ public class UsersController {
 
     // ユーザー名更新
     @PatchMapping("/name")
+    @ResponseBody
     public ResponseEntity<?> updateName(@Validated @RequestBody final UpdateNameRequest updateNameRequest,
             final BindingResult bindingResult, final HttpServletRequest httpServletRequest) {
         if (bindingResult.hasErrors()) {
@@ -46,6 +49,7 @@ public class UsersController {
 
     // ユーザーパスワード更新
     @PatchMapping("/password")
+    @ResponseBody
     public ResponseEntity<?> updatePassword(@Validated @RequestBody final UpdatePasswordRequest updatePasswordRequest,
             final BindingResult bindingResult, final HttpServletRequest httpServletRequest) {
         if (bindingResult.hasErrors()) {
