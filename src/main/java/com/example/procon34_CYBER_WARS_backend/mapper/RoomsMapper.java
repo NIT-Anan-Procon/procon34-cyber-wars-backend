@@ -11,7 +11,7 @@ import com.example.procon34_CYBER_WARS_backend.entity.Vulnerabilities;
 public interface RoomsMapper {
 
     // ルーム作成
-    @Insert("INSERT INTO rooms(invite_id, challenge_id) SELECT #{invite_id}, challenge_id FROM vulnerabilities WHERE difficult = #{difficult} ORDER BY RAND() LIMIT 1")
+    @Insert("INSERT INTO rooms(invite_id, challenge_id) SELECT #{rooms.invite_id}, challenge_id FROM vulnerabilities WHERE difficult = #{vulnerabilities.difficult} ORDER BY RAND() LIMIT 1")
     void createRoom(final Rooms room, final Vulnerabilities vulnerability);
 
     // ルーム割り当て
