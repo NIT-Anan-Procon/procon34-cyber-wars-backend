@@ -9,7 +9,7 @@ public class LoginUserRequest {
 
     @NotBlank
     @Size(max = 20)
-    private String name;
+    private final String name;
 
     @NotBlank
     @Size(max = 100)

@@ -24,113 +24,113 @@ import lombok.RequiredArgsConstructor;
 @Transactional
 public class UsersService {
 
-    private final UsersRepository usersRepository;
-    private final UserGetterByName userGetterByName;
-    private final UserIdGetter userIdGetter;
-    private final StringFormatter stringFormatter;
-    private final PasswordEncoder passwordEncoder;
+        private final UsersRepository usersRepository;
+        private final UserGetterByName userGetterByName;
+        private final UserIdGetter userIdGetter;
+        private final StringFormatter stringFormatter;
+        private final PasswordEncoder passwordEncoder;
 
-    // ユーザー登録
-    public RegisterUserResponse registerUser(final RegisterUserRequest registerUserRequest) {
-        final String formattedName = stringFormatter.formatString(registerUserRequest.getName());
-        final RegisterUserResponse registerUserResponse;
+        // ユーザー登録
+        public RegisterUserResponse registerUser(final RegisterUserRequest registerUserRequest) {
+                final String formattedName = stringFormatter.formatString(registerUserRequest.getName());
+                final RegisterUserResponse registerUserResponse;
 
-        // ユーザー名が空の場合
-        if (formattedName.isEmpty()) {
-            registerUserResponse = RegisterUserResponse.builder()
-                    .success(false)
-                    .build();
-            return registerUserResponse;
+                // ユーザー名が空の場合
+                if (formattedName.isEmpty()) {
+                        registerUserResponse = RegisterUserResponse.builder()
+                                        .success(false)
+                                        .build();
+                        return registerUserResponse;
+                }
+
+                // ユーザーが存在する場合
+                if (userGetterByName.getUserByName(formattedName) != null) {
+                        registerUserResponse = RegisterUserResponse.builder()
+                                        .success(false)
+                                        .build();
+                        return registerUserResponse;
+                }
+
+                final String formattedPassword = stringFormatter.formatString(registerUserRequest.getPassword());
+
+                // ユーザーパスワードが空の場合
+                if (formattedPassword.isEmpty()) {
+                        registerUserResponse = RegisterUserResponse.builder()
+                                        .success(false)
+                                        .build();
+                        return registerUserResponse;
+                }
+
+                final Users user = Users.builder()
+                                .name(formattedName)
+                                .password(passwordEncoder.hashPassword(formattedPassword))
+                                .build();
+                usersRepository.registerUser(user);
+
+                registerUserResponse = RegisterUserResponse.builder()
+                                .success(true)
+                                .build();
+                return registerUserResponse;
         }
 
-        // ユーザーが存在する場合
-        if (userGetterByName.getUserByName(formattedName) != null) {
-            registerUserResponse = RegisterUserResponse.builder()
-                    .success(false)
-                    .build();
-            return registerUserResponse;
+        // ユーザー名更新
+        public UpdateNameResponse updateName(final UpdateNameRequest updateNameRequest,
+                        final HttpServletRequest httpServletRequest) {
+                final String formattedName = stringFormatter.formatString(updateNameRequest.getName());
+                final UpdateNameResponse updateNameResponse;
+
+                // ユーザー名が空の場合
+                if (formattedName.isEmpty()) {
+                        updateNameResponse = UpdateNameResponse.builder()
+                                        .success(false)
+                                        .build();
+                        return updateNameResponse;
+                }
+
+                // ユーザーが存在する場合
+                if (userGetterByName.getUserByName(formattedName) != null) {
+                        updateNameResponse = UpdateNameResponse.builder()
+                                        .success(false)
+                                        .build();
+                        return updateNameResponse;
+                }
+
+                final Users user = Users.builder()
+                                .user_id(userIdGetter.getUserId(httpServletRequest))
+                                .name(formattedName)
+                                .build();
+                usersRepository.updateName(user);
+
+                updateNameResponse = UpdateNameResponse.builder()
+                                .success(true)
+                                .build();
+                return updateNameResponse;
         }
 
-        final String formattedPassword = stringFormatter.formatString(registerUserRequest.getPassword());
+        // ユーザーパスワード更新
+        public UpdatePasswordResponse updatePassword(final UpdatePasswordRequest updatePasswordRequest,
+                        final HttpServletRequest httpServletRequest) {
+                final String formattedPassword = stringFormatter.formatString(updatePasswordRequest.getPassword());
+                final UpdatePasswordResponse updatePasswordResponse;
 
-        // ユーザーパスワードが空の場合
-        if (formattedPassword.isEmpty()) {
-            registerUserResponse = RegisterUserResponse.builder()
-                    .success(false)
-                    .build();
-            return registerUserResponse;
+                // ユーザーパスワードが空の場合
+                if (formattedPassword.isEmpty()) {
+                        updatePasswordResponse = UpdatePasswordResponse.builder()
+                                        .success(false)
+                                        .build();
+                        return updatePasswordResponse;
+                }
+
+                final Users user = Users.builder()
+                                .user_id(userIdGetter.getUserId(httpServletRequest))
+                                .password(passwordEncoder.hashPassword(formattedPassword))
+                                .build();
+                usersRepository.updatePassword(user);
+
+                updatePasswordResponse = UpdatePasswordResponse.builder()
+                                .success(true)
+                                .build();
+                return updatePasswordResponse;
         }
-
-        final Users user = Users.builder()
-                .name(formattedName)
-                .password(passwordEncoder.hashPassword(formattedPassword))
-                .build();
-        usersRepository.registerUser(user);
-
-        registerUserResponse = RegisterUserResponse.builder()
-                .success(true)
-                .build();
-        return registerUserResponse;
-    }
-
-    // ユーザー名更新
-    public UpdateNameResponse updateName(final UpdateNameRequest updateNameRequest,
-            final HttpServletRequest httpServletRequest) {
-        final String formattedName = stringFormatter.formatString(updateNameRequest.getName());
-        final UpdateNameResponse updateNameResponse;
-
-        // ユーザー名が空の場合
-        if (formattedName.isEmpty()) {
-            updateNameResponse = UpdateNameResponse.builder()
-                    .success(false)
-                    .build();
-            return updateNameResponse;
-        }
-
-        // ユーザーが存在する場合
-        if (userGetterByName.getUserByName(formattedName) != null) {
-            updateNameResponse = UpdateNameResponse.builder()
-                    .success(false)
-                    .build();
-            return updateNameResponse;
-        }
-
-        final Users user = Users.builder()
-                .user_id(userIdGetter.getUserId(httpServletRequest))
-                .name(formattedName)
-                .build();
-        usersRepository.updateName(user);
-
-        updateNameResponse = UpdateNameResponse.builder()
-                .success(true)
-                .build();
-        return updateNameResponse;
-    }
-
-    // ユーザーパスワード更新
-    public UpdatePasswordResponse updatePassword(final UpdatePasswordRequest updatePasswordRequest,
-            final HttpServletRequest httpServletRequest) {
-        final String formattedPassword = stringFormatter.formatString(updatePasswordRequest.getPassword());
-        final UpdatePasswordResponse updatePasswordResponse;
-
-        // ユーザーパスワードが空の場合
-        if (formattedPassword.isEmpty()) {
-            updatePasswordResponse = UpdatePasswordResponse.builder()
-                    .success(false)
-                    .build();
-            return updatePasswordResponse;
-        }
-
-        final Users user = Users.builder()
-                .user_id(userIdGetter.getUserId(httpServletRequest))
-                .password(passwordEncoder.hashPassword(formattedPassword))
-                .build();
-        usersRepository.updatePassword(user);
-
-        updatePasswordResponse = UpdatePasswordResponse.builder()
-                .success(true)
-                .build();
-        return updatePasswordResponse;
-    }
 
 }

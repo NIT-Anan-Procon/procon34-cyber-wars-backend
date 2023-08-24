@@ -7,6 +7,7 @@ import com.example.procon34_CYBER_WARS_backend.dto.rooms.CreateRoomRequest;
 import com.example.procon34_CYBER_WARS_backend.dto.rooms.CreateRoomResponse;
 import com.example.procon34_CYBER_WARS_backend.entity.Allocations;
 import com.example.procon34_CYBER_WARS_backend.entity.Rooms;
+import com.example.procon34_CYBER_WARS_backend.entity.Vulnerabilities;
 import com.example.procon34_CYBER_WARS_backend.repository.RoomsRepository;
 import com.example.procon34_CYBER_WARS_backend.utility.FourDigitRandomNumberGenerator;
 import com.example.procon34_CYBER_WARS_backend.utility.UserIdGetter;
@@ -31,7 +32,10 @@ public class RoomsService {
         final Rooms room = Rooms.builder()
                 .invite_id(inviteId)
                 .build();
-        roomsRepository.createRoom(room);
+        final Vulnerabilities vulnerability = Vulnerabilities.builder()
+                .difficult(createRoomRequest.isDifficult())
+                .build();
+        roomsRepository.createRoom(room, vulnerability);
 
         final Allocations allocation = Allocations.builder()
                 .user_id(userIdGetter.getUserId(httpServletRequest))

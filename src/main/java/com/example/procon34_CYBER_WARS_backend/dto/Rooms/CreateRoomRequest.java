@@ -1,12 +1,12 @@
 package com.example.procon34_CYBER_WARS_backend.dto.rooms;
 
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
 public class CreateRoomRequest {
 
-    @NotNull
+    @NotBlank
     private boolean difficult;
 
 }
