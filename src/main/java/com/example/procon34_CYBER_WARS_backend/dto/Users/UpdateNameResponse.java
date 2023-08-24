@@ -7,6 +7,6 @@ import lombok.Data;
 @Builder
 public class UpdateNameResponse {
 
-    private boolean success;
+    private final boolean success;
 
 }

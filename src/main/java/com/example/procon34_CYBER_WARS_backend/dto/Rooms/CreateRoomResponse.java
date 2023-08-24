@@ -7,6 +7,6 @@ import lombok.Data;
 @Builder
 public class CreateRoomResponse {
 
-    private short invite_id;
+    private final short invite_id;
 
 }
