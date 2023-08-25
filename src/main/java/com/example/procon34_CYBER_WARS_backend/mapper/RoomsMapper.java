@@ -22,7 +22,7 @@ public interface RoomsMapper {
             FROM
                 vulnerabilities
             WHERE
-                difficult = #{difficult}
+                difficult = #{vulnerability.difficult}
             ORDER BY
                 RAND()
             LIMIT
@@ -58,7 +58,7 @@ public interface RoomsMapper {
     // ルーム情報取得
     @Insert("""
             SELECT
-                name
+                NOT host, name
             FROM
                 allocations
             NATURAL JOIN
@@ -71,9 +71,7 @@ public interface RoomsMapper {
                         allocations
                     WHERE
                         user_id = #{user_id}
-                )
-            ORDER BY
-                host DESC;
+                ) AND user_id != #{user_id};
             """)
     List<Rooms> getRoomInformation(final Users user, final Allocations allocation);
 

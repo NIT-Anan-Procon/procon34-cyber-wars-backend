@@ -18,4 +18,6 @@ public class Allocations {
     @EmbeddedId
     private final int user_id;
 
+    private final boolean host;
+
 }

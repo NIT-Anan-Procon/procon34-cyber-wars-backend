@@ -7,8 +7,8 @@ import lombok.Data;
 @Builder
 public class GetRoomInformationResponse {
 
-    private final String hostName;
+    private final boolean host;
 
-    private final String guestName;
+    private final String opponentName;
 
 }
