@@ -3,13 +3,13 @@ package com.example.procon34_CYBER_WARS_backend.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.procon34_CYBER_WARS_backend.dto.users.Credentials.CheckUserLoginResponse;
-import com.example.procon34_CYBER_WARS_backend.dto.users.Credentials.LoginUserRequest;
-import com.example.procon34_CYBER_WARS_backend.dto.users.Credentials.LoginUserResponse;
+import com.example.procon34_CYBER_WARS_backend.dto.users.Credentials.IsLoggedInResponse;
+import com.example.procon34_CYBER_WARS_backend.dto.users.Credentials.LogInRequest;
+import com.example.procon34_CYBER_WARS_backend.dto.users.Credentials.LogInResponse;
 import com.example.procon34_CYBER_WARS_backend.entity.Users;
 import com.example.procon34_CYBER_WARS_backend.utility.PasswordEncoder;
 import com.example.procon34_CYBER_WARS_backend.utility.StringFormatter;
-import com.example.procon34_CYBER_WARS_backend.utility.UserGetterByName;
+import com.example.procon34_CYBER_WARS_backend.utility.UserManager;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -20,49 +20,40 @@ import lombok.RequiredArgsConstructor;
 @Transactional
 public class UsersCredentialsService {
 
-    private final UserGetterByName userGetterByName;
+    private final UserManager userManager;
     private final StringFormatter stringFormatter;
     private final PasswordEncoder passwordEncoder;
 
     // ユーザーログイン
-    public LoginUserResponse loginUser(final LoginUserRequest loginUserRequest,
+    public LogInResponse logIn(final LogInRequest logInRequest,
             final HttpServletRequest httpServletRequest) {
-        final Users user = userGetterByName.getUserByName(stringFormatter.formatString(loginUserRequest.getName()));
+        final Users user = userManager.getUserByName(stringFormatter.format(logInRequest.getName()));
 
         // ユーザーが存在しない場合
         if (user == null) {
-            return new LoginUserResponse(false);
+            return new LogInResponse(false);
         }
 
         // ユーザーパスワードが異なる場合
-        if (!passwordEncoder.matchPassword(stringFormatter.formatString(loginUserRequest.getPassword()),
+        if (!passwordEncoder.arePasswordsEqual(stringFormatter.format(logInRequest.getPassword()),
                 user.getPassword())) {
-            return new LoginUserResponse(false);
+            return new LogInResponse(false);
         }
 
         final HttpSession httpSession = httpServletRequest.getSession();
         httpSession.setAttribute("sessionId", user.getUserId());
-        httpSession.setMaxInactiveInterval(60 * 60);
+        userManager.setSession(httpSession);
 
-        return new LoginUserResponse(true);
+        return new LogInResponse(true);
     }
 
     // ユーザーログインチェック
-    public CheckUserLoginResponse checkUserLogin(final HttpServletRequest httpServletRequest) {
-        final HttpSession httpSession = httpServletRequest.getSession(false);
-
-        // セッションが存在しない場合
-        if (httpSession == null) {
-            return new CheckUserLoginResponse(false);
-        }
-
-        httpSession.setMaxInactiveInterval(60 * 60);
-
-        return new CheckUserLoginResponse(true);
+    public IsLoggedInResponse isLoggedIn(final HttpServletRequest httpServletRequest) {
+        return new IsLoggedInResponse(userManager.isLoggedIn(httpServletRequest));
     }
 
     // ユーザーログアウト
-    public void logoutUser(final HttpServletRequest httpServletRequest) {
+    public void logOut(final HttpServletRequest httpServletRequest) {
         httpServletRequest.getSession(false).invalidate();
     }
 

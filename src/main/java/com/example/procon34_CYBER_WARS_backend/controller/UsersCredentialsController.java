@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.procon34_CYBER_WARS_backend.dto.users.Credentials.LoginUserRequest;
+import com.example.procon34_CYBER_WARS_backend.dto.users.Credentials.LogInRequest;
 import com.example.procon34_CYBER_WARS_backend.service.UsersCredentialsService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -27,25 +27,25 @@ public class UsersCredentialsController {
     // ユーザーログイン
     @PostMapping
     @ResponseBody
-    public ResponseEntity<?> loginUser(@Validated @RequestBody final LoginUserRequest loginUserRequest,
+    public ResponseEntity<?> logIn(@Validated @RequestBody final LogInRequest logInRequest,
             final BindingResult bindingResult, final HttpServletRequest httpServletRequest) {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
         }
-        return ResponseEntity.ok(usersCredentialsService.loginUser(loginUserRequest, httpServletRequest));
+        return ResponseEntity.ok(usersCredentialsService.logIn(logInRequest, httpServletRequest));
     }
 
     // ユーザーログインチェック
     @GetMapping
     @ResponseBody
-    public ResponseEntity<?> checkUserLogin(final HttpServletRequest httpServletRequest) {
-        return ResponseEntity.ok(usersCredentialsService.checkUserLogin(httpServletRequest));
+    public ResponseEntity<?> isLoggedIn(final HttpServletRequest httpServletRequest) {
+        return ResponseEntity.ok(usersCredentialsService.isLoggedIn(httpServletRequest));
     }
 
     // ユーザーログアウト
     @DeleteMapping
-    public ResponseEntity<?> logoutUser(final HttpServletRequest httpServletRequest) {
-        usersCredentialsService.logoutUser(httpServletRequest);
+    public ResponseEntity<?> logOut(final HttpServletRequest httpServletRequest) {
+        usersCredentialsService.logOut(httpServletRequest);
         return ResponseEntity.ok().build();
     }
 

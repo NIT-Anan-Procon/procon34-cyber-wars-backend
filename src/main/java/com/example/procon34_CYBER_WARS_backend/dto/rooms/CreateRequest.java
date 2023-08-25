@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
-public class CreateRoomRequest {
+public class CreateRequest {
 
     @NotNull
     private boolean difficult;

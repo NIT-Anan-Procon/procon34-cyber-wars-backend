@@ -14,8 +14,8 @@ public class UsersRepository {
     private final UsersMapper usersMapper;
 
     // ユーザー登録
-    public void registerUser(final String name, final String password) {
-        usersMapper.registerUser(name, password);
+    public void register(final String name, final String password) {
+        usersMapper.register(name, password);
     }
 
     // ユーザー名更新

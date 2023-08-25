@@ -10,10 +10,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.procon34_CYBER_WARS_backend.dto.users.RegisterUserRequest;
+import com.example.procon34_CYBER_WARS_backend.dto.users.RegisterRequest;
 import com.example.procon34_CYBER_WARS_backend.dto.users.UpdateNameRequest;
 import com.example.procon34_CYBER_WARS_backend.dto.users.UpdatePasswordRequest;
 import com.example.procon34_CYBER_WARS_backend.service.UsersService;
+import com.example.procon34_CYBER_WARS_backend.utility.UserManager;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -24,16 +25,17 @@ import lombok.RequiredArgsConstructor;
 public class UsersController {
 
     private final UsersService usersService;
+    private final UserManager userManager;
 
     // ユーザー登録
     @PostMapping
     @ResponseBody
-    public ResponseEntity<?> registerUser(@Validated @RequestBody final RegisterUserRequest registerUserRequest,
+    public ResponseEntity<?> register(@Validated @RequestBody final RegisterRequest registerRequest,
             final BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
         }
-        return ResponseEntity.ok(usersService.registerUser(registerUserRequest));
+        return ResponseEntity.ok(usersService.register(registerRequest));
     }
 
     // ユーザー名更新
@@ -43,6 +45,9 @@ public class UsersController {
             final BindingResult bindingResult, final HttpServletRequest httpServletRequest) {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
+        }
+        if (!userManager.isLoggedIn(httpServletRequest)) {
+            return ResponseEntity.status(401).build();
         }
         return ResponseEntity.ok(usersService.updateName(updateNameRequest, httpServletRequest));
     }

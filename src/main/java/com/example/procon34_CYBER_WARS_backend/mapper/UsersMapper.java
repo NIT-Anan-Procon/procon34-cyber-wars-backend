@@ -26,7 +26,7 @@ public interface UsersMapper {
             VALUES
                 (#{name}, #{password})
             """)
-    void registerUser(@Param("name") final String name, @Param("password") final String password);
+    void register(@Param("name") final String name, @Param("password") final String password);
 
     // ユーザー名更新
     @Update("""

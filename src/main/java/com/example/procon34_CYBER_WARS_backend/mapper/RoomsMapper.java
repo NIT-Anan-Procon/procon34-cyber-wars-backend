@@ -10,7 +10,7 @@ import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
 
-import com.example.procon34_CYBER_WARS_backend.dto.rooms.GetRoomInformationResponse;
+import com.example.procon34_CYBER_WARS_backend.dto.rooms.GetInformationResponse;
 import com.example.procon34_CYBER_WARS_backend.entity.Rooms;
 
 @Mapper
@@ -38,7 +38,7 @@ public interface RoomsMapper {
             LIMIT
                 1
             """)
-    void createRoom(@Param("invite_id") final short inviteId, @Param("difficult") final boolean difficult);
+    void create(@Param("invite_id") final short inviteId, @Param("difficult") final boolean difficult);
 
     // ルーム割り当て
     @Insert("""
@@ -49,7 +49,7 @@ public interface RoomsMapper {
             FROM
                 rooms
             """)
-    void allocateRoom(@Param("user_id") final int userId);
+    void allocate(@Param("user_id") final int userId);
 
     // ルーム参加
     @Insert("""
@@ -63,7 +63,7 @@ public interface RoomsMapper {
                 invite_id = #{invite_id}
                 AND status = 0
             """)
-    void joinRoom(@Param("user_id") final int userId, @Param("invite_id") final short inviteId);
+    void join(@Param("user_id") final int userId, @Param("invite_id") final short inviteId);
 
     // ルーム情報取得
     @Insert("""
@@ -84,7 +84,7 @@ public interface RoomsMapper {
                 ) AND user_id != #{user_id}
             """)
     @ResultMap("Rooms")
-    GetRoomInformationResponse getRoomInformation(@Param("user_id") final int userId);
+    GetInformationResponse getInformation(@Param("user_id") final int userId);
 
     // ルーム退出
     @Insert("""
@@ -93,7 +93,7 @@ public interface RoomsMapper {
             WHERE
                 user_id = #{user_id}
             """)
-    void leaveRoom(@Param("user_id") final int userId);
+    void leave(@Param("user_id") final int userId);
 
     // 未開始ルーム取得
     @Select("""

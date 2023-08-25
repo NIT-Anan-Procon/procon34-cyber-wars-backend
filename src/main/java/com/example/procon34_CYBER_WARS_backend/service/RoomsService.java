@@ -1,17 +1,18 @@
 package com.example.procon34_CYBER_WARS_backend.service;
 
+import java.util.Random;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.procon34_CYBER_WARS_backend.dto.rooms.CreateRoomRequest;
-import com.example.procon34_CYBER_WARS_backend.dto.rooms.CreateRoomResponse;
-import com.example.procon34_CYBER_WARS_backend.dto.rooms.GetRoomInformationResponse;
-import com.example.procon34_CYBER_WARS_backend.dto.rooms.JoinRoomRequest;
-import com.example.procon34_CYBER_WARS_backend.dto.rooms.JoinRoomResponse;
+import com.example.procon34_CYBER_WARS_backend.dto.rooms.CreateRequest;
+import com.example.procon34_CYBER_WARS_backend.dto.rooms.CreateResponse;
+import com.example.procon34_CYBER_WARS_backend.dto.rooms.GetInformationResponse;
+import com.example.procon34_CYBER_WARS_backend.dto.rooms.JoinRequest;
+import com.example.procon34_CYBER_WARS_backend.dto.rooms.JoinResponse;
+import com.example.procon34_CYBER_WARS_backend.entity.Rooms;
 import com.example.procon34_CYBER_WARS_backend.repository.RoomsRepository;
-import com.example.procon34_CYBER_WARS_backend.utility.FourDigitRandomNumberGenerator;
-import com.example.procon34_CYBER_WARS_backend.utility.RoomGetterByInviteId;
-import com.example.procon34_CYBER_WARS_backend.utility.UserIdGetter;
+import com.example.procon34_CYBER_WARS_backend.utility.UserManager;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -22,44 +23,63 @@ import lombok.RequiredArgsConstructor;
 public class RoomsService {
 
     private final RoomsRepository roomsRepository;
-    private final UserIdGetter userIdGetter;
-    private final RoomGetterByInviteId roomGetterByInviteId;
-    private final FourDigitRandomNumberGenerator fourDigitRandomNumberGenerator;
+    private final UserManager userManager;
 
     // ルーム作成
-    public CreateRoomResponse createRoom(final CreateRoomRequest createRoomRequest,
+    public CreateResponse create(final CreateRequest createRequest,
             final HttpServletRequest httpServletRequest) {
-        final short inviteId = fourDigitRandomNumberGenerator.generateFourDigitRandomNumber();
+        final short inviteId = generate4DigitRandomNumber();
 
-        roomsRepository.createRoom(inviteId, createRoomRequest.isDifficult());
-        roomsRepository.allocateRoom(userIdGetter.getUserId(httpServletRequest));
+        roomsRepository.create(inviteId, createRequest.isDifficult());
+        roomsRepository.allocate(userManager.getUserId(httpServletRequest));
 
-        return new CreateRoomResponse(inviteId);
+        return new CreateResponse(inviteId);
     }
 
     // ルーム参加
-    public JoinRoomResponse joinRoom(final JoinRoomRequest joinRoomRequest,
+    public JoinResponse join(final JoinRequest joinRequest,
             final HttpServletRequest httpServletRequest) {
-        final short inviteId = joinRoomRequest.getInviteId();
+        final short inviteId = joinRequest.getInviteId();
 
         // ルームが存在しない場合
-        if (roomGetterByInviteId.getRoomByInviteId(inviteId) == null) {
-            return new JoinRoomResponse(false);
+        if (getRoomByInviteId(inviteId) == null) {
+            return new JoinResponse(false);
         }
 
-        roomsRepository.joinRoom(userIdGetter.getUserId(httpServletRequest), joinRoomRequest.getInviteId());
+        roomsRepository.join(userManager.getUserId(httpServletRequest), joinRequest.getInviteId());
 
-        return new JoinRoomResponse(true);
+        return new JoinResponse(true);
     }
 
     // ルーム情報取得
-    public GetRoomInformationResponse getRoomInformation(final HttpServletRequest httpServletRequest) {
-        return roomsRepository.getRoomInformation(userIdGetter.getUserId(httpServletRequest));
+    public GetInformationResponse getInformation(final HttpServletRequest httpServletRequest) {
+        return roomsRepository.getInformation(userManager.getUserId(httpServletRequest));
     }
 
     // ルーム退出
-    public void leaveRoom(final HttpServletRequest httpServletRequest) {
-        roomsRepository.leaveRoom(userIdGetter.getUserId(httpServletRequest));
+    public void leave(final HttpServletRequest httpServletRequest) {
+        roomsRepository.leave(userManager.getUserId(httpServletRequest));
+    }
+
+    // ルーム取得 by 招待ID
+    public Rooms getRoomByInviteId(final short inviteId) {
+        return roomsRepository.getRoomByInviteId(inviteId);
+    }
+
+    // 4桁乱数生成
+    public short generate4DigitRandomNumber() {
+        short inviteId;
+        while (true) {
+            inviteId = (short) (new Random().nextInt(9000) + 1000);
+            for (final Rooms room : roomsRepository.getNotStartedRooms()) {
+                // 招待IDが等しい場合
+                if (inviteId == room.getInviteId()) {
+                    continue;
+                }
+            }
+            break;
+        }
+        return inviteId;
     }
 
 }

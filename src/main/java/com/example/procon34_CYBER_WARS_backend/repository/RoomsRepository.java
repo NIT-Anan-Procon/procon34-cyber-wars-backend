@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import com.example.procon34_CYBER_WARS_backend.dto.rooms.GetRoomInformationResponse;
+import com.example.procon34_CYBER_WARS_backend.dto.rooms.GetInformationResponse;
 import com.example.procon34_CYBER_WARS_backend.entity.Rooms;
 import com.example.procon34_CYBER_WARS_backend.mapper.RoomsMapper;
 
@@ -17,28 +17,28 @@ public class RoomsRepository {
     private final RoomsMapper roomsMapper;
 
     // ルーム作成
-    public void createRoom(final short inviteId, final boolean difficult) {
-        roomsMapper.createRoom(inviteId, difficult);
+    public void create(final short inviteId, final boolean difficult) {
+        roomsMapper.create(inviteId, difficult);
     }
 
     // ルーム割り当て
-    public void allocateRoom(final int userId) {
-        roomsMapper.allocateRoom(userId);
+    public void allocate(final int userId) {
+        roomsMapper.allocate(userId);
     }
 
     // ルーム参加
-    public void joinRoom(final int userId, final short inviteId) {
-        roomsMapper.joinRoom(userId, inviteId);
+    public void join(final int userId, final short inviteId) {
+        roomsMapper.join(userId, inviteId);
     }
 
     // ルーム情報取得
-    public GetRoomInformationResponse getRoomInformation(final int userId) {
-        return roomsMapper.getRoomInformation(userId);
+    public GetInformationResponse getInformation(final int userId) {
+        return roomsMapper.getInformation(userId);
     }
 
     // ルーム退出
-    public void leaveRoom(final int userId) {
-        roomsMapper.leaveRoom(userId);
+    public void leave(final int userId) {
+        roomsMapper.leave(userId);
     }
 
     // 未開始ルーム取得

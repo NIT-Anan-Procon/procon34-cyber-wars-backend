@@ -11,13 +11,13 @@ public class PasswordEncoder {
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    // パスワードエンコード
-    public String hashPassword(final String unhashedPassword) {
+    // パスワードハッシュ
+    public String hash(final String unhashedPassword) {
         return bCryptPasswordEncoder.encode(unhashedPassword);
     }
 
-    // パスワードマッチ
-    public boolean matchPassword(final String requestPassword, final String databasePassword) {
+    // ユーザーパスワード一致判定
+    public boolean arePasswordsEqual(final String requestPassword, final String databasePassword) {
         return bCryptPasswordEncoder.matches(requestPassword, databasePassword);
     }
 

@@ -14,7 +14,7 @@
 
 ## 実行方法
 
-「Database Password」にデータベースのパスワードを入れて実行
+「Database Password」にデータベースのユーザーパスワードを入れて実行
 
 ```
 gradle clean build

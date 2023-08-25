@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.procon34_CYBER_WARS_backend.dto.rooms.CreateRoomRequest;
-import com.example.procon34_CYBER_WARS_backend.dto.rooms.JoinRoomRequest;
+import com.example.procon34_CYBER_WARS_backend.dto.rooms.CreateRequest;
+import com.example.procon34_CYBER_WARS_backend.dto.rooms.JoinRequest;
 import com.example.procon34_CYBER_WARS_backend.service.RoomsService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -29,36 +29,36 @@ public class RoomsController {
     // ルーム作成
     @PostMapping
     @ResponseBody
-    public ResponseEntity<?> createRoom(@Validated @RequestBody final CreateRoomRequest createRoomRequest,
+    public ResponseEntity<?> create(@Validated @RequestBody final CreateRequest createRequest,
             final BindingResult bindingResult, final HttpServletRequest httpServletRequest) {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
         }
-        return ResponseEntity.ok(roomsService.createRoom(createRoomRequest, httpServletRequest));
+        return ResponseEntity.ok(roomsService.create(createRequest, httpServletRequest));
     }
 
     // ルーム参加
     @PutMapping
     @ResponseBody
-    public ResponseEntity<?> joinRoom(@Validated @RequestBody final JoinRoomRequest joinRoomRequest,
+    public ResponseEntity<?> join(@Validated @RequestBody final JoinRequest joinRequest,
             final BindingResult bindingResult, final HttpServletRequest httpServletRequest) {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
         }
-        return ResponseEntity.ok(roomsService.joinRoom(joinRoomRequest, httpServletRequest));
+        return ResponseEntity.ok(roomsService.join(joinRequest, httpServletRequest));
     }
 
     // ルーム情報取得
     @GetMapping
     @ResponseBody
-    public ResponseEntity<?> getRoomInformation(final HttpServletRequest httpServletRequest) {
-        return ResponseEntity.ok(roomsService.getRoomInformation(httpServletRequest));
+    public ResponseEntity<?> getInformation(final HttpServletRequest httpServletRequest) {
+        return ResponseEntity.ok(roomsService.getInformation(httpServletRequest));
     }
 
     // ルーム退出
     @DeleteMapping
-    public ResponseEntity<?> leaveRoom(final HttpServletRequest httpServletRequest) {
-        roomsService.leaveRoom(httpServletRequest);
+    public ResponseEntity<?> leave(final HttpServletRequest httpServletRequest) {
+        roomsService.leave(httpServletRequest);
         return ResponseEntity.ok().build();
     }
 

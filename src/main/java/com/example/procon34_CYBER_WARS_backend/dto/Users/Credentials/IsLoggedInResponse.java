@@ -3,8 +3,8 @@ package com.example.procon34_CYBER_WARS_backend.dto.users.Credentials;
 import lombok.Data;
 
 @Data
-public class LoginUserResponse {
+public class IsLoggedInResponse {
 
-    private final boolean success;
+    private final boolean loggedIn;
 
 }
