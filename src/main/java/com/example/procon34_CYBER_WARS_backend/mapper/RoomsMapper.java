@@ -18,7 +18,7 @@ public interface RoomsMapper {
             INSERT INTO
                 rooms(invite_id, challenge_id)
             SELECT
-                #{invite_id}, challenge_id
+                #{room.invite_id}, challenge_id
             FROM
                 vulnerabilities
             WHERE
