@@ -3,23 +3,21 @@ package com.example.procon34_CYBER_WARS_backend.entity;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-import lombok.Builder;
 import lombok.Data;
 
 @Entity
 @Table(name = "games")
 @Data
-@Builder
 public class Games {
 
     @EmbeddedId
-    private final int room_id;
+    private final int roomId;
 
     @EmbeddedId
-    private final int user_id;
+    private final int userId;
 
     @EmbeddedId
-    private final byte vulnerability_id;
+    private final byte vulnerabilityId;
 
     @EmbeddedId
     private final byte score_type;

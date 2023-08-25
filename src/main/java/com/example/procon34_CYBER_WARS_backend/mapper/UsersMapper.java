@@ -2,12 +2,22 @@ package com.example.procon34_CYBER_WARS_backend.mapper;
 
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Result;
+import org.apache.ibatis.annotations.ResultMap;
+import org.apache.ibatis.annotations.Results;
+import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
 import com.example.procon34_CYBER_WARS_backend.entity.Users;
 
 @Mapper
 public interface UsersMapper {
+    @Results(id = "Users", value = {
+            @Result(column = "user_id", property = "userId"),
+            @Result(column = "name", property = "name"),
+            @Result(column = "password", property = "password")
+    })
 
     // ユーザー登録
     @Insert("""
@@ -16,7 +26,7 @@ public interface UsersMapper {
             VALUES
                 (#{name}, #{password})
             """)
-    void registerUser(final Users user);
+    void registerUser(@Param("name") final String name, @Param("password") final String password);
 
     // ユーザー名更新
     @Update("""
@@ -27,7 +37,7 @@ public interface UsersMapper {
             WHERE
                 user_id = #{user_id}
             """)
-    void updateName(final Users user);
+    void updateName(@Param("user_id") final int userId, @Param("name") final String name);
 
     // ユーザーパスワード更新
     @Update("""
@@ -38,6 +48,18 @@ public interface UsersMapper {
             WHERE
                 user_id = #{user_id}
             """)
-    void updatePassword(final Users user);
+    void updatePassword(@Param("user_id") final int userId, @Param("password") final String password);
+
+    // ユーザー取得 by ユーザー名
+    @Select("""
+            SELECT
+                *
+            FROM
+                users
+            WHERE
+                name = #{name}
+            """)
+    @ResultMap("Users")
+    Users getUserByName(@Param("name") final String name);
 
 }

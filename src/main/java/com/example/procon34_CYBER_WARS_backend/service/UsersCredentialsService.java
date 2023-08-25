@@ -28,54 +28,37 @@ public class UsersCredentialsService {
     public LoginUserResponse loginUser(final LoginUserRequest loginUserRequest,
             final HttpServletRequest httpServletRequest) {
         final Users user = userGetterByName.getUserByName(stringFormatter.formatString(loginUserRequest.getName()));
-        final LoginUserResponse loginUserResponse;
 
         // ユーザーが存在しない場合
         if (user == null) {
-            loginUserResponse = LoginUserResponse.builder()
-                    .success(false)
-                    .build();
-            return loginUserResponse;
+            return new LoginUserResponse(false);
         }
 
         // ユーザーパスワードが異なる場合
         if (!passwordEncoder.matchPassword(stringFormatter.formatString(loginUserRequest.getPassword()),
                 user.getPassword())) {
-            loginUserResponse = LoginUserResponse.builder()
-                    .success(false)
-                    .build();
-            return loginUserResponse;
+            return new LoginUserResponse(false);
         }
 
         final HttpSession httpSession = httpServletRequest.getSession();
-        httpSession.setAttribute("sessionId", user.getUser_id());
+        httpSession.setAttribute("sessionId", user.getUserId());
         httpSession.setMaxInactiveInterval(60 * 60);
 
-        loginUserResponse = LoginUserResponse.builder()
-                .success(true)
-                .build();
-        return loginUserResponse;
+        return new LoginUserResponse(true);
     }
 
     // ユーザーログインチェック
     public CheckUserLoginResponse checkUserLogin(final HttpServletRequest httpServletRequest) {
         final HttpSession httpSession = httpServletRequest.getSession(false);
-        final CheckUserLoginResponse checkUserLoginResponse;
 
         // セッションが存在しない場合
         if (httpSession == null) {
-            checkUserLoginResponse = CheckUserLoginResponse.builder()
-                    .loggedIn(false)
-                    .build();
-            return checkUserLoginResponse;
+            return new CheckUserLoginResponse(false);
         }
 
         httpSession.setMaxInactiveInterval(60 * 60);
 
-        checkUserLoginResponse = CheckUserLoginResponse.builder()
-                .loggedIn(true)
-                .build();
-        return checkUserLoginResponse;
+        return new CheckUserLoginResponse(true);
     }
 
     // ユーザーログアウト

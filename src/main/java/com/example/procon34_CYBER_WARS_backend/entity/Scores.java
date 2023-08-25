@@ -4,17 +4,15 @@ import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-import lombok.Builder;
 import lombok.Data;
 
 @Entity
 @Table(name = "scores")
 @Data
-@Builder
 public class Scores {
 
     @EmbeddedId
-    private final byte score_type;
+    private final byte scoreType;
 
     @EmbeddedId
     private final boolean difficult;

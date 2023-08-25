@@ -8,9 +8,6 @@ import com.example.procon34_CYBER_WARS_backend.dto.rooms.CreateRoomResponse;
 import com.example.procon34_CYBER_WARS_backend.dto.rooms.GetRoomInformationResponse;
 import com.example.procon34_CYBER_WARS_backend.dto.rooms.JoinRoomRequest;
 import com.example.procon34_CYBER_WARS_backend.dto.rooms.JoinRoomResponse;
-import com.example.procon34_CYBER_WARS_backend.entity.Allocations;
-import com.example.procon34_CYBER_WARS_backend.entity.Rooms;
-import com.example.procon34_CYBER_WARS_backend.entity.Vulnerabilities;
 import com.example.procon34_CYBER_WARS_backend.repository.RoomsRepository;
 import com.example.procon34_CYBER_WARS_backend.utility.FourDigitRandomNumberGenerator;
 import com.example.procon34_CYBER_WARS_backend.utility.RoomGetterByInviteId;
@@ -24,72 +21,45 @@ import lombok.RequiredArgsConstructor;
 @Transactional
 public class RoomsService {
 
-        private final RoomsRepository roomsRepository;
-        private final UserIdGetter userIdGetter;
-        private final RoomGetterByInviteId roomGetterByInviteId;
-        private final FourDigitRandomNumberGenerator fourDigitRandomNumberGenerator;
+    private final RoomsRepository roomsRepository;
+    private final UserIdGetter userIdGetter;
+    private final RoomGetterByInviteId roomGetterByInviteId;
+    private final FourDigitRandomNumberGenerator fourDigitRandomNumberGenerator;
 
-        // ルーム作成
-        public CreateRoomResponse createRoom(final CreateRoomRequest createRoomRequest,
-                        final HttpServletRequest httpServletRequest) {
-                final short inviteId = fourDigitRandomNumberGenerator.generateFourDigitRandomNumber();
+    // ルーム作成
+    public CreateRoomResponse createRoom(final CreateRoomRequest createRoomRequest,
+            final HttpServletRequest httpServletRequest) {
+        final short inviteId = fourDigitRandomNumberGenerator.generateFourDigitRandomNumber();
 
-                final Rooms room = Rooms.builder()
-                                .invite_id(inviteId)
-                                .build();
-                final Vulnerabilities vulnerability = Vulnerabilities.builder()
-                                .difficult(createRoomRequest.isDifficult())
-                                .build();
-                roomsRepository.createRoom(room, vulnerability);
+        roomsRepository.createRoom(inviteId, createRoomRequest.isDifficult());
+        roomsRepository.allocateRoom(userIdGetter.getUserId(httpServletRequest));
 
-                final Allocations allocation = Allocations.builder()
-                                .user_id(userIdGetter.getUserId(httpServletRequest))
-                                .build();
-                roomsRepository.allocateRoom(allocation);
+        return new CreateRoomResponse(inviteId);
+    }
 
-                final CreateRoomResponse createRoomResponse = CreateRoomResponse.builder()
-                                .inviteId(inviteId)
-                                .build();
-                return createRoomResponse;
+    // ルーム参加
+    public JoinRoomResponse joinRoom(final JoinRoomRequest joinRoomRequest,
+            final HttpServletRequest httpServletRequest) {
+        final short inviteId = joinRoomRequest.getInviteId();
+
+        // ルームが存在しない場合
+        if (roomGetterByInviteId.getRoomByInviteId(inviteId) == null) {
+            return new JoinRoomResponse(false);
         }
 
-        // ルーム参加
-        public JoinRoomResponse joinRoom(final JoinRoomRequest joinRoomRequest,
-                        final HttpServletRequest httpServletRequest) {
-                final short inviteId = joinRoomRequest.getInviteId();
-                final JoinRoomResponse joinRoomResponse;
+        roomsRepository.joinRoom(userIdGetter.getUserId(httpServletRequest), joinRoomRequest.getInviteId());
 
-                // ルームが存在しない場合
-                if (roomGetterByInviteId.getRoomByInviteId(inviteId) == null) {
-                        joinRoomResponse = JoinRoomResponse.builder()
-                                        .success(false)
-                                        .build();
-                        return joinRoomResponse;
-                }
+        return new JoinRoomResponse(true);
+    }
 
-                final Rooms room = Rooms.builder()
-                                .invite_id(joinRoomRequest.getInviteId())
-                                .build();
-                final Allocations allocation = Allocations.builder()
-                                .user_id(userIdGetter.getUserId(httpServletRequest))
-                                .build();
-                roomsRepository.joinRoom(room, allocation);
+    // ルーム情報取得
+    public GetRoomInformationResponse getRoomInformation(final HttpServletRequest httpServletRequest) {
+        return roomsRepository.getRoomInformation(userIdGetter.getUserId(httpServletRequest));
+    }
 
-                joinRoomResponse = JoinRoomResponse.builder()
-                                .success(true)
-                                .build();
-                return joinRoomResponse;
-        }
-
-        // ルーム情報取得
-        public GetRoomInformationResponse getRoomInformation(final HttpServletRequest httpServletRequest) {
-                final GetRoomInformationResponse getRoomInformationResponse = GetRoomInformationResponse.builder()
-                                .build();
-                return getRoomInformationResponse;
-        }
-
-        // ルーム退出
-        public void leaveRoom(final HttpServletRequest httpServletRequest) {
-        }
+    // ルーム退出
+    public void leaveRoom(final HttpServletRequest httpServletRequest) {
+        roomsRepository.leaveRoom(userIdGetter.getUserId(httpServletRequest));
+    }
 
 }

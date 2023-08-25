@@ -4,21 +4,31 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Result;
+import org.apache.ibatis.annotations.ResultMap;
+import org.apache.ibatis.annotations.Results;
+import org.apache.ibatis.annotations.Select;
 
-import com.example.procon34_CYBER_WARS_backend.entity.Allocations;
+import com.example.procon34_CYBER_WARS_backend.dto.rooms.GetRoomInformationResponse;
 import com.example.procon34_CYBER_WARS_backend.entity.Rooms;
-import com.example.procon34_CYBER_WARS_backend.entity.Users;
-import com.example.procon34_CYBER_WARS_backend.entity.Vulnerabilities;
 
 @Mapper
 public interface RoomsMapper {
+    @Results(id = "Rooms", value = {
+            @Result(column = "room_id", property = "roomId"),
+            @Result(column = "invite_id", property = "inviteId"),
+            @Result(column = "challenge_id", property = "challengeId"),
+            @Result(column = "started_at", property = "startedAt"),
+            @Result(column = "started", property = "started")
+    })
 
     // ルーム作成
     @Insert("""
             INSERT INTO
                 rooms(invite_id, challenge_id)
             SELECT
-                #{room.invite_id}, challenge_id
+                #{user.invite_id}, challenge_id
             FROM
                 vulnerabilities
             WHERE
@@ -28,7 +38,7 @@ public interface RoomsMapper {
             LIMIT
                 1
             """)
-    void createRoom(final Rooms room, final Vulnerabilities vulnerability);
+    void createRoom(@Param("invite_id") final short inviteId, @Param("difficult") final boolean difficult);
 
     // ルーム割り当て
     @Insert("""
@@ -39,7 +49,7 @@ public interface RoomsMapper {
             FROM
                 rooms
             """)
-    void allocateRoom(final Allocations allocation);
+    void allocateRoom(@Param("user_id") final int userId);
 
     // ルーム参加
     @Insert("""
@@ -53,7 +63,7 @@ public interface RoomsMapper {
                 invite_id = #{invite_id}
                 AND status = 0
             """)
-    void joinRoom(final Rooms room, final Allocations allocation);
+    void joinRoom(@Param("user_id") final int userId, @Param("invite_id") final short inviteId);
 
     // ルーム情報取得
     @Insert("""
@@ -73,7 +83,8 @@ public interface RoomsMapper {
                         user_id = #{user_id}
                 ) AND user_id != #{user_id}
             """)
-    List<Rooms> getRoomInformation(final Users user, final Allocations allocation);
+    @ResultMap("Rooms")
+    GetRoomInformationResponse getRoomInformation(@Param("user_id") final int userId);
 
     // ルーム退出
     @Insert("""
@@ -82,6 +93,31 @@ public interface RoomsMapper {
             WHERE
                 user_id = #{user_id}
             """)
-    void leaveRoom(final Allocations allocation);
+    void leaveRoom(@Param("user_id") final int userId);
+
+    // 未開始ルーム取得
+    @Select("""
+            SELECT
+                *
+            FROM
+                rooms
+            WHERE
+                started = FALSE
+            """)
+    @ResultMap("Rooms")
+    List<Rooms> getNotStartedRooms();
+
+    // ルーム取得 by 招待ID
+    @Select("""
+            SELECT
+                *
+            FROM
+                rooms
+            WHERE
+                invite_id = #{invite_id}
+                AND started = FALSE
+            """)
+    @ResultMap("Rooms")
+    Rooms getRoomByInviteId(@Param("invite_id") final short inviteId);
 
 }
