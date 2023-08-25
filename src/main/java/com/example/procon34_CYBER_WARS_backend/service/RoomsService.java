@@ -67,7 +67,7 @@ public class RoomsService {
         }
 
         // ルーム退出
-        public void joinRoom(final HttpServletRequest httpServletRequest) {
+        public void leaveRoom(final HttpServletRequest httpServletRequest) {
         }
 
 }

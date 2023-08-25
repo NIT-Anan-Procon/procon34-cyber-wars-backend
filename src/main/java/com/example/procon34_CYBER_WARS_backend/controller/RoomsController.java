@@ -66,7 +66,8 @@ public class RoomsController {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
         }
-        return ResponseEntity.ok(roomsService.leaveRoom(httpServletRequest));
+        roomsService.leaveRoom(httpServletRequest);
+        return ResponseEntity.ok().build();
     }
 
 }
