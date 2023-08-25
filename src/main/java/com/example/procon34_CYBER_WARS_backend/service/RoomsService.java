@@ -5,6 +5,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.procon34_CYBER_WARS_backend.dto.rooms.CreateRoomRequest;
 import com.example.procon34_CYBER_WARS_backend.dto.rooms.CreateRoomResponse;
+import com.example.procon34_CYBER_WARS_backend.dto.rooms.GetRoomInformationResponse;
+import com.example.procon34_CYBER_WARS_backend.dto.rooms.JoinRoomRequest;
+import com.example.procon34_CYBER_WARS_backend.dto.rooms.JoinRoomResponse;
 import com.example.procon34_CYBER_WARS_backend.entity.Allocations;
 import com.example.procon34_CYBER_WARS_backend.entity.Rooms;
 import com.example.procon34_CYBER_WARS_backend.entity.Vulnerabilities;
@@ -46,6 +49,25 @@ public class RoomsService {
                                 .inviteId(inviteId)
                                 .build();
                 return createRoomResponse;
+        }
+
+        // ルーム参加
+        public JoinRoomResponse joinRoom(final JoinRoomRequest joinRoomRequest,
+                        final HttpServletRequest httpServletRequest) {
+                final JoinRoomResponse joinRoomResponse = JoinRoomResponse.builder()
+                                .build();
+                return joinRoomResponse;
+        }
+
+        // ルーム情報取得
+        public GetRoomInformationResponse getRoomInformation(final HttpServletRequest httpServletRequest) {
+                final GetRoomInformationResponse getRoomInformationResponse = GetRoomInformationResponse.builder()
+                                .build();
+                return getRoomInformationResponse;
+        }
+
+        // ルーム退出
+        public void joinRoom(final HttpServletRequest httpServletRequest) {
         }
 
 }

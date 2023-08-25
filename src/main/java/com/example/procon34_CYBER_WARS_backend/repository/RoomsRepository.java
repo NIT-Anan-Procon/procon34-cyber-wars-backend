@@ -1,9 +1,12 @@
 package com.example.procon34_CYBER_WARS_backend.repository;
 
+import java.util.List;
+
 import org.springframework.stereotype.Repository;
 
 import com.example.procon34_CYBER_WARS_backend.entity.Allocations;
 import com.example.procon34_CYBER_WARS_backend.entity.Rooms;
+import com.example.procon34_CYBER_WARS_backend.entity.Users;
 import com.example.procon34_CYBER_WARS_backend.entity.Vulnerabilities;
 import com.example.procon34_CYBER_WARS_backend.mapper.RoomsMapper;
 
@@ -23,6 +26,21 @@ public class RoomsRepository {
     // ルーム割り当て
     public void allocateRoom(final Allocations allocation) {
         roomsMapper.allocateRoom(allocation);
+    }
+
+    // ルーム参加
+    public void joinRoom(final Rooms room, final Allocations allocation) {
+        roomsMapper.joinRoom(room, allocation);
+    }
+
+    // ルーム情報取得
+    public List<Rooms> getRoomInformation(final Users user, final Allocations allocation) {
+        return roomsMapper.getRoomInformation(user, allocation);
+    }
+
+    // ルーム退出
+    public void leaveRoom(final Allocations allocation) {
+        roomsMapper.leaveRoom(allocation);
     }
 
 }

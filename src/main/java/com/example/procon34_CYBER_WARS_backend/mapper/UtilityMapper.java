@@ -12,11 +12,25 @@ import com.example.procon34_CYBER_WARS_backend.entity.Users;
 public interface UtilityMapper {
 
     // ユーザー取得 by ユーザー名
-    @Select("SELECT * FROM users WHERE name = #{name}")
+    @Select("""
+            SELECT
+                *
+            FROM
+                users
+            WHERE
+                name = #{name}
+            """)
     Users getUserByName(final Users user);
 
     // 動作中部屋取得
-    @Select("SELECT * FROM rooms WHERE status IN(0, 1)")
+    @Select("""
+            SELECT
+                *
+            FROM
+                rooms
+            WHERE
+                status IN(0, 1)
+            """)
     List<Rooms> getActiveRooms();
 
 }

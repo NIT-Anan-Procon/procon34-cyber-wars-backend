@@ -3,13 +3,17 @@ package com.example.procon34_CYBER_WARS_backend.controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.procon34_CYBER_WARS_backend.dto.rooms.CreateRoomRequest;
+import com.example.procon34_CYBER_WARS_backend.dto.rooms.JoinRoomRequest;
 import com.example.procon34_CYBER_WARS_backend.service.RoomsService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,12 +29,44 @@ public class RoomsController {
     // ルーム作成
     @PostMapping
     @ResponseBody
-    public ResponseEntity<?> updateName(@Validated @RequestBody final CreateRoomRequest createRoomRequest,
+    public ResponseEntity<?> createRoom(@Validated @RequestBody final CreateRoomRequest createRoomRequest,
             final BindingResult bindingResult, final HttpServletRequest httpServletRequest) {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
         }
         return ResponseEntity.ok(roomsService.createRoom(createRoomRequest, httpServletRequest));
+    }
+
+    // ルーム参加
+    @PutMapping
+    @ResponseBody
+    public ResponseEntity<?> joinRoom(@Validated @RequestBody final JoinRoomRequest joinRoomRequest,
+            final BindingResult bindingResult, final HttpServletRequest httpServletRequest) {
+        if (bindingResult.hasErrors()) {
+            return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
+        }
+        return ResponseEntity.ok(roomsService.joinRoom(joinRoomRequest, httpServletRequest));
+    }
+
+    // ルーム情報取得
+    @GetMapping
+    @ResponseBody
+    public ResponseEntity<?> getRoomInformation(final BindingResult bindingResult,
+            final HttpServletRequest httpServletRequest) {
+        if (bindingResult.hasErrors()) {
+            return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
+        }
+        return ResponseEntity.ok(roomsService.getRoomInformation(httpServletRequest));
+    }
+
+    // ルーム退出
+    @DeleteMapping
+    @ResponseBody
+    public ResponseEntity<?> leaveRoom(final BindingResult bindingResult, final HttpServletRequest httpServletRequest) {
+        if (bindingResult.hasErrors()) {
+            return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
+        }
+        return ResponseEntity.ok(roomsService.leaveRoom(httpServletRequest));
     }
 
 }
