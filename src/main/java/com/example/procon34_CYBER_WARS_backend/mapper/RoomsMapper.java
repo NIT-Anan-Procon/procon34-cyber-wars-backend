@@ -44,13 +44,13 @@ public interface RoomsMapper {
     // ルーム参加
     @Insert("""
             INSERT INTO
-                allocations(room.room_id, user_id)
+                allocations(room_id, user_id, host)
             SELECT
-                room_id, #{user_id}
+                room_id, #{user_id}, FALSE
             FROM
                 rooms
             WHERE
-                invite_id = #{room.invite_id}
+                invite_id = #{invite_id}
                 AND status = 0
             """)
     void joinRoom(final Rooms room, final Allocations allocation);
@@ -58,7 +58,7 @@ public interface RoomsMapper {
     // ルーム情報取得
     @Insert("""
             SELECT
-                NOT host, name
+                - host AS host, name
             FROM
                 allocations
             NATURAL JOIN
@@ -71,7 +71,7 @@ public interface RoomsMapper {
                         allocations
                     WHERE
                         user_id = #{user_id}
-                ) AND user_id != #{user_id};
+                ) AND user_id != #{user_id}
             """)
     List<Rooms> getRoomInformation(final Users user, final Allocations allocation);
 

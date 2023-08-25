@@ -26,6 +26,6 @@ public class Rooms {
 
     private final Timestamp started_at;
 
-    private final byte status;
+    private final boolean started;
 
 }

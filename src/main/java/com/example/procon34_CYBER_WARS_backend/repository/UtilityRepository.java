@@ -21,9 +21,14 @@ public class UtilityRepository {
         return utilityMapper.getUserByName(user);
     }
 
-    // 動作中部屋取得
-    public List<Rooms> getActiveRooms() {
-        return utilityMapper.getActiveRooms();
+    // 未開始ルーム取得
+    public List<Rooms> getNotStartedRooms() {
+        return utilityMapper.getNotStartedRooms();
+    }
+
+    // ルーム取得 by 招待ID
+    public Rooms getRoomByInviteId(final Rooms room) {
+        return utilityMapper.getRoomByInviteId(room);
     }
 
 }

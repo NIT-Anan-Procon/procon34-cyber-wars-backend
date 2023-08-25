@@ -22,15 +22,27 @@ public interface UtilityMapper {
             """)
     Users getUserByName(final Users user);
 
-    // 動作中部屋取得
+    // 未開始ルーム取得
     @Select("""
             SELECT
                 *
             FROM
                 rooms
             WHERE
-                status IN(0, 1)
+                started = FALSE
             """)
-    List<Rooms> getActiveRooms();
+    List<Rooms> getNotStartedRooms();
+
+    // ルーム取得 by 招待ID
+    @Select("""
+            SELECT
+                *
+            FROM
+                rooms
+            WHERE
+                invite_id = #{invite_id}
+                AND started = FALSE
+            """)
+    Rooms getRoomByInviteId(final Rooms room);
 
 }

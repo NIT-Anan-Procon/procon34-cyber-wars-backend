@@ -20,7 +20,7 @@ public class FourDigitRandomNumberGenerator {
         short inviteId;
         while (true) {
             inviteId = (short) (new Random().nextInt(9000) + 1000);
-            for (final Rooms room : utilityRepository.getActiveRooms()) {
+            for (final Rooms room : utilityRepository.getNotStartedRooms()) {
                 // 招待IDが等しい場合
                 if (inviteId == room.getInvite_id()) {
                     continue;

@@ -13,6 +13,7 @@ import com.example.procon34_CYBER_WARS_backend.entity.Rooms;
 import com.example.procon34_CYBER_WARS_backend.entity.Vulnerabilities;
 import com.example.procon34_CYBER_WARS_backend.repository.RoomsRepository;
 import com.example.procon34_CYBER_WARS_backend.utility.FourDigitRandomNumberGenerator;
+import com.example.procon34_CYBER_WARS_backend.utility.RoomGetterByInviteId;
 import com.example.procon34_CYBER_WARS_backend.utility.UserIdGetter;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,6 +26,7 @@ public class RoomsService {
 
         private final RoomsRepository roomsRepository;
         private final UserIdGetter userIdGetter;
+        private final RoomGetterByInviteId roomGetterByInviteId;
         private final FourDigitRandomNumberGenerator fourDigitRandomNumberGenerator;
 
         // ルーム作成
@@ -54,7 +56,27 @@ public class RoomsService {
         // ルーム参加
         public JoinRoomResponse joinRoom(final JoinRoomRequest joinRoomRequest,
                         final HttpServletRequest httpServletRequest) {
-                final JoinRoomResponse joinRoomResponse = JoinRoomResponse.builder()
+                final short inviteId = joinRoomRequest.getInviteId();
+                final JoinRoomResponse joinRoomResponse;
+
+                // ルームが存在しない場合
+                if (roomGetterByInviteId.getRoomByInviteId(inviteId) == null) {
+                        joinRoomResponse = JoinRoomResponse.builder()
+                                        .success(false)
+                                        .build();
+                        return joinRoomResponse;
+                }
+
+                final Rooms room = Rooms.builder()
+                                .invite_id(joinRoomRequest.getInviteId())
+                                .build();
+                final Allocations allocation = Allocations.builder()
+                                .user_id(userIdGetter.getUserId(httpServletRequest))
+                                .build();
+                roomsRepository.joinRoom(room, allocation);
+
+                joinRoomResponse = JoinRoomResponse.builder()
+                                .success(true)
                                 .build();
                 return joinRoomResponse;
         }
