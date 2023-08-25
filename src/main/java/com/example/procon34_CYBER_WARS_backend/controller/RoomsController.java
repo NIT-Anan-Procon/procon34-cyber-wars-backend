@@ -51,21 +51,13 @@ public class RoomsController {
     // ルーム情報取得
     @GetMapping
     @ResponseBody
-    public ResponseEntity<?> getRoomInformation(final BindingResult bindingResult,
-            final HttpServletRequest httpServletRequest) {
-        if (bindingResult.hasErrors()) {
-            return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
-        }
+    public ResponseEntity<?> getRoomInformation(final HttpServletRequest httpServletRequest) {
         return ResponseEntity.ok(roomsService.getRoomInformation(httpServletRequest));
     }
 
     // ルーム退出
     @DeleteMapping
-    @ResponseBody
-    public ResponseEntity<?> leaveRoom(final BindingResult bindingResult, final HttpServletRequest httpServletRequest) {
-        if (bindingResult.hasErrors()) {
-            return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
-        }
+    public ResponseEntity<?> leaveRoom(final HttpServletRequest httpServletRequest) {
         roomsService.leaveRoom(httpServletRequest);
         return ResponseEntity.ok().build();
     }
