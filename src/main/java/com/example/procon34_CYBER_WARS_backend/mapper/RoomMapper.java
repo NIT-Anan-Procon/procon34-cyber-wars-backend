@@ -2,6 +2,7 @@ package com.example.procon34_CYBER_WARS_backend.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Result;
@@ -58,7 +59,7 @@ public interface RoomMapper {
     void join(final int userId, final short inviteId);
 
     // ルーム情報取得
-    @Insert("""
+    @Select("""
             SELECT
                 - host, name
             FROM
@@ -82,7 +83,7 @@ public interface RoomMapper {
     GetInformationResponse getInformation(final int userId);
 
     // ルーム退出
-    @Insert("""
+    @Delete("""
             DELETE FROM
                 allocations
             WHERE
