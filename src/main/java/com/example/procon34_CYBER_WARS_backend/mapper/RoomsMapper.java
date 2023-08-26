@@ -21,11 +21,11 @@ public interface RoomsMapper {
             INSERT INTO
                 rooms(invite_id, challenge_id)
             SELECT
-                #{user.invite_id}, challenge_id
+                #{invite_id}, challenge_id
             FROM
                 vulnerabilities
             WHERE
-                difficult = #{vulnerability.difficult}
+                difficult = #{difficult}
             ORDER BY
                 RAND()
             LIMIT
