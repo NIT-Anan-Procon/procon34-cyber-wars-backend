@@ -4,7 +4,6 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
@@ -13,11 +12,6 @@ import com.example.procon34_CYBER_WARS_backend.entity.Users;
 
 @Mapper
 public interface UsersMapper {
-    @Results(id = "Users", value = {
-            @Result(column = "user_id", property = "userId"),
-            @Result(column = "name", property = "name"),
-            @Result(column = "password", property = "password")
-    })
 
     // ユーザー登録
     @Insert("""
@@ -59,7 +53,11 @@ public interface UsersMapper {
             WHERE
                 name = #{name}
             """)
-    @ResultMap("Users")
+    @Results(id = "Users", value = {
+            @Result(column = "user_id", property = "userId"),
+            @Result(column = "name", property = "name"),
+            @Result(column = "password", property = "password")
+    })
     Users getUserByName(@Param("name") final String name);
 
 }

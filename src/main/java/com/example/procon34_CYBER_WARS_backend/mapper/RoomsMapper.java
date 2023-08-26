@@ -15,13 +15,6 @@ import com.example.procon34_CYBER_WARS_backend.entity.Rooms;
 
 @Mapper
 public interface RoomsMapper {
-    @Results(id = "Rooms", value = {
-            @Result(column = "room_id", property = "roomId"),
-            @Result(column = "invite_id", property = "inviteId"),
-            @Result(column = "challenge_id", property = "challengeId"),
-            @Result(column = "started_at", property = "startedAt"),
-            @Result(column = "started", property = "started")
-    })
 
     // ルーム作成
     @Insert("""
@@ -83,7 +76,13 @@ public interface RoomsMapper {
                         user_id = #{user_id}
                 ) AND user_id != #{user_id}
             """)
-    @ResultMap("Rooms")
+    @Results(id = "Rooms", value = {
+            @Result(column = "room_id", property = "roomId"),
+            @Result(column = "invite_id", property = "inviteId"),
+            @Result(column = "challenge_id", property = "challengeId"),
+            @Result(column = "started_at", property = "startedAt"),
+            @Result(column = "started", property = "started")
+    })
     GetInformationResponse getInformation(@Param("user_id") final int userId);
 
     // ルーム退出
