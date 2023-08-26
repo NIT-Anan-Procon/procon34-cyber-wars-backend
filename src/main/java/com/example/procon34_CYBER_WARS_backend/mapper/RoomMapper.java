@@ -86,7 +86,7 @@ public interface RoomMapper {
                 user_id != #{userId}
             """)
     @Result(column = "host", property = "host")
-    boolean isHost(final int userId);
+    Boolean isHost(final int userId);
 
     // 対戦相手ユーザー名取得
     @Select("""

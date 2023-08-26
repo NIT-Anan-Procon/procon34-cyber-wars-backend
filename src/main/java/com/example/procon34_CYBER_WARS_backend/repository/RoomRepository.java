@@ -36,7 +36,7 @@ public class RoomRepository {
     }
 
     // ホスト判定
-    public boolean isHost(final int userId) {
+    public Boolean isHost(final int userId) {
         return roomMapper.isHost(userId);
     }
 
