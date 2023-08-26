@@ -18,11 +18,14 @@ public class UserManager {
     // ユーザーログイン判定
     public boolean isLoggedIn(HttpServletRequest httpServletRequest) {
         final HttpSession httpSession = httpServletRequest.getSession(false);
+
         // ユーザーセッションが存在しない場合
         if (httpSession == null) {
             return false;
         }
+
         setSession(httpSession);
+
         return true;
     }
 

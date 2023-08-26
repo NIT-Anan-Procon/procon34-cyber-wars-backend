@@ -24,11 +24,13 @@ public class HttpClientErrorHandler {
             return new HttpClientErrorHandlerResponse(true,
                     ResponseEntity.badRequest().body(bindingResult.getAllErrors()));
         }
+
         // ユーザーログインをしていない場合
         if (httpServletRequest != null && !userManager.isLoggedIn(httpServletRequest)) {
             return new HttpClientErrorHandlerResponse(true,
                     ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Authentication Error"));
         }
+
         return new HttpClientErrorHandlerResponse(false, null);
     }
 
