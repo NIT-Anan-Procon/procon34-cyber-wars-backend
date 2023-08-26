@@ -54,13 +54,26 @@ public class RoomService {
     // ルーム情報取得
     public GetInformationResponse getInformation(final HttpServletRequest httpServletRequest) {
         final int userId = userManager.getUserId(httpServletRequest);
+        final String opponentName = roomRepository.getOpponentName(userId);
 
-        return new GetInformationResponse(roomRepository.isHost(userId), roomRepository.getOpponentName(userId));
+        // ルームが動作していない場合 and 対戦相手ユーザー名が存在しない場合
+        if (roomRepository.isActive(userId) && opponentName == null) {
+            return new GetInformationResponse(opponentName, roomRepository.isHost(userId), false);
+        }
+
+        return new GetInformationResponse(opponentName, roomRepository.isHost(userId), true);
     }
 
     // ルーム退出
-    public void leave(final HttpServletRequest httpServletRequest) {
-        roomRepository.leave(userManager.getUserId(httpServletRequest));
+    public void exit(final HttpServletRequest httpServletRequest) {
+        final int userId = userManager.getUserId(httpServletRequest);
+
+        // ユーザーがホストの場合
+        if (roomRepository.isHost(userId)) {
+            roomRepository.close(userId);
+        }
+
+        roomRepository.exit(userId);
     }
 
     // 4桁乱数生成
@@ -69,7 +82,7 @@ public class RoomService {
 
         while (true) {
             inviteId = (short) (new Random().nextInt(9000) + 1000);
-            for (final Rooms room : roomRepository.getNotStartedRooms()) {
+            for (final Rooms room : roomRepository.getActiveRooms()) {
                 // 招待IDが等しい場合
                 if (inviteId == room.getInviteId()) {
                     continue;

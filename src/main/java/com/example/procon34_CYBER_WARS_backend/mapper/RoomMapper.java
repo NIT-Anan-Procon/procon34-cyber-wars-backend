@@ -9,6 +9,7 @@ import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import com.example.procon34_CYBER_WARS_backend.entity.Rooms;
 
@@ -51,14 +52,14 @@ public interface RoomMapper {
                 rooms
             WHERE
                 invite_id = #{inviteId}
-                AND started = FALSE
+                AND active = TRUE
             """)
     @Results(id = "Rooms", value = {
             @Result(column = "room_id", property = "roomId"),
             @Result(column = "invite_id", property = "inviteId"),
             @Result(column = "challenge_id", property = "challengeId"),
             @Result(column = "started_at", property = "startedAt"),
-            @Result(column = "started", property = "started")
+            @Result(column = "active", property = "active")
     })
     Rooms getRoomByInviteId(final short inviteId);
 
@@ -72,21 +73,9 @@ public interface RoomMapper {
                 rooms
             WHERE
                 invite_id = #{inviteId}
-                AND started = FALSE
+                AND active = TRUE
             """)
     void join(final int userId, final short inviteId);
-
-    // ホスト判定
-    @Select("""
-            SELECT
-                host
-            FROM
-                allocations
-            WHERE
-                user_id = #{userId}
-            """)
-    @Result(column = "host", property = "host")
-    boolean isHost(final int userId);
 
     // 対戦相手ユーザー名取得
     @Select("""
@@ -109,6 +98,55 @@ public interface RoomMapper {
     @Result(column = "name", property = "opponentName")
     String getOpponentName(final int userId);
 
+    // ルーム動作判定
+    @Select("""
+            SELECT
+                active
+            FROM
+                rooms
+            WHERE
+                room_id = (
+                    SELECT
+                        room_id
+                    FROM
+                        allocations
+                    WHERE
+                        user_id = #{userId}
+                )
+            """)
+    @Result(column = "active", property = "active")
+    boolean isActive(final int userId);
+
+    // ルームホスト判定
+    @Select("""
+            SELECT
+                host
+            FROM
+                allocations
+            WHERE
+                user_id = #{userId}
+            """)
+    @Result(column = "host", property = "host")
+    boolean isHost(final int userId);
+
+    // ルーム閉鎖
+    @Update("""
+            UPDATE
+                rooms
+            SET
+                active = FALSE
+            WHERE
+                room_id = (
+                    SELECT
+                        room_id
+                    FROM
+                        allocations
+                    WHERE
+                        user_id = #{userId}
+                )
+            """)
+    void close(final int userId);
+
     // ルーム退出
     @Delete("""
             DELETE FROM
@@ -116,18 +154,18 @@ public interface RoomMapper {
             WHERE
                 user_id = #{userId}
             """)
-    void leave(final int userId);
+    void exit(final int userId);
 
-    // 未開始ルーム取得
+    // 動作ルーム取得
     @Select("""
             SELECT
                 *
             FROM
                 rooms
             WHERE
-                started = FALSE
+                active = TRUE
             """)
     @ResultMap("Rooms")
-    List<Rooms> getNotStartedRooms();
+    List<Rooms> getActiveRooms();
 
 }

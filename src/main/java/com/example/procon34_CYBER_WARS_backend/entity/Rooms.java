@@ -24,6 +24,6 @@ public class Rooms {
 
     private final Timestamp startedAt;
 
-    private final boolean started;
+    private final boolean active;
 
 }

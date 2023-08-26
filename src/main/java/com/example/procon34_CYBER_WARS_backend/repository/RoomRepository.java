@@ -35,24 +35,34 @@ public class RoomRepository {
         roomMapper.join(userId, inviteId);
     }
 
-    // ホスト判定
-    public boolean isHost(final int userId) {
-        return roomMapper.isHost(userId);
-    }
-
     // 対戦相手ユーザー名取得
     public String getOpponentName(final int userId) {
         return roomMapper.getOpponentName(userId);
     }
 
-    // ルーム退出
-    public void leave(final int userId) {
-        roomMapper.leave(userId);
+    // ルーム動作判定
+    public boolean isActive(final int userId) {
+        return roomMapper.isActive(userId);
     }
 
-    // 未開始ルーム取得
-    public List<Rooms> getNotStartedRooms() {
-        return roomMapper.getNotStartedRooms();
+    // ルームホスト判定
+    public boolean isHost(final int userId) {
+        return roomMapper.isHost(userId);
+    }
+
+    // ルーム閉鎖
+    public void close(final int userId) {
+        roomMapper.close(userId);
+    }
+
+    // ルーム退出
+    public void exit(final int userId) {
+        roomMapper.exit(userId);
+    }
+
+    // 動作ルーム取得
+    public List<Rooms> getActiveRooms() {
+        return roomMapper.getActiveRooms();
     }
 
 }

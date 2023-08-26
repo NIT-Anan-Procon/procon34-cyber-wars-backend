@@ -12,6 +12,22 @@ import com.example.procon34_CYBER_WARS_backend.entity.Users;
 @Mapper
 public interface UserMapper {
 
+    // ユーザー取得 by ユーザー名
+    @Select("""
+            SELECT
+                *
+            FROM
+                users
+            WHERE
+                name = #{name}
+            """)
+    @Results(id = "Users", value = {
+            @Result(column = "user_id", property = "userId"),
+            @Result(column = "name", property = "name"),
+            @Result(column = "password", property = "password")
+    })
+    Users getUserByName(final String name);
+
     // ユーザー登録
     @Insert("""
             INSERT INTO
@@ -42,21 +58,5 @@ public interface UserMapper {
                 user_id = #{userId}
             """)
     void updatePassword(final int userId, final String password);
-
-    // ユーザー取得 by ユーザー名
-    @Select("""
-            SELECT
-                *
-            FROM
-                users
-            WHERE
-                name = #{name}
-            """)
-    @Results(id = "Users", value = {
-            @Result(column = "user_id", property = "userId"),
-            @Result(column = "name", property = "name"),
-            @Result(column = "password", property = "password")
-    })
-    Users getUserByName(final String name);
 
 }

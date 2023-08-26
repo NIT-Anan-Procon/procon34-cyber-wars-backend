@@ -69,13 +69,13 @@ public class RoomController {
 
     // ルーム退出
     @DeleteMapping
-    public ResponseEntity<?> leave(final HttpServletRequest httpServletRequest) {
+    public ResponseEntity<?> exit(final HttpServletRequest httpServletRequest) {
         final HttpClientErrorHandlerResponse httpClientErrorHandlerResponse = httpClientErrorHandler
                 .handle(null, httpServletRequest);
         if (httpClientErrorHandlerResponse.isError()) {
             return httpClientErrorHandlerResponse.getResponseEntity();
         }
-        roomService.leave(httpServletRequest);
+        roomService.exit(httpServletRequest);
         return ResponseEntity.ok().build();
     }
 
