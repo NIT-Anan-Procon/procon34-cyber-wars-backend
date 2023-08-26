@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.procon34_CYBER_WARS_backend.dto.HttpClientErrorHandlerResponse;
 import com.example.procon34_CYBER_WARS_backend.dto.users.Credentials.LogInRequest;
 import com.example.procon34_CYBER_WARS_backend.service.UsersCredentialsService;
+import com.example.procon34_CYBER_WARS_backend.utility.HttpClientErrorHandler;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UsersCredentialsController {
 
+    private final HttpClientErrorHandler httpClientErrorHandler;
     private final UsersCredentialsService usersCredentialsService;
 
     // ユーザーログイン
@@ -29,8 +32,10 @@ public class UsersCredentialsController {
     @ResponseBody
     public ResponseEntity<?> logIn(@Validated @RequestBody final LogInRequest logInRequest,
             final BindingResult bindingResult, final HttpServletRequest httpServletRequest) {
-        if (bindingResult.hasErrors()) {
-            return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
+        final HttpClientErrorHandlerResponse httpClientErrorHandlerResponse = httpClientErrorHandler
+                .handle(bindingResult, null);
+        if (httpClientErrorHandlerResponse.isError()) {
+            return httpClientErrorHandlerResponse.getResponseEntity();
         }
         return ResponseEntity.ok(usersCredentialsService.logIn(logInRequest, httpServletRequest));
     }
@@ -45,6 +50,11 @@ public class UsersCredentialsController {
     // ユーザーログアウト
     @DeleteMapping
     public ResponseEntity<?> logOut(final HttpServletRequest httpServletRequest) {
+        final HttpClientErrorHandlerResponse httpClientErrorHandlerResponse = httpClientErrorHandler
+                .handle(null, httpServletRequest);
+        if (httpClientErrorHandlerResponse.isError()) {
+            return httpClientErrorHandlerResponse.getResponseEntity();
+        }
         usersCredentialsService.logOut(httpServletRequest);
         return ResponseEntity.ok().build();
     }

@@ -10,11 +10,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.procon34_CYBER_WARS_backend.dto.HttpClientErrorHandlerResponse;
 import com.example.procon34_CYBER_WARS_backend.dto.users.RegisterRequest;
 import com.example.procon34_CYBER_WARS_backend.dto.users.UpdateNameRequest;
 import com.example.procon34_CYBER_WARS_backend.dto.users.UpdatePasswordRequest;
 import com.example.procon34_CYBER_WARS_backend.service.UsersService;
-import com.example.procon34_CYBER_WARS_backend.utility.UserManager;
+import com.example.procon34_CYBER_WARS_backend.utility.HttpClientErrorHandler;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -24,16 +25,18 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UsersController {
 
+    private final HttpClientErrorHandler httpClientErrorHandler;
     private final UsersService usersService;
-    private final UserManager userManager;
 
     // ユーザー登録
     @PostMapping
     @ResponseBody
     public ResponseEntity<?> register(@Validated @RequestBody final RegisterRequest registerRequest,
             final BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
+        final HttpClientErrorHandlerResponse httpClientErrorHandlerResponse = httpClientErrorHandler
+                .handle(bindingResult, null);
+        if (httpClientErrorHandlerResponse.isError()) {
+            return httpClientErrorHandlerResponse.getResponseEntity();
         }
         return ResponseEntity.ok(usersService.register(registerRequest));
     }
@@ -43,11 +46,10 @@ public class UsersController {
     @ResponseBody
     public ResponseEntity<?> updateName(@Validated @RequestBody final UpdateNameRequest updateNameRequest,
             final BindingResult bindingResult, final HttpServletRequest httpServletRequest) {
-        if (bindingResult.hasErrors()) {
-            return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
-        }
-        if (!userManager.isLoggedIn(httpServletRequest)) {
-            return ResponseEntity.status(401).build();
+        final HttpClientErrorHandlerResponse httpClientErrorHandlerResponse = httpClientErrorHandler
+                .handle(bindingResult, httpServletRequest);
+        if (httpClientErrorHandlerResponse.isError()) {
+            return httpClientErrorHandlerResponse.getResponseEntity();
         }
         return ResponseEntity.ok(usersService.updateName(updateNameRequest, httpServletRequest));
     }
@@ -57,8 +59,10 @@ public class UsersController {
     @ResponseBody
     public ResponseEntity<?> updatePassword(@Validated @RequestBody final UpdatePasswordRequest updatePasswordRequest,
             final BindingResult bindingResult, final HttpServletRequest httpServletRequest) {
-        if (bindingResult.hasErrors()) {
-            return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
+        final HttpClientErrorHandlerResponse httpClientErrorHandlerResponse = httpClientErrorHandler
+                .handle(bindingResult, httpServletRequest);
+        if (httpClientErrorHandlerResponse.isError()) {
+            return httpClientErrorHandlerResponse.getResponseEntity();
         }
         return ResponseEntity.ok(usersService.updatePassword(updatePasswordRequest, httpServletRequest));
     }

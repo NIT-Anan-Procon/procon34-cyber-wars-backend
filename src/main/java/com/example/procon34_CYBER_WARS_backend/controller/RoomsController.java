@@ -12,9 +12,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.procon34_CYBER_WARS_backend.dto.HttpClientErrorHandlerResponse;
 import com.example.procon34_CYBER_WARS_backend.dto.rooms.CreateRequest;
 import com.example.procon34_CYBER_WARS_backend.dto.rooms.JoinRequest;
 import com.example.procon34_CYBER_WARS_backend.service.RoomsService;
+import com.example.procon34_CYBER_WARS_backend.utility.HttpClientErrorHandler;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +26,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class RoomsController {
 
+    private final HttpClientErrorHandler httpClientErrorHandler;
     private final RoomsService roomsService;
 
     // ルーム作成
@@ -31,8 +34,10 @@ public class RoomsController {
     @ResponseBody
     public ResponseEntity<?> create(@Validated @RequestBody final CreateRequest createRequest,
             final BindingResult bindingResult, final HttpServletRequest httpServletRequest) {
-        if (bindingResult.hasErrors()) {
-            return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
+        final HttpClientErrorHandlerResponse httpClientErrorHandlerResponse = httpClientErrorHandler
+                .handle(bindingResult, httpServletRequest);
+        if (httpClientErrorHandlerResponse.isError()) {
+            return httpClientErrorHandlerResponse.getResponseEntity();
         }
         return ResponseEntity.ok(roomsService.create(createRequest, httpServletRequest));
     }
@@ -42,8 +47,10 @@ public class RoomsController {
     @ResponseBody
     public ResponseEntity<?> join(@Validated @RequestBody final JoinRequest joinRequest,
             final BindingResult bindingResult, final HttpServletRequest httpServletRequest) {
-        if (bindingResult.hasErrors()) {
-            return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
+        final HttpClientErrorHandlerResponse httpClientErrorHandlerResponse = httpClientErrorHandler
+                .handle(bindingResult, httpServletRequest);
+        if (httpClientErrorHandlerResponse.isError()) {
+            return httpClientErrorHandlerResponse.getResponseEntity();
         }
         return ResponseEntity.ok(roomsService.join(joinRequest, httpServletRequest));
     }
@@ -52,12 +59,22 @@ public class RoomsController {
     @GetMapping
     @ResponseBody
     public ResponseEntity<?> getInformation(final HttpServletRequest httpServletRequest) {
+        final HttpClientErrorHandlerResponse httpClientErrorHandlerResponse = httpClientErrorHandler
+                .handle(null, httpServletRequest);
+        if (httpClientErrorHandlerResponse.isError()) {
+            return httpClientErrorHandlerResponse.getResponseEntity();
+        }
         return ResponseEntity.ok(roomsService.getInformation(httpServletRequest));
     }
 
     // ルーム退出
     @DeleteMapping
     public ResponseEntity<?> leave(final HttpServletRequest httpServletRequest) {
+        final HttpClientErrorHandlerResponse httpClientErrorHandlerResponse = httpClientErrorHandler
+                .handle(null, httpServletRequest);
+        if (httpClientErrorHandlerResponse.isError()) {
+            return httpClientErrorHandlerResponse.getResponseEntity();
+        }
         roomsService.leave(httpServletRequest);
         return ResponseEntity.ok().build();
     }
