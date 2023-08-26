@@ -11,21 +11,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.procon34_CYBER_WARS_backend.dto.users.credentials.LogInRequest;
+import com.example.procon34_CYBER_WARS_backend.dto.user.credential.LogInRequest;
 import com.example.procon34_CYBER_WARS_backend.dto.utility.HttpClientErrorHandlerResponse;
-import com.example.procon34_CYBER_WARS_backend.service.UsersCredentialsService;
+import com.example.procon34_CYBER_WARS_backend.service.UserCredentialService;
 import com.example.procon34_CYBER_WARS_backend.utility.HttpClientErrorHandler;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/users/credentials")
+@RequestMapping("/user/credential")
 @RequiredArgsConstructor
-public class UsersCredentialsController {
+public class UserCredentialController {
 
     private final HttpClientErrorHandler httpClientErrorHandler;
-    private final UsersCredentialsService usersCredentialsService;
+    private final UserCredentialService userCredentialService;
 
     // ユーザーログイン
     @PostMapping
@@ -37,14 +37,14 @@ public class UsersCredentialsController {
         if (httpClientErrorHandlerResponse.isError()) {
             return httpClientErrorHandlerResponse.getResponseEntity();
         }
-        return ResponseEntity.ok(usersCredentialsService.logIn(logInRequest, httpServletRequest));
+        return ResponseEntity.ok(userCredentialService.logIn(logInRequest, httpServletRequest));
     }
 
     // ユーザーログインチェック
     @GetMapping
     @ResponseBody
     public ResponseEntity<?> isLoggedIn(final HttpServletRequest httpServletRequest) {
-        return ResponseEntity.ok(usersCredentialsService.isLoggedIn(httpServletRequest));
+        return ResponseEntity.ok(userCredentialService.isLoggedIn(httpServletRequest));
     }
 
     // ユーザーログアウト
@@ -55,7 +55,7 @@ public class UsersCredentialsController {
         if (httpClientErrorHandlerResponse.isError()) {
             return httpClientErrorHandlerResponse.getResponseEntity();
         }
-        usersCredentialsService.logOut(httpServletRequest);
+        userCredentialService.logOut(httpServletRequest);
         return ResponseEntity.ok().build();
     }
 

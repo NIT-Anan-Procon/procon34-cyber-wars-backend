@@ -3,13 +3,13 @@ package com.example.procon34_CYBER_WARS_backend.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.procon34_CYBER_WARS_backend.dto.users.RegisterRequest;
-import com.example.procon34_CYBER_WARS_backend.dto.users.RegisterResponse;
-import com.example.procon34_CYBER_WARS_backend.dto.users.UpdateNameRequest;
-import com.example.procon34_CYBER_WARS_backend.dto.users.UpdateNameResponse;
-import com.example.procon34_CYBER_WARS_backend.dto.users.UpdatePasswordRequest;
-import com.example.procon34_CYBER_WARS_backend.dto.users.UpdatePasswordResponse;
-import com.example.procon34_CYBER_WARS_backend.repository.UsersRepository;
+import com.example.procon34_CYBER_WARS_backend.dto.user.RegisterRequest;
+import com.example.procon34_CYBER_WARS_backend.dto.user.RegisterResponse;
+import com.example.procon34_CYBER_WARS_backend.dto.user.UpdateNameRequest;
+import com.example.procon34_CYBER_WARS_backend.dto.user.UpdateNameResponse;
+import com.example.procon34_CYBER_WARS_backend.dto.user.UpdatePasswordRequest;
+import com.example.procon34_CYBER_WARS_backend.dto.user.UpdatePasswordResponse;
+import com.example.procon34_CYBER_WARS_backend.repository.UserRepository;
 import com.example.procon34_CYBER_WARS_backend.utility.PasswordEncoder;
 import com.example.procon34_CYBER_WARS_backend.utility.StringFormatter;
 import com.example.procon34_CYBER_WARS_backend.utility.UserManager;
@@ -20,9 +20,9 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class UsersService {
+public class UserService {
 
-    private final UsersRepository usersRepository;
+    private final UserRepository userRepository;
     private final UserManager userManager;
     private final StringFormatter stringFormatter;
     private final PasswordEncoder passwordEncoder;
@@ -48,7 +48,7 @@ public class UsersService {
             return new RegisterResponse(false);
         }
 
-        usersRepository.register(formattedName, passwordEncoder.hash(formattedPassword));
+        userRepository.register(formattedName, passwordEncoder.hash(formattedPassword));
 
         return new RegisterResponse(true);
     }
@@ -68,7 +68,7 @@ public class UsersService {
             return new UpdateNameResponse(false);
         }
 
-        usersRepository.updateName(userManager.getUserId(httpServletRequest), formattedName);
+        userRepository.updateName(userManager.getUserId(httpServletRequest), formattedName);
 
         return new UpdateNameResponse(true);
     }
@@ -83,7 +83,7 @@ public class UsersService {
             return new UpdatePasswordResponse(false);
         }
 
-        usersRepository.updatePassword(userManager.getUserId(httpServletRequest),
+        userRepository.updatePassword(userManager.getUserId(httpServletRequest),
                 passwordEncoder.hash(formattedPassword));
 
         return new UpdatePasswordResponse(true);

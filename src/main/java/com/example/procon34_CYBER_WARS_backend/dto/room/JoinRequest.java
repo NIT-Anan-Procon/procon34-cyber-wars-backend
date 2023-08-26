@@ -1,4 +1,4 @@
-package com.example.procon34_CYBER_WARS_backend.dto.rooms;
+package com.example.procon34_CYBER_WARS_backend.dto.room;
 
 import lombok.Data;
 

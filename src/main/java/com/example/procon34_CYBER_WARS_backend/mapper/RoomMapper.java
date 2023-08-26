@@ -10,11 +10,11 @@ import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
 
-import com.example.procon34_CYBER_WARS_backend.dto.rooms.GetInformationResponse;
+import com.example.procon34_CYBER_WARS_backend.dto.room.GetInformationResponse;
 import com.example.procon34_CYBER_WARS_backend.entity.Rooms;
 
 @Mapper
-public interface RoomsMapper {
+public interface RoomMapper {
 
     // ルーム作成
     @Insert("""
@@ -54,7 +54,7 @@ public interface RoomsMapper {
                 rooms
             WHERE
                 invite_id = #{invite_id}
-                AND status = 0
+                AND started = FALSE
             """)
     void join(@Param("user_id") final int userId, @Param("invite_id") final short inviteId);
 

@@ -11,7 +11,7 @@ import org.apache.ibatis.annotations.Update;
 import com.example.procon34_CYBER_WARS_backend.entity.Users;
 
 @Mapper
-public interface UsersMapper {
+public interface UserMapper {
 
     // ユーザー登録
     @Insert("""

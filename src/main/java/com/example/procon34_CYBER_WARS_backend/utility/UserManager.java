@@ -3,7 +3,7 @@ package com.example.procon34_CYBER_WARS_backend.utility;
 import org.springframework.stereotype.Component;
 
 import com.example.procon34_CYBER_WARS_backend.entity.Users;
-import com.example.procon34_CYBER_WARS_backend.repository.UsersRepository;
+import com.example.procon34_CYBER_WARS_backend.repository.UserRepository;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserManager {
 
-    private final UsersRepository usersRepository;
+    private final UserRepository userRepository;
 
     // ユーザーログイン判定
     public boolean isLoggedIn(HttpServletRequest httpServletRequest) {
@@ -33,7 +33,7 @@ public class UserManager {
 
     // ユーザー取得 by ユーザー名
     public Users getUserByName(final String name) {
-        return usersRepository.getUserByName(name);
+        return userRepository.getUserByName(name);
     }
 
     // ユーザーID取得

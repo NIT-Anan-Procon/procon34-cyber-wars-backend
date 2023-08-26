@@ -1,11 +1,15 @@
-package com.example.procon34_CYBER_WARS_backend.dto.users;
+package com.example.procon34_CYBER_WARS_backend.dto.user;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
-public class UpdatePasswordRequest {
+public class RegisterRequest {
+
+    @NotBlank
+    @Size(max = 20)
+    private String name;
 
     @NotBlank
     @Size(max = 100)

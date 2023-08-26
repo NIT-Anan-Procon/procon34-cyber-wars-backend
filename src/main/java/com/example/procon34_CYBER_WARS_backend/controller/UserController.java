@@ -10,23 +10,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.procon34_CYBER_WARS_backend.dto.users.RegisterRequest;
-import com.example.procon34_CYBER_WARS_backend.dto.users.UpdateNameRequest;
-import com.example.procon34_CYBER_WARS_backend.dto.users.UpdatePasswordRequest;
+import com.example.procon34_CYBER_WARS_backend.dto.user.RegisterRequest;
+import com.example.procon34_CYBER_WARS_backend.dto.user.UpdateNameRequest;
+import com.example.procon34_CYBER_WARS_backend.dto.user.UpdatePasswordRequest;
 import com.example.procon34_CYBER_WARS_backend.dto.utility.HttpClientErrorHandlerResponse;
-import com.example.procon34_CYBER_WARS_backend.service.UsersService;
+import com.example.procon34_CYBER_WARS_backend.service.UserService;
 import com.example.procon34_CYBER_WARS_backend.utility.HttpClientErrorHandler;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/user")
 @RequiredArgsConstructor
-public class UsersController {
+public class UserController {
 
     private final HttpClientErrorHandler httpClientErrorHandler;
-    private final UsersService usersService;
+    private final UserService userService;
 
     // ユーザー登録
     @PostMapping
@@ -38,7 +38,7 @@ public class UsersController {
         if (httpClientErrorHandlerResponse.isError()) {
             return httpClientErrorHandlerResponse.getResponseEntity();
         }
-        return ResponseEntity.ok(usersService.register(registerRequest));
+        return ResponseEntity.ok(userService.register(registerRequest));
     }
 
     // ユーザー名更新
@@ -51,7 +51,7 @@ public class UsersController {
         if (httpClientErrorHandlerResponse.isError()) {
             return httpClientErrorHandlerResponse.getResponseEntity();
         }
-        return ResponseEntity.ok(usersService.updateName(updateNameRequest, httpServletRequest));
+        return ResponseEntity.ok(userService.updateName(updateNameRequest, httpServletRequest));
     }
 
     // ユーザーパスワード更新
@@ -64,7 +64,7 @@ public class UsersController {
         if (httpClientErrorHandlerResponse.isError()) {
             return httpClientErrorHandlerResponse.getResponseEntity();
         }
-        return ResponseEntity.ok(usersService.updatePassword(updatePasswordRequest, httpServletRequest));
+        return ResponseEntity.ok(userService.updatePassword(updatePasswordRequest, httpServletRequest));
     }
 
 }

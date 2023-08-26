@@ -3,9 +3,9 @@ package com.example.procon34_CYBER_WARS_backend.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.procon34_CYBER_WARS_backend.dto.users.credentials.IsLoggedInResponse;
-import com.example.procon34_CYBER_WARS_backend.dto.users.credentials.LogInRequest;
-import com.example.procon34_CYBER_WARS_backend.dto.users.credentials.LogInResponse;
+import com.example.procon34_CYBER_WARS_backend.dto.user.credential.IsLoggedInResponse;
+import com.example.procon34_CYBER_WARS_backend.dto.user.credential.LogInRequest;
+import com.example.procon34_CYBER_WARS_backend.dto.user.credential.LogInResponse;
 import com.example.procon34_CYBER_WARS_backend.entity.Users;
 import com.example.procon34_CYBER_WARS_backend.utility.PasswordEncoder;
 import com.example.procon34_CYBER_WARS_backend.utility.StringFormatter;
@@ -18,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class UsersCredentialsService {
+public class UserCredentialService {
 
     private final UserManager userManager;
     private final StringFormatter stringFormatter;

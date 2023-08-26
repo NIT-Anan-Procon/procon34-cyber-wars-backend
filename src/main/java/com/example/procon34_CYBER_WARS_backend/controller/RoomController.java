@@ -12,22 +12,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.procon34_CYBER_WARS_backend.dto.rooms.CreateRequest;
-import com.example.procon34_CYBER_WARS_backend.dto.rooms.JoinRequest;
+import com.example.procon34_CYBER_WARS_backend.dto.room.CreateRequest;
+import com.example.procon34_CYBER_WARS_backend.dto.room.JoinRequest;
 import com.example.procon34_CYBER_WARS_backend.dto.utility.HttpClientErrorHandlerResponse;
-import com.example.procon34_CYBER_WARS_backend.service.RoomsService;
+import com.example.procon34_CYBER_WARS_backend.service.RoomService;
 import com.example.procon34_CYBER_WARS_backend.utility.HttpClientErrorHandler;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/rooms")
+@RequestMapping("/room")
 @RequiredArgsConstructor
-public class RoomsController {
+public class RoomController {
 
     private final HttpClientErrorHandler httpClientErrorHandler;
-    private final RoomsService roomsService;
+    private final RoomService roomService;
 
     // ルーム作成
     @PostMapping
@@ -39,7 +39,7 @@ public class RoomsController {
         if (httpClientErrorHandlerResponse.isError()) {
             return httpClientErrorHandlerResponse.getResponseEntity();
         }
-        return ResponseEntity.ok(roomsService.create(createRequest, httpServletRequest));
+        return ResponseEntity.ok(roomService.create(createRequest, httpServletRequest));
     }
 
     // ルーム参加
@@ -52,7 +52,7 @@ public class RoomsController {
         if (httpClientErrorHandlerResponse.isError()) {
             return httpClientErrorHandlerResponse.getResponseEntity();
         }
-        return ResponseEntity.ok(roomsService.join(joinRequest, httpServletRequest));
+        return ResponseEntity.ok(roomService.join(joinRequest, httpServletRequest));
     }
 
     // ルーム情報取得
@@ -64,7 +64,7 @@ public class RoomsController {
         if (httpClientErrorHandlerResponse.isError()) {
             return httpClientErrorHandlerResponse.getResponseEntity();
         }
-        return ResponseEntity.ok(roomsService.getInformation(httpServletRequest));
+        return ResponseEntity.ok(roomService.getInformation(httpServletRequest));
     }
 
     // ルーム退出
@@ -75,7 +75,7 @@ public class RoomsController {
         if (httpClientErrorHandlerResponse.isError()) {
             return httpClientErrorHandlerResponse.getResponseEntity();
         }
-        roomsService.leave(httpServletRequest);
+        roomService.leave(httpServletRequest);
         return ResponseEntity.ok().build();
     }
 

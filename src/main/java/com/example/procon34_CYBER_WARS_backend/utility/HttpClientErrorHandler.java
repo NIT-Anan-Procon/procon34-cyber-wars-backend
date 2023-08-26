@@ -19,12 +19,12 @@ public class HttpClientErrorHandler {
     // HTTPクライアントエラー処理
     public HttpClientErrorHandlerResponse handle(final BindingResult bindingResult,
             final HttpServletRequest httpServletRequest) {
-        //
+        // バリデーションエラーがあった場合
         if (bindingResult != null && bindingResult.hasErrors()) {
             return new HttpClientErrorHandlerResponse(true,
                     ResponseEntity.badRequest().body(bindingResult.getAllErrors()));
         }
-        //
+        // ユーザーログインをしていない場合
         if (httpServletRequest != null && !userManager.isLoggedIn(httpServletRequest)) {
             return new HttpClientErrorHandlerResponse(true,
                     ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Authentication Error"));

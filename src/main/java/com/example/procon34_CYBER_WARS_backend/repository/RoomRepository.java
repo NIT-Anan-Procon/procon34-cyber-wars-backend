@@ -4,51 +4,51 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import com.example.procon34_CYBER_WARS_backend.dto.rooms.GetInformationResponse;
+import com.example.procon34_CYBER_WARS_backend.dto.room.GetInformationResponse;
 import com.example.procon34_CYBER_WARS_backend.entity.Rooms;
-import com.example.procon34_CYBER_WARS_backend.mapper.RoomsMapper;
+import com.example.procon34_CYBER_WARS_backend.mapper.RoomMapper;
 
 import lombok.RequiredArgsConstructor;
 
 @Repository
 @RequiredArgsConstructor
-public class RoomsRepository {
+public class RoomRepository {
 
-    private final RoomsMapper roomsMapper;
+    private final RoomMapper roomMapper;
 
     // ルーム作成
     public void create(final short inviteId, final boolean difficult) {
-        roomsMapper.create(inviteId, difficult);
+        roomMapper.create(inviteId, difficult);
     }
 
     // ルーム割り当て
     public void allocate(final int userId) {
-        roomsMapper.allocate(userId);
+        roomMapper.allocate(userId);
     }
 
     // ルーム参加
     public void join(final int userId, final short inviteId) {
-        roomsMapper.join(userId, inviteId);
+        roomMapper.join(userId, inviteId);
     }
 
     // ルーム情報取得
     public GetInformationResponse getInformation(final int userId) {
-        return roomsMapper.getInformation(userId);
+        return roomMapper.getInformation(userId);
     }
 
     // ルーム退出
     public void leave(final int userId) {
-        roomsMapper.leave(userId);
+        roomMapper.leave(userId);
     }
 
     // 未開始ルーム取得
     public List<Rooms> getNotStartedRooms() {
-        return roomsMapper.getNotStartedRooms();
+        return roomMapper.getNotStartedRooms();
     }
 
     // ルーム取得 by 招待ID
     public Rooms getRoomByInviteId(final short inviteId) {
-        return roomsMapper.getRoomByInviteId(inviteId);
+        return roomMapper.getRoomByInviteId(inviteId);
     }
 
 }
