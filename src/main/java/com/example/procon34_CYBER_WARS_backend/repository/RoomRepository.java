@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import com.example.procon34_CYBER_WARS_backend.dto.room.GetInformationResponse;
 import com.example.procon34_CYBER_WARS_backend.entity.Rooms;
 import com.example.procon34_CYBER_WARS_backend.mapper.RoomMapper;
 
@@ -26,14 +25,24 @@ public class RoomRepository {
         roomMapper.allocate(userId);
     }
 
+    // ルーム取得 by 招待ID
+    public Rooms getRoomByInviteId(final short inviteId) {
+        return roomMapper.getRoomByInviteId(inviteId);
+    }
+
     // ルーム参加
     public void join(final int userId, final short inviteId) {
         roomMapper.join(userId, inviteId);
     }
 
-    // ルーム情報取得
-    public GetInformationResponse getInformation(final int userId) {
-        return roomMapper.getInformation(userId);
+    // ホスト判定
+    public boolean isHost(final int userId) {
+        return roomMapper.isHost(userId);
+    }
+
+    // 対戦相手ユーザー名取得
+    public String getOpponentName(final int userId) {
+        return roomMapper.getOpponentName(userId);
     }
 
     // ルーム退出
@@ -44,11 +53,6 @@ public class RoomRepository {
     // 未開始ルーム取得
     public List<Rooms> getNotStartedRooms() {
         return roomMapper.getNotStartedRooms();
-    }
-
-    // ルーム取得 by 招待ID
-    public Rooms getRoomByInviteId(final short inviteId) {
-        return roomMapper.getRoomByInviteId(inviteId);
     }
 
 }

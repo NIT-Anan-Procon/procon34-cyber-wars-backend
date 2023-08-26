@@ -42,7 +42,7 @@ public class RoomService {
         final short inviteId = joinRequest.getInviteId();
 
         // ルームが存在しない場合
-        if (getRoomByInviteId(inviteId) == null) {
+        if (roomRepository.getRoomByInviteId(inviteId) == null) {
             return new JoinResponse(false);
         }
 
@@ -53,17 +53,21 @@ public class RoomService {
 
     // ルーム情報取得
     public GetInformationResponse getInformation(final HttpServletRequest httpServletRequest) {
-        return roomRepository.getInformation(userManager.getUserId(httpServletRequest));
+        final int userId = userManager.getUserId(httpServletRequest);
+        final String opponentName = roomRepository.getOpponentName(userId);
+
+        // 対戦相手が存在しない場合
+        if (opponentName == null) {
+            System.out.println("null");
+            return new GetInformationResponse(roomRepository.isHost(userId), null);
+        }
+
+        return new GetInformationResponse(roomRepository.isHost(userId), opponentName);
     }
 
     // ルーム退出
     public void leave(final HttpServletRequest httpServletRequest) {
         roomRepository.leave(userManager.getUserId(httpServletRequest));
-    }
-
-    // ルーム取得 by 招待ID
-    public Rooms getRoomByInviteId(final short inviteId) {
-        return roomRepository.getRoomByInviteId(inviteId);
     }
 
     // 4桁乱数生成

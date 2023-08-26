@@ -10,7 +10,6 @@ import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
 
-import com.example.procon34_CYBER_WARS_backend.dto.room.GetInformationResponse;
 import com.example.procon34_CYBER_WARS_backend.entity.Rooms;
 
 @Mapper
@@ -44,6 +43,25 @@ public interface RoomMapper {
             """)
     void allocate(final int userId);
 
+    // ルーム取得 by 招待ID
+    @Select("""
+            SELECT
+                *
+            FROM
+                rooms
+            WHERE
+                invite_id = #{inviteId}
+                AND started = FALSE
+            """)
+    @Results(id = "Rooms", value = {
+            @Result(column = "room_id", property = "roomId"),
+            @Result(column = "invite_id", property = "inviteId"),
+            @Result(column = "challenge_id", property = "challengeId"),
+            @Result(column = "started_at", property = "startedAt"),
+            @Result(column = "started", property = "started")
+    })
+    Rooms getRoomByInviteId(final short inviteId);
+
     // ルーム参加
     @Insert("""
             INSERT INTO
@@ -58,10 +76,22 @@ public interface RoomMapper {
             """)
     void join(final int userId, final short inviteId);
 
-    // ルーム情報取得
+    // ホスト判定
     @Select("""
             SELECT
-                - host, name
+                host
+            FROM
+                allocations
+            WHERE
+                user_id != #{userId}
+            """)
+    @Result(column = "host", property = "host")
+    boolean isHost(final int userId);
+
+    // 対戦相手ユーザー名取得
+    @Select("""
+            SELECT
+                name
             FROM
                 allocations
             NATURAL JOIN
@@ -76,11 +106,8 @@ public interface RoomMapper {
                         user_id = #{userId}
                 ) AND user_id != #{userId}
             """)
-    @Results({
-            @Result(column = "- host", property = "host"),
-            @Result(column = "name", property = "opponentName"),
-    })
-    GetInformationResponse getInformation(final int userId);
+    @Result(column = "name", property = "opponentName")
+    String getOpponentName(final int userId);
 
     // ルーム退出
     @Delete("""
@@ -100,26 +127,7 @@ public interface RoomMapper {
             WHERE
                 started = FALSE
             """)
-    @Results(id = "Rooms", value = {
-            @Result(column = "room_id", property = "roomId"),
-            @Result(column = "invite_id", property = "inviteId"),
-            @Result(column = "challenge_id", property = "challengeId"),
-            @Result(column = "started_at", property = "startedAt"),
-            @Result(column = "started", property = "started")
-    })
-    List<Rooms> getNotStartedRooms();
-
-    // ルーム取得 by 招待ID
-    @Select("""
-            SELECT
-                *
-            FROM
-                rooms
-            WHERE
-                invite_id = #{inviteId}
-                AND started = FALSE
-            """)
     @ResultMap("Rooms")
-    Rooms getRoomByInviteId(final short inviteId);
+    List<Rooms> getNotStartedRooms();
 
 }
