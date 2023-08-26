@@ -78,7 +78,7 @@ public interface RoomsMapper {
             """)
     @Results({
             @Result(column = "- host", property = "host"),
-            @Result(column = "name", property = "name"),
+            @Result(column = "name", property = "opponentName"),
     })
     GetInformationResponse getInformation(@Param("user_id") final int userId);
 
