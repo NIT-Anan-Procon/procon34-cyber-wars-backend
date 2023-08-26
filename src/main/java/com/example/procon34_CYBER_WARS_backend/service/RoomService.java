@@ -54,15 +54,8 @@ public class RoomService {
     // ルーム情報取得
     public GetInformationResponse getInformation(final HttpServletRequest httpServletRequest) {
         final int userId = userManager.getUserId(httpServletRequest);
-        final String opponentName = roomRepository.getOpponentName(userId);
 
-        // 対戦相手が存在しない場合
-        if (opponentName == null) {
-            System.out.println("null");
-            return new GetInformationResponse(roomRepository.isHost(userId), null);
-        }
-
-        return new GetInformationResponse(roomRepository.isHost(userId), opponentName);
+        return new GetInformationResponse(roomRepository.isHost(userId), roomRepository.getOpponentName(userId));
     }
 
     // ルーム退出

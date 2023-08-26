@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class GetInformationResponse {
 
-    private final boolean host;
+    private final Boolean host;
 
     private final String opponentName;
 
