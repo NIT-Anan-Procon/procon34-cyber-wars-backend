@@ -56,12 +56,12 @@ public class RoomService {
         final int userId = userManager.getUserId(httpServletRequest);
         final String opponentName = roomRepository.getOpponentName(userId);
 
-        // ルームが動作していない場合 and 対戦相手ユーザー名が存在しない場合
-        if (roomRepository.isActive(userId) && opponentName == null) {
-            return new GetInformationResponse(opponentName, roomRepository.isHost(userId), false);
+        // ルームが動作していない場合 and 対戦相手ユーザー名が存在する場合
+        if (roomRepository.isActive(userId) && opponentName != null) {
+            return new GetInformationResponse(opponentName, roomRepository.isHost(userId), true);
         }
 
-        return new GetInformationResponse(opponentName, roomRepository.isHost(userId), true);
+        return new GetInformationResponse(opponentName, roomRepository.isHost(userId), false);
     }
 
     // ルーム退出
