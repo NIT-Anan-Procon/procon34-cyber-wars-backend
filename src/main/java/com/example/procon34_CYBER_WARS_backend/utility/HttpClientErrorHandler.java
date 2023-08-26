@@ -5,7 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
 
-import com.example.procon34_CYBER_WARS_backend.dto.HttpClientErrorHandlerResponse;
+import com.example.procon34_CYBER_WARS_backend.dto.utility.HttpClientErrorHandlerResponse;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;

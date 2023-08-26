@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.procon34_CYBER_WARS_backend.dto.HttpClientErrorHandlerResponse;
 import com.example.procon34_CYBER_WARS_backend.dto.rooms.CreateRequest;
 import com.example.procon34_CYBER_WARS_backend.dto.rooms.JoinRequest;
+import com.example.procon34_CYBER_WARS_backend.dto.utility.HttpClientErrorHandlerResponse;
 import com.example.procon34_CYBER_WARS_backend.service.RoomsService;
 import com.example.procon34_CYBER_WARS_backend.utility.HttpClientErrorHandler;
 
