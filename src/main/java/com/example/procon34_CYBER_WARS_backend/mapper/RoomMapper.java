@@ -83,7 +83,7 @@ public interface RoomMapper {
             FROM
                 allocations
             WHERE
-                user_id == #{userId}
+                user_id = #{userId}
             """)
     @Result(column = "host", property = "host")
     boolean isHost(final int userId);
