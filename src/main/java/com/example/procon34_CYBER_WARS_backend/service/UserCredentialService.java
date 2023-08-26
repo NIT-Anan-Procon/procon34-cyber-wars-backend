@@ -55,7 +55,7 @@ public class UserCredentialService {
 
         // ユーザーログインをしていない場合
         if (!isLoggedIn) {
-            new IsLoggedInResponse(isLoggedIn, null);
+            return new IsLoggedInResponse(isLoggedIn, null);
         }
 
         return new IsLoggedInResponse(isLoggedIn,
