@@ -61,7 +61,7 @@ public interface RoomsMapper {
     // ルーム情報取得
     @Insert("""
             SELECT
-                - host AS host, name
+                - host, name
             FROM
                 allocations
             NATURAL JOIN
@@ -76,12 +76,9 @@ public interface RoomsMapper {
                         user_id = #{user_id}
                 ) AND user_id != #{user_id}
             """)
-    @Results(id = "Rooms", value = {
-            @Result(column = "room_id", property = "roomId"),
-            @Result(column = "invite_id", property = "inviteId"),
-            @Result(column = "challenge_id", property = "challengeId"),
-            @Result(column = "started_at", property = "startedAt"),
-            @Result(column = "started", property = "started")
+    @Results({
+            @Result(column = "- host", property = "host"),
+            @Result(column = "name", property = "name"),
     })
     GetInformationResponse getInformation(@Param("user_id") final int userId);
 
@@ -103,7 +100,13 @@ public interface RoomsMapper {
             WHERE
                 started = FALSE
             """)
-    @ResultMap("Rooms")
+    @Results(id = "Rooms", value = {
+            @Result(column = "room_id", property = "roomId"),
+            @Result(column = "invite_id", property = "inviteId"),
+            @Result(column = "challenge_id", property = "challengeId"),
+            @Result(column = "started_at", property = "startedAt"),
+            @Result(column = "started", property = "started")
+    })
     List<Rooms> getNotStartedRooms();
 
     // ルーム取得 by 招待ID
