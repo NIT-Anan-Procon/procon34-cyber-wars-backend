@@ -2,7 +2,6 @@ package com.example.procon34_CYBER_WARS_backend.mapper;
 
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
@@ -20,7 +19,7 @@ public interface UserMapper {
             VALUES
                 (#{name}, #{password})
             """)
-    void register(@Param("name") final String name, @Param("password") final String password);
+    void register(final String name, final String password);
 
     // ユーザー名更新
     @Update("""
@@ -29,9 +28,9 @@ public interface UserMapper {
             SET
                 name = #{name}
             WHERE
-                user_id = #{user_id}
+                user_id = #{userId}
             """)
-    void updateName(@Param("user_id") final int userId, @Param("name") final String name);
+    void updateName(final int userId, final String name);
 
     // ユーザーパスワード更新
     @Update("""
@@ -40,9 +39,9 @@ public interface UserMapper {
             SET
                 password = #{password}
             WHERE
-                user_id = #{user_id}
+                user_id = #{userId}
             """)
-    void updatePassword(@Param("user_id") final int userId, @Param("password") final String password);
+    void updatePassword(final int userId, final String password);
 
     // ユーザー取得 by ユーザー名
     @Select("""
@@ -58,6 +57,6 @@ public interface UserMapper {
             @Result(column = "name", property = "name"),
             @Result(column = "password", property = "password")
     })
-    Users getUserByName(@Param("name") final String name);
+    Users getUserByName(final String name);
 
 }

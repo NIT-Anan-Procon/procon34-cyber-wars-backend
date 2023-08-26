@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Results;
@@ -21,7 +20,7 @@ public interface RoomMapper {
             INSERT INTO
                 rooms(invite_id, challenge_id)
             SELECT
-                #{invite_id}, challenge_id
+                #{inviteId}, challenge_id
             FROM
                 vulnerabilities
             WHERE
@@ -31,32 +30,32 @@ public interface RoomMapper {
             LIMIT
                 1
             """)
-    void create(@Param("invite_id") final short inviteId, @Param("difficult") final boolean difficult);
+    void create(final short inviteId, final boolean difficult);
 
     // ルーム割り当て
     @Insert("""
             INSERT INTO
                 allocations(room_id, user_id)
             SELECT
-                MAX(room_id), #{user_id}
+                MAX(room_id), #{userId}
             FROM
                 rooms
             """)
-    void allocate(@Param("user_id") final int userId);
+    void allocate(final int userId);
 
     // ルーム参加
     @Insert("""
             INSERT INTO
                 allocations(room_id, user_id, host)
             SELECT
-                room_id, #{user_id}, FALSE
+                room_id, #{userId}, FALSE
             FROM
                 rooms
             WHERE
-                invite_id = #{invite_id}
+                invite_id = #{inviteId}
                 AND started = FALSE
             """)
-    void join(@Param("user_id") final int userId, @Param("invite_id") final short inviteId);
+    void join(final int userId, final short inviteId);
 
     // ルーム情報取得
     @Insert("""
@@ -73,23 +72,23 @@ public interface RoomMapper {
                     FROM
                         allocations
                     WHERE
-                        user_id = #{user_id}
-                ) AND user_id != #{user_id}
+                        user_id = #{userId}
+                ) AND user_id != #{userId}
             """)
     @Results({
             @Result(column = "- host", property = "host"),
             @Result(column = "name", property = "opponentName"),
     })
-    GetInformationResponse getInformation(@Param("user_id") final int userId);
+    GetInformationResponse getInformation(final int userId);
 
     // ルーム退出
     @Insert("""
             DELETE FROM
                 allocations
             WHERE
-                user_id = #{user_id}
+                user_id = #{userId}
             """)
-    void leave(@Param("user_id") final int userId);
+    void leave(final int userId);
 
     // 未開始ルーム取得
     @Select("""
@@ -116,10 +115,10 @@ public interface RoomMapper {
             FROM
                 rooms
             WHERE
-                invite_id = #{invite_id}
+                invite_id = #{inviteId}
                 AND started = FALSE
             """)
     @ResultMap("Rooms")
-    Rooms getRoomByInviteId(@Param("invite_id") final short inviteId);
+    Rooms getRoomByInviteId(final short inviteId);
 
 }

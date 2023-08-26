@@ -69,6 +69,7 @@ public class RoomService {
     // 4桁乱数生成
     public short generate4DigitRandomNumber() {
         short inviteId;
+
         while (true) {
             inviteId = (short) (new Random().nextInt(9000) + 1000);
             for (final Rooms room : roomRepository.getNotStartedRooms()) {
@@ -79,6 +80,7 @@ public class RoomService {
             }
             break;
         }
+
         return inviteId;
     }
 

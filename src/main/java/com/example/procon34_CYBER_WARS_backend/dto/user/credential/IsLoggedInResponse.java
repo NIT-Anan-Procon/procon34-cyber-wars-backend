@@ -7,4 +7,6 @@ public class IsLoggedInResponse {
 
     private final boolean loggedIn;
 
+    private final String name;
+
 }
