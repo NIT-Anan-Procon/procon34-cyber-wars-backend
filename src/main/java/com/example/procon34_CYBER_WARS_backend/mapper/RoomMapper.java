@@ -83,10 +83,10 @@ public interface RoomMapper {
             FROM
                 allocations
             WHERE
-                user_id != #{userId}
+                user_id == #{userId}
             """)
     @Result(column = "host", property = "host")
-    Boolean isHost(final int userId);
+    boolean isHost(final int userId);
 
     // 対戦相手ユーザー名取得
     @Select("""
