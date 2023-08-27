@@ -56,7 +56,7 @@ public class RoomService {
         final int userId = userManager.getUserId(httpServletRequest);
         final String opponentName = roomRepository.getOpponentName(userId);
 
-        // ルームが動作していない場合 and 対戦相手ユーザー名が存在する場合
+        // ルームが動作をしていない場合 and 対戦相手ユーザー名が存在する場合
         if (!roomRepository.isActive(userId) && opponentName != null) {
             return new GetInformationResponse(opponentName, roomRepository.isHost(userId), true);
         }
@@ -68,7 +68,7 @@ public class RoomService {
     public void exit(final HttpServletRequest httpServletRequest) {
         final int userId = userManager.getUserId(httpServletRequest);
 
-        // ユーザーがホストの場合
+        // ユーザーがホストである場合
         if (roomRepository.isHost(userId)) {
             roomRepository.close(userId);
         }
