@@ -23,7 +23,7 @@ public interface RoomMapper {
             SELECT
                 #{inviteId}, challenge_id
             FROM
-                vulnerabilities
+                challenges
             WHERE
                 difficult = #{difficult}
             ORDER BY

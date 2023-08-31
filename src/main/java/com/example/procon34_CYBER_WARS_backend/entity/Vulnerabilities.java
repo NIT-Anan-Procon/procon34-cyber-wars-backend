@@ -8,9 +8,11 @@ import jakarta.persistence.Table;
 import lombok.Data;
 
 @Entity
-@Table(name = "vulnerabilities")
+@Table(name = "challenges")
 @Data
 public class Vulnerabilities {
+
+    private final int challengeId;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,7 +25,5 @@ public class Vulnerabilities {
     private final String flag;
 
     private final boolean difficult;
-
-    private final int challengeId;
 
 }
