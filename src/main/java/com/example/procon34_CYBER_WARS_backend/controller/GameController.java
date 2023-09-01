@@ -35,7 +35,7 @@ public class GameController {
     }
 
     // ゲーム開始時刻取得
-    @GetMapping
+    @GetMapping("start-time")
     @ResponseBody
     public ResponseEntity<?> getInformation(final HttpServletRequest httpServletRequest) {
         final HttpClientErrorHandlerResponse httpClientErrorHandlerResponse = httpClientErrorHandler
@@ -47,7 +47,7 @@ public class GameController {
     }
 
     // 対戦相手ユーザー名取得
-    @GetMapping
+    @GetMapping("opponent-name")
     @ResponseBody
     public ResponseEntity<?> getOpponentName(final HttpServletRequest httpServletRequest) {
         final HttpClientErrorHandlerResponse httpClientErrorHandlerResponse = httpClientErrorHandler
@@ -59,7 +59,7 @@ public class GameController {
     }
 
     // スコア取得
-    @GetMapping
+    @GetMapping("scores")
     @ResponseBody
     public ResponseEntity<?> getScores(final HttpServletRequest httpServletRequest) {
         final HttpClientErrorHandlerResponse httpClientErrorHandlerResponse = httpClientErrorHandler
