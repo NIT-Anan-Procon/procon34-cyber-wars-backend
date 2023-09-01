@@ -18,7 +18,7 @@ public interface GameMapper {
             WHERE
                 room_id = #{roomId}
             """)
-    void setStartTime(final int userId);
+    void setStartTime(final int roomId);
 
     // ゲーム開始時刻取得
     @Select("""

@@ -26,10 +26,10 @@ public class GameService {
 
     // ゲーム開始
     public void start(final HttpServletRequest httpServletRequest) {
-        final int userId = userManager.getUserId(httpServletRequest);
-        System.out.println(userId);
-        roomManager.close(userId);
-        gameRepository.setStartTime(userId);
+        final int roomId = roomManager.getRoomId(userManager.getUserId(httpServletRequest));
+
+        roomManager.close(roomId);
+        gameRepository.setStartTime(roomId);
     }
 
     // ゲーム開始時刻取得
@@ -41,12 +41,14 @@ public class GameService {
     // 対戦相手ユーザー名取得
     public GetOpponentNameResponse getOpponentName(final HttpServletRequest httpServletRequest) {
         final int userId = userManager.getUserId(httpServletRequest);
+
         return new GetOpponentNameResponse(gameManager.getOpponentName(userId, roomManager.getRoomId(userId)));
     }
 
     // スコア取得
     public GetScoresResponse getScores(final HttpServletRequest httpServletRequest) {
         final int userId = userManager.getUserId(httpServletRequest);
+
         return new GetScoresResponse(gameRepository.getScores(userId, roomManager.getRoomId(userId)));
     }
 

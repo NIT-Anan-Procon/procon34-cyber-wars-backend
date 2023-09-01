@@ -15,8 +15,8 @@ public class GameRepository {
     private final GameMapper gameMapper;
 
     // ゲーム開始時刻設定
-    public void setStartTime(final int userId) {
-        gameMapper.setStartTime(userId);
+    public void setStartTime(final int roomId) {
+        gameMapper.setStartTime(roomId);
     }
 
     // ゲーム開始時刻取得
