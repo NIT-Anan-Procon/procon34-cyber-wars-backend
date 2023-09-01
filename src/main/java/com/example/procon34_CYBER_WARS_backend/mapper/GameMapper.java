@@ -49,21 +49,27 @@ public interface GameMapper {
     // スコア取得
     @Select("""
             SELECT
-                COALESCE(SUM(score), 0)
-            FROM
-                games
-            NATURAL JOIN
-                scores
-            WHERE
-                room_id = #{roomId}
-            ORDER BY
-                CASE
+                score
+            FROM (
+                SELECT
+                    user_id, COALESCE(SUM(score), 0)
+                FROM
+                    games
+                NATURAL JOIN
+                    scores
+                WHERE
+                    room_id = #{roomId}
+                GROUP BY
                     user_id
-                WHEN
-                    #{userId} THEN 1
-                ELSE
-                    2
-                END
+                ORDER BY
+                    CASE
+                        user_id
+                    WHEN
+                        #{userId} THEN 1
+                    ELSE
+                        2
+                    END
+            )
             """)
     short[] getScores(final int userId, final int roomId);
 
