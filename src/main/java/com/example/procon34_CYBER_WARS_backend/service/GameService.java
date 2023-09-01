@@ -27,7 +27,7 @@ public class GameService {
     // ゲーム開始
     public void start(final HttpServletRequest httpServletRequest) {
         final int userId = userManager.getUserId(httpServletRequest);
-
+        System.out.println(userId);
         roomManager.close(userId);
         gameRepository.setStartTime(userId);
     }
