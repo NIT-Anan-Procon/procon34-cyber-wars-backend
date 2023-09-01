@@ -38,7 +38,7 @@ public class GameService {
                 gameRepository.getStartTime(roomManager.getRoomId(userManager.getUserId(httpServletRequest))));
     }
 
-    // 対戦相手ユーザー名取得
+    // 相手ユーザー名取得
     public GetOpponentNameResponse getOpponentName(final HttpServletRequest httpServletRequest) {
         final int userId = userManager.getUserId(httpServletRequest);
 
@@ -48,8 +48,10 @@ public class GameService {
     // スコア取得
     public GetScoresResponse getScores(final HttpServletRequest httpServletRequest) {
         final int userId = userManager.getUserId(httpServletRequest);
-
-        return new GetScoresResponse(gameRepository.getScores(userId, roomManager.getRoomId(userId)));
+        final int roomId = roomManager.getRoomId(userId);
+        final short scores[] = { gameRepository.getMyScore(userId, roomId),
+                gameRepository.getOpponentScore(userId, roomId) };
+        return new GetScoresResponse(scores);
     }
 
 }

@@ -24,14 +24,19 @@ public class GameRepository {
         return gameMapper.getStartTime(roomId);
     }
 
-    // 対戦相手ユーザー名取得
+    // 相手ユーザー名取得
     public String getOpponentName(final int userId, final int roomId) {
         return gameMapper.getOpponentName(userId, roomId);
     }
 
-    // スコア取得
-    public short[] getScores(final int userId, final int roomId) {
-        return gameMapper.getScores(userId, roomId);
+    // 自分スコア取得
+    public short getMyScore(final int userId, final int roomId) {
+        return gameMapper.getMyScore(userId, roomId);
+    }
+
+    // 相手スコア取得
+    public short getOpponentScore(final int userId, final int roomId) {
+        return gameMapper.getOpponentScore(userId, roomId);
     }
 
 }

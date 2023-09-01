@@ -61,7 +61,7 @@ public class RoomService {
         final int roomId = roomManager.getRoomId(userId);
         final String opponentName = gameManager.getOpponentName(userId, roomId);
 
-        // ルームが動作をしていない場合 and 対戦相手ユーザー名が存在する場合
+        // ルームが動作をしていない場合 and 相手ユーザー名が存在する場合
         if (!roomRepository.isActive(roomId) && opponentName != null) {
             return new GetInformationResponse(opponentName, roomRepository.isHost(userId), true);
         }

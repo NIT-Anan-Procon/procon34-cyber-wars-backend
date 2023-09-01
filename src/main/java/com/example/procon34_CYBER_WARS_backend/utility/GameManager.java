@@ -12,7 +12,7 @@ public class GameManager {
 
     private final GameRepository gameRepository;
 
-    // 対戦相手ユーザー名取得
+    // 相手ユーザー名取得
     public String getOpponentName(final int userId, final int roomId) {
         return gameRepository.getOpponentName(userId, roomId);
     }

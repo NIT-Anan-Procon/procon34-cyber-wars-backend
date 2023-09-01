@@ -31,7 +31,7 @@ public interface GameMapper {
             """)
     Timestamp getStartTime(final int roomId);
 
-    // 対戦相手ユーザー名取得
+    // 相手ユーザー名取得
     @Select("""
             SELECT
                 name
@@ -46,32 +46,34 @@ public interface GameMapper {
             """)
     String getOpponentName(final int userId, final int roomId);
 
-    // スコア取得
+    // 自分スコア取得
     @Select("""
             SELECT
-                sum_score
-            FROM (
-                SELECT
-                    user_id, COALESCE(SUM(score), 0) AS sum_score
-                FROM
-                    games
-                NATURAL JOIN
-                    scores
-                WHERE
-                    room_id = #{roomId}
-                GROUP BY
-                    user_id
-                ORDER BY
-                    CASE
-                        user_id
-                    WHEN
-                        #{userId} THEN 1
-                    ELSE
-                        2
-                    END
-            ) AS
-                sum_scores
+                COALESCE(SUM(score), 0)
+            FROM
+                games
+            NATURAL JOIN
+                scores
+            WHERE
+                room_id = #{roomId}
+            AND
+                user_id = #{userId}
             """)
-    short[] getScores(final int userId, final int roomId);
+    short getMyScore(final int userId, final int roomId);
+
+    // 相手スコア取得
+    @Select("""
+            SELECT
+                COALESCE(SUM(score), 0)
+            FROM
+                games
+            NATURAL JOIN
+                scores
+            WHERE
+                room_id = #{roomId}
+            AND
+                user_id != #{userId}
+            """)
+    short getOpponentScore(final int userId, final int roomId);
 
 }

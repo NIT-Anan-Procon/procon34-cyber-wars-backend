@@ -46,7 +46,7 @@ public class GameController {
         return ResponseEntity.ok(gameService.getStartTime(httpServletRequest));
     }
 
-    // 対戦相手ユーザー名取得
+    // 相手ユーザー名取得
     @GetMapping("opponent-name")
     @ResponseBody
     public ResponseEntity<?> getOpponentName(final HttpServletRequest httpServletRequest) {
