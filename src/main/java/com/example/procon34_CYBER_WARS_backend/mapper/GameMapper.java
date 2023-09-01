@@ -68,6 +68,8 @@ public interface GameMapper {
             FROM
                 games
             NATURAL JOIN
+                challenges
+            NATURAL JOIN
                 scores
             WHERE
                 room_id = #{roomId}
