@@ -20,6 +20,6 @@ public class Games {
     private final byte vulnerabilityId;
 
     @EmbeddedId
-    private final byte score_type;
+    private final byte scoreType;
 
 }

@@ -22,7 +22,7 @@ public class Rooms {
 
     private final int challengeId;
 
-    private final Timestamp startedAt;
+    private final Timestamp startTime;
 
     private final boolean active;
 

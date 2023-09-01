@@ -44,7 +44,7 @@ public interface RoomMapper {
             """)
     void allocate(final int userId);
 
-    // ルーム取得 by 招待ID
+    // ルーム取得
     @Select("""
             SELECT
                 *
@@ -52,7 +52,8 @@ public interface RoomMapper {
                 rooms
             WHERE
                 invite_id = #{inviteId}
-                AND active = TRUE
+            AND
+                active = TRUE
             """)
     @Results(id = "Rooms", value = {
             @Result(column = "room_id", property = "roomId"),
@@ -61,7 +62,7 @@ public interface RoomMapper {
             @Result(column = "started_at", property = "startedAt"),
             @Result(column = "active", property = "active")
     })
-    Rooms getRoomByInviteId(final short inviteId);
+    Rooms getRoom(final short inviteId);
 
     // ルーム参加
     @Insert("""
@@ -73,30 +74,21 @@ public interface RoomMapper {
                 rooms
             WHERE
                 invite_id = #{inviteId}
-                AND active = TRUE
+            AND
+                active = TRUE
             """)
     void join(final int userId, final short inviteId);
 
-    // 対戦相手ユーザー名取得
+    // ルームID取得
     @Select("""
             SELECT
-                name
+                room_id
             FROM
                 allocations
-            NATURAL JOIN
-                users
             WHERE
-                room_id = (
-                    SELECT
-                        room_id
-                    FROM
-                        allocations
-                    WHERE
-                        user_id = #{userId}
-                ) AND user_id != #{userId}
+                user_id = #{userId}
             """)
-    @Result(column = "name", property = "opponentName")
-    String getOpponentName(final int userId);
+    int getRoomId(final int userId);
 
     // ルーム動作判定
     @Select("""
@@ -105,17 +97,9 @@ public interface RoomMapper {
             FROM
                 rooms
             WHERE
-                room_id = (
-                    SELECT
-                        room_id
-                    FROM
-                        allocations
-                    WHERE
-                        user_id = #{userId}
-                )
+                room_id = #{roomId}
             """)
-    @Result(column = "active", property = "active")
-    boolean isActive(final int userId);
+    boolean isActive(final int roomId);
 
     // ルームホスト判定
     @Select("""
@@ -126,7 +110,6 @@ public interface RoomMapper {
             WHERE
                 user_id = #{userId}
             """)
-    @Result(column = "host", property = "host")
     boolean isHost(final int userId);
 
     // ルーム閉鎖
@@ -136,16 +119,9 @@ public interface RoomMapper {
             SET
                 active = FALSE
             WHERE
-                room_id = (
-                    SELECT
-                        room_id
-                    FROM
-                        allocations
-                    WHERE
-                        user_id = #{userId}
-                )
+                room_id = #{roomId}
             """)
-    void close(final int userId);
+    void close(final int roomId);
 
     // ルーム退出
     @Delete("""

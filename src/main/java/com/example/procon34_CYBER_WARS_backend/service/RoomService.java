@@ -12,6 +12,8 @@ import com.example.procon34_CYBER_WARS_backend.dto.room.JoinRequest;
 import com.example.procon34_CYBER_WARS_backend.dto.room.JoinResponse;
 import com.example.procon34_CYBER_WARS_backend.entity.Rooms;
 import com.example.procon34_CYBER_WARS_backend.repository.RoomRepository;
+import com.example.procon34_CYBER_WARS_backend.utility.GameManager;
+import com.example.procon34_CYBER_WARS_backend.utility.RoomManager;
 import com.example.procon34_CYBER_WARS_backend.utility.UserManager;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -24,6 +26,8 @@ public class RoomService {
 
     private final RoomRepository roomRepository;
     private final UserManager userManager;
+    private final RoomManager roomManager;
+    private final GameManager gameManager;
 
     // ルーム作成
     public CreateResponse create(final CreateRequest createRequest,
@@ -42,7 +46,7 @@ public class RoomService {
         final short inviteId = joinRequest.getInviteId();
 
         // ルームが存在しない場合
-        if (roomRepository.getRoomByInviteId(inviteId) == null) {
+        if (roomRepository.getRoom(inviteId) == null) {
             return new JoinResponse(false);
         }
 
@@ -54,10 +58,11 @@ public class RoomService {
     // ルーム情報取得
     public GetInformationResponse getInformation(final HttpServletRequest httpServletRequest) {
         final int userId = userManager.getUserId(httpServletRequest);
-        final String opponentName = roomRepository.getOpponentName(userId);
+        final int roomId = roomManager.getRoomId(userId);
+        final String opponentName = gameManager.getOpponentName(userId, roomId);
 
         // ルームが動作をしていない場合 and 対戦相手ユーザー名が存在する場合
-        if (!roomRepository.isActive(userId) && opponentName != null) {
+        if (!roomRepository.isActive(roomId) && opponentName != null) {
             return new GetInformationResponse(opponentName, roomRepository.isHost(userId), true);
         }
 
@@ -70,7 +75,7 @@ public class RoomService {
 
         // ユーザーがホストである場合
         if (roomRepository.isHost(userId)) {
-            roomRepository.close(userId);
+            roomManager.close(roomManager.getRoomId(userId));
         }
 
         roomRepository.exit(userId);

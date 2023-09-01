@@ -25,9 +25,9 @@ public class RoomRepository {
         roomMapper.allocate(userId);
     }
 
-    // ルーム取得 by 招待ID
-    public Rooms getRoomByInviteId(final short inviteId) {
-        return roomMapper.getRoomByInviteId(inviteId);
+    // ルーム取得
+    public Rooms getRoom(final short inviteId) {
+        return roomMapper.getRoom(inviteId);
     }
 
     // ルーム参加
@@ -35,14 +35,14 @@ public class RoomRepository {
         roomMapper.join(userId, inviteId);
     }
 
-    // 対戦相手ユーザー名取得
-    public String getOpponentName(final int userId) {
-        return roomMapper.getOpponentName(userId);
+    // ルームID取得
+    public int getRoomId(final int userId) {
+        return roomMapper.getRoomId(userId);
     }
 
     // ルーム動作判定
-    public boolean isActive(final int userId) {
-        return roomMapper.isActive(userId);
+    public boolean isActive(final int roomId) {
+        return roomMapper.isActive(roomId);
     }
 
     // ルームホスト判定
@@ -51,8 +51,8 @@ public class RoomRepository {
     }
 
     // ルーム閉鎖
-    public void close(final int userId) {
-        roomMapper.close(userId);
+    public void close(final int roomId) {
+        roomMapper.close(roomId);
     }
 
     // ルーム退出

@@ -13,6 +13,11 @@ public class UserRepository {
 
     private final UserMapper userMapper;
 
+    // ユーザー取得 by ユーザー名
+    public Users getUserByName(final String name) {
+        return userMapper.getUserByName(name);
+    }
+
     // ユーザー登録
     public void register(final String name, final String password) {
         userMapper.register(name, password);
@@ -26,11 +31,6 @@ public class UserRepository {
     // ユーザーパスワード更新
     public void updatePassword(final int userId, final String password) {
         userMapper.updatePassword(userId, password);
-    }
-
-    // ユーザー取得 by ユーザー名
-    public Users getUserByName(final String name) {
-        return userMapper.getUserByName(name);
     }
 
 }

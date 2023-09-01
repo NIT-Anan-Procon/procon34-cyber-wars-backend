@@ -16,7 +16,7 @@ public class UserManager {
     private final UserRepository userRepository;
 
     // ユーザーログイン判定
-    public boolean isLoggedIn(HttpServletRequest httpServletRequest) {
+    public boolean isLoggedIn(final HttpServletRequest httpServletRequest) {
         final HttpSession httpSession = httpServletRequest.getSession(false);
 
         // ユーザーセッションが存在しない場合
@@ -30,7 +30,7 @@ public class UserManager {
     }
 
     // ユーザーセッション設定
-    public void setSession(HttpSession httpSession) {
+    public void setSession(final HttpSession httpSession) {
         httpSession.setMaxInactiveInterval(60 * 60);
     }
 
