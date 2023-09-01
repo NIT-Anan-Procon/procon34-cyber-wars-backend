@@ -49,10 +49,10 @@ public interface GameMapper {
     // スコア取得
     @Select("""
             SELECT
-                score
+                sum_score
             FROM (
                 SELECT
-                    user_id, COALESCE(SUM(score), 0)
+                    user_id, COALESCE(SUM(score), 0) AS sum_score
                 FROM
                     games
                 NATURAL JOIN
@@ -69,7 +69,8 @@ public interface GameMapper {
                     ELSE
                         2
                     END
-            )
+            ) AS
+                sum_scores
             """)
     short[] getScores(final int userId, final int roomId);
 
