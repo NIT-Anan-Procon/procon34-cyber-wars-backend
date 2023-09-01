@@ -49,7 +49,7 @@ public interface GameMapper {
     // スコア取得
     @Select("""
             SELECT
-                COALESCE(SUM(score))
+                COALESCE(SUM(score), 0)
             FROM
                 games
             NATURAL JOIN
