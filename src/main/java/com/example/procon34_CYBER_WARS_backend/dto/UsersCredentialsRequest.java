@@ -1,14 +1,11 @@
-package com.example.procon34_CYBER_WARS_backend.entity;
+package com.example.procon34_CYBER_WARS_backend.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
-public class Users {
-
-    @NotBlank
-    private Long userId;
+public class UsersCredentialsRequest {
 
     @NotBlank
     @Size(max = 20)

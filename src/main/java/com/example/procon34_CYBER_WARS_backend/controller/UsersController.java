@@ -8,7 +8,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.procon34_CYBER_WARS_backend.dto.UsersRegisterRequest;
+import com.example.procon34_CYBER_WARS_backend.dto.UsersCredentialsRequest;
+import com.example.procon34_CYBER_WARS_backend.dto.UsersCredentialsResponse;
 import com.example.procon34_CYBER_WARS_backend.service.UsersService;
 
 import jakarta.validation.Valid;
@@ -18,16 +19,29 @@ import jakarta.validation.Valid;
 public class UsersController {
 
     @Autowired
-    UsersService usersService;
+    private UsersService usersService;
+
+    private UsersCredentialsResponse usersCredentialsResponse = new UsersCredentialsResponse();
 
     @PostMapping("/register")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody UsersRegisterRequest usersRegisterRequest,
+    public ResponseEntity<?> register(@Valid @RequestBody UsersCredentialsRequest usersCredentialsRequest,
             BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
         } else {
-            usersService.register(usersRegisterRequest);
-            return ResponseEntity.ok("Success");
+            usersCredentialsResponse = usersService.register(usersCredentialsRequest, usersCredentialsResponse);
+            return ResponseEntity.ok(usersCredentialsResponse);
+        }
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@Valid @RequestBody UsersCredentialsRequest usersCredentialsRequest,
+            BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
+        } else {
+            usersCredentialsResponse = usersService.login(usersCredentialsRequest, usersCredentialsResponse);
+            return ResponseEntity.ok(usersCredentialsResponse);
         }
     }
 
