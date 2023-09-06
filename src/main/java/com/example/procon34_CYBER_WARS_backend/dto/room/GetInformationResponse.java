@@ -7,7 +7,7 @@ public class GetInformationResponse {
 
     private final String opponentName;
 
-    private final boolean host;
+    private final boolean isHost;
 
     private final boolean started;
 
