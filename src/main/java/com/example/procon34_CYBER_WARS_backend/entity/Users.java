@@ -1,21 +1,25 @@
 package com.example.procon34_CYBER_WARS_backend.entity;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.Data;
 
+@Entity
+@Table(name = "users")
 @Data
 public class Users {
 
-    @NotBlank
-    private Long userId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private final int userId;
 
-    @NotBlank
-    @Size(max = 20)
-    private String name;
+    @Column(unique = true)
+    private final String name;
 
-    @NotBlank
-    @Size(max = 100)
-    private String password;
+    private final String password;
 
 }
