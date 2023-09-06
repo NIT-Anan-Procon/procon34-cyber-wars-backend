@@ -5,16 +5,16 @@
 > .env
 >
 > ```dotenv:.env
-> DATABASE=「DATABASE NAME」
-> DB_HOST=「DB HOST」
-> DB_PORT=「DB PORT」
-> DB_USER=「DB USER」
-> OPENAI_API_KEY=「OPENAI API KEY」
+> DATABASE=「Database Name」
+> DB_HOST=「Database Host」
+> DB_PORT=「Database Port」
+> DB_USER=「Database User」
+> OPENAI_API_KEY=「OpenAI API Key」
 > ```
 
 ## 実行方法
 
-「Database Password」にデータベースのパスワードを入れて実行
+「Database Password」にデータベースのユーザーパスワードを入れて実行
 
 ```
 gradle clean build
