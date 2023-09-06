@@ -9,10 +9,11 @@ import com.example.procon34_CYBER_WARS_backend.dto.user.UpdateNameRequest;
 import com.example.procon34_CYBER_WARS_backend.dto.user.UpdateNameResponse;
 import com.example.procon34_CYBER_WARS_backend.dto.user.UpdatePasswordRequest;
 import com.example.procon34_CYBER_WARS_backend.dto.user.UpdatePasswordResponse;
-import com.example.procon34_CYBER_WARS_backend.repository.UserRepository;
-import com.example.procon34_CYBER_WARS_backend.utility.PasswordEncoder;
+import com.example.procon34_CYBER_WARS_backend.repository.UsersRepository;
 import com.example.procon34_CYBER_WARS_backend.utility.StringFormatter;
-import com.example.procon34_CYBER_WARS_backend.utility.UserManager;
+import com.example.procon34_CYBER_WARS_backend.utility.users.PasswordEncoder;
+import com.example.procon34_CYBER_WARS_backend.utility.users.UserFetcherByName;
+import com.example.procon34_CYBER_WARS_backend.utility.users.UserIdFetcher;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -22,8 +23,9 @@ import lombok.RequiredArgsConstructor;
 @Transactional
 public class UserService {
 
-    private final UserRepository userRepository;
-    private final UserManager userManager;
+    private final UsersRepository usersRepository;
+    private final UserFetcherByName userFetcherByName;
+    private final UserIdFetcher userIdFetcher;
     private final StringFormatter stringFormatter;
     private final PasswordEncoder passwordEncoder;
 
@@ -37,7 +39,7 @@ public class UserService {
         }
 
         // ユーザーが存在する場合
-        if (userManager.getUserByName(formattedName) != null) {
+        if (userFetcherByName.fetchUserByName(formattedName) != null) {
             return new RegisterResponse(false);
         }
 
@@ -48,7 +50,7 @@ public class UserService {
             return new RegisterResponse(false);
         }
 
-        userRepository.register(formattedName, passwordEncoder.hash(formattedPassword));
+        usersRepository.register(formattedName, passwordEncoder.hash(formattedPassword));
 
         return new RegisterResponse(true);
     }
@@ -64,11 +66,11 @@ public class UserService {
         }
 
         // ユーザーが存在する場合
-        if (userManager.getUserByName(formattedName) != null) {
+        if (userFetcherByName.fetchUserByName(formattedName) != null) {
             return new UpdateNameResponse(false);
         }
 
-        userRepository.updateName(userManager.getUserId(httpServletRequest), formattedName);
+        usersRepository.updateName(userIdFetcher.fetchUserId(httpServletRequest), formattedName);
 
         return new UpdateNameResponse(true);
     }
@@ -83,7 +85,7 @@ public class UserService {
             return new UpdatePasswordResponse(false);
         }
 
-        userRepository.updatePassword(userManager.getUserId(httpServletRequest),
+        usersRepository.updatePassword(userIdFetcher.fetchUserId(httpServletRequest),
                 passwordEncoder.hash(formattedPassword));
 
         return new UpdatePasswordResponse(true);

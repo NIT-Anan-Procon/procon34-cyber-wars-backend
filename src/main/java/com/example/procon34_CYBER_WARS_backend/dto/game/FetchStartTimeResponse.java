@@ -5,7 +5,7 @@ import java.sql.Timestamp;
 import lombok.Data;
 
 @Data
-public class GetStartTimeResponse {
+public class FetchStartTimeResponse {
 
     private final Timestamp startTime;
 

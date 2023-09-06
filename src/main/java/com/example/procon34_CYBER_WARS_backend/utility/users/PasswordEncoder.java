@@ -1,4 +1,4 @@
-package com.example.procon34_CYBER_WARS_backend.utility;
+package com.example.procon34_CYBER_WARS_backend.utility.users;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;

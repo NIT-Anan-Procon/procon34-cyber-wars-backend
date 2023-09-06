@@ -7,10 +7,13 @@ import com.example.procon34_CYBER_WARS_backend.dto.user.credential.IsLoggedInRes
 import com.example.procon34_CYBER_WARS_backend.dto.user.credential.LogInRequest;
 import com.example.procon34_CYBER_WARS_backend.dto.user.credential.LogInResponse;
 import com.example.procon34_CYBER_WARS_backend.entity.Users;
-import com.example.procon34_CYBER_WARS_backend.repository.UserCredentialRepository;
-import com.example.procon34_CYBER_WARS_backend.utility.PasswordEncoder;
+import com.example.procon34_CYBER_WARS_backend.repository.UsersRepository;
 import com.example.procon34_CYBER_WARS_backend.utility.StringFormatter;
-import com.example.procon34_CYBER_WARS_backend.utility.UserManager;
+import com.example.procon34_CYBER_WARS_backend.utility.credential.LoggedInChecker;
+import com.example.procon34_CYBER_WARS_backend.utility.credential.SessionTimeoutUpdater;
+import com.example.procon34_CYBER_WARS_backend.utility.users.PasswordEncoder;
+import com.example.procon34_CYBER_WARS_backend.utility.users.UserFetcherByName;
+import com.example.procon34_CYBER_WARS_backend.utility.users.UserIdFetcher;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -21,15 +24,17 @@ import lombok.RequiredArgsConstructor;
 @Transactional
 public class UserCredentialService {
 
-    private final UserCredentialRepository userCredentialRepository;
-    private final UserManager userManager;
+    private final UsersRepository usersRepository;
+    private final UserFetcherByName userFetcherByName;
+    private final UserIdFetcher userIdFetcher;
+    private final LoggedInChecker loggedInChecker;
+    private final SessionTimeoutUpdater sessionTimeoutUpdater;
     private final StringFormatter stringFormatter;
     private final PasswordEncoder passwordEncoder;
 
     // ユーザーログイン
-    public LogInResponse logIn(final LogInRequest logInRequest,
-            final HttpServletRequest httpServletRequest) {
-        final Users user = userManager.getUserByName(stringFormatter.format(logInRequest.getName()));
+    public LogInResponse logIn(final LogInRequest logInRequest, final HttpServletRequest httpServletRequest) {
+        final Users user = userFetcherByName.fetchUserByName(stringFormatter.format(logInRequest.getName()));
 
         // ユーザーが存在しない場合
         if (user == null) {
@@ -44,14 +49,14 @@ public class UserCredentialService {
 
         final HttpSession httpSession = httpServletRequest.getSession();
         httpSession.setAttribute("sessionId", user.getUserId());
-        userManager.setSession(httpSession);
+        sessionTimeoutUpdater.updateSessionTimeout(httpSession);
 
         return new LogInResponse(true);
     }
 
     // ユーザーログインチェック
     public IsLoggedInResponse isLoggedIn(final HttpServletRequest httpServletRequest) {
-        final boolean isLoggedIn = userManager.isLoggedIn(httpServletRequest);
+        final boolean isLoggedIn = loggedInChecker.isLoggedIn(httpServletRequest);
 
         // ユーザーログインをしていない場合
         if (!isLoggedIn) {
@@ -59,7 +64,7 @@ public class UserCredentialService {
         }
 
         return new IsLoggedInResponse(isLoggedIn,
-                userCredentialRepository.getUserByUserId(userManager.getUserId(httpServletRequest)).getName());
+                usersRepository.fetchUserByUserId(userIdFetcher.fetchUserId(httpServletRequest)).getName());
     }
 
     // ユーザーログアウト

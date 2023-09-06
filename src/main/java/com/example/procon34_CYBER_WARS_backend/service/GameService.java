@@ -3,13 +3,15 @@ package com.example.procon34_CYBER_WARS_backend.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.procon34_CYBER_WARS_backend.dto.game.GetOpponentNameResponse;
-import com.example.procon34_CYBER_WARS_backend.dto.game.GetScoresResponse;
-import com.example.procon34_CYBER_WARS_backend.dto.game.GetStartTimeResponse;
-import com.example.procon34_CYBER_WARS_backend.repository.GameRepository;
-import com.example.procon34_CYBER_WARS_backend.utility.GameManager;
-import com.example.procon34_CYBER_WARS_backend.utility.RoomManager;
-import com.example.procon34_CYBER_WARS_backend.utility.UserManager;
+import com.example.procon34_CYBER_WARS_backend.dto.game.FetchOpponentNameResponse;
+import com.example.procon34_CYBER_WARS_backend.dto.game.FetchScoresResponse;
+import com.example.procon34_CYBER_WARS_backend.dto.game.FetchStartTimeResponse;
+import com.example.procon34_CYBER_WARS_backend.repository.GamesRepository;
+import com.example.procon34_CYBER_WARS_backend.repository.RoomsRepository;
+import com.example.procon34_CYBER_WARS_backend.utility.allocations.OpponentNameFetcher;
+import com.example.procon34_CYBER_WARS_backend.utility.rooms.RoomCloser;
+import com.example.procon34_CYBER_WARS_backend.utility.rooms.RoomIdFetcher;
+import com.example.procon34_CYBER_WARS_backend.utility.users.UserIdFetcher;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -19,39 +21,42 @@ import lombok.RequiredArgsConstructor;
 @Transactional
 public class GameService {
 
-    private final GameRepository gameRepository;
-    private final UserManager userManager;
-    private final RoomManager roomManager;
-    private final GameManager gameManager;
+    private final RoomsRepository roomsRepository;
+    private final GamesRepository gamesRepository;
+    private final UserIdFetcher userIdFetcher;
+    private final RoomCloser roomCloser;
+    private final RoomIdFetcher roomIdFetcher;
+    private final OpponentNameFetcher opponentNameFetcher;
 
     // ゲーム開始
     public void start(final HttpServletRequest httpServletRequest) {
-        final int roomId = roomManager.getRoomId(userManager.getUserId(httpServletRequest));
+        final int roomId = roomIdFetcher.fetchRoomId(userIdFetcher.fetchUserId(httpServletRequest));
 
-        roomManager.close(roomId);
-        gameRepository.setStartTime(roomId);
+        roomCloser.close(roomId);
+        roomsRepository.updateStartTime(roomId);
     }
 
     // ゲーム開始時刻取得
-    public GetStartTimeResponse getStartTime(final HttpServletRequest httpServletRequest) {
-        return new GetStartTimeResponse(
-                gameRepository.getStartTime(roomManager.getRoomId(userManager.getUserId(httpServletRequest))));
+    public FetchStartTimeResponse fetchStartTime(final HttpServletRequest httpServletRequest) {
+        return new FetchStartTimeResponse(roomsRepository
+                .fetchStartTime(roomIdFetcher.fetchRoomId(userIdFetcher.fetchUserId(httpServletRequest))));
     }
 
     // 相手ユーザー名取得
-    public GetOpponentNameResponse getOpponentName(final HttpServletRequest httpServletRequest) {
-        final int userId = userManager.getUserId(httpServletRequest);
+    public FetchOpponentNameResponse fetchOpponentName(final HttpServletRequest httpServletRequest) {
+        final int userId = userIdFetcher.fetchUserId(httpServletRequest);
 
-        return new GetOpponentNameResponse(gameManager.getOpponentName(userId, roomManager.getRoomId(userId)));
+        return new FetchOpponentNameResponse(
+                opponentNameFetcher.fetchOpponentName(userId, roomIdFetcher.fetchRoomId(userId)));
     }
 
     // スコア取得
-    public GetScoresResponse getScores(final HttpServletRequest httpServletRequest) {
-        final int userId = userManager.getUserId(httpServletRequest);
-        final int roomId = roomManager.getRoomId(userId);
-        final short scores[] = { gameRepository.getMyScore(userId, roomId),
-                gameRepository.getOpponentScore(userId, roomId) };
-        return new GetScoresResponse(scores);
+    public FetchScoresResponse fetchScores(final HttpServletRequest httpServletRequest) {
+        final int userId = userIdFetcher.fetchUserId(httpServletRequest);
+        final int roomId = roomIdFetcher.fetchRoomId(userId);
+        final short scores[] = { gamesRepository.fetchMyScore(userId, roomId),
+                gamesRepository.fetchOpponentScore(userId, roomId) };
+        return new FetchScoresResponse(scores);
     }
 
 }

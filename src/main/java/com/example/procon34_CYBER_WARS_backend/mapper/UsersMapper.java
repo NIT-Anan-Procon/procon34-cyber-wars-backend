@@ -3,6 +3,7 @@ package com.example.procon34_CYBER_WARS_backend.mapper;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Result;
+import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
@@ -10,7 +11,32 @@ import org.apache.ibatis.annotations.Update;
 import com.example.procon34_CYBER_WARS_backend.entity.Users;
 
 @Mapper
-public interface UserMapper {
+public interface UsersMapper {
+
+    // ユーザー登録
+    @Insert("""
+            INSERT INTO
+                users(name, password)
+            VALUES
+                (#{name}, #{password})
+            """)
+    void register(final String name, final String password);
+
+    // ユーザー取得 by ユーザーID
+    @Select("""
+            SELECT
+                *
+            FROM
+                users
+            WHERE
+                user_id = #{userId}
+            """)
+    @Results(id = "Users", value = {
+            @Result(column = "user_id", property = "userId"),
+            @Result(column = "name", property = "name"),
+            @Result(column = "password", property = "password")
+    })
+    Users fetchUserByUserId(final int userId);
 
     // ユーザー取得 by ユーザー名
     @Select("""
@@ -21,21 +47,8 @@ public interface UserMapper {
             WHERE
                 name = #{name}
             """)
-    @Results(id = "Users", value = {
-            @Result(column = "user_id", property = "userId"),
-            @Result(column = "name", property = "name"),
-            @Result(column = "password", property = "password")
-    })
-    Users getUserByName(final String name);
-
-    // ユーザー登録
-    @Insert("""
-            INSERT INTO
-                users(name, password)
-            VALUES
-                (#{name}, #{password})
-            """)
-    void register(final String name, final String password);
+    @ResultMap("Users")
+    Users fetchUserByName(final String name);
 
     // ユーザー名更新
     @Update("""

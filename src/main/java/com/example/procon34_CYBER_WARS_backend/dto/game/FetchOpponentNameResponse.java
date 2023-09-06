@@ -3,8 +3,8 @@ package com.example.procon34_CYBER_WARS_backend.dto.game;
 import lombok.Data;
 
 @Data
-public class GetScoresResponse {
+public class FetchOpponentNameResponse {
 
-    private final short scores[];
+    private final String opponentName;
 
 }

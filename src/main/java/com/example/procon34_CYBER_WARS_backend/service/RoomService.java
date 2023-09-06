@@ -1,20 +1,20 @@
 package com.example.procon34_CYBER_WARS_backend.service;
 
-import java.util.Random;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.procon34_CYBER_WARS_backend.dto.room.CreateRequest;
 import com.example.procon34_CYBER_WARS_backend.dto.room.CreateResponse;
-import com.example.procon34_CYBER_WARS_backend.dto.room.GetInformationResponse;
+import com.example.procon34_CYBER_WARS_backend.dto.room.FetchInformationResponse;
 import com.example.procon34_CYBER_WARS_backend.dto.room.JoinRequest;
 import com.example.procon34_CYBER_WARS_backend.dto.room.JoinResponse;
-import com.example.procon34_CYBER_WARS_backend.entity.Rooms;
-import com.example.procon34_CYBER_WARS_backend.repository.RoomRepository;
-import com.example.procon34_CYBER_WARS_backend.utility.GameManager;
-import com.example.procon34_CYBER_WARS_backend.utility.RoomManager;
-import com.example.procon34_CYBER_WARS_backend.utility.UserManager;
+import com.example.procon34_CYBER_WARS_backend.repository.AllocationsRepository;
+import com.example.procon34_CYBER_WARS_backend.repository.RoomsRepository;
+import com.example.procon34_CYBER_WARS_backend.utility.allocations.OpponentNameFetcher;
+import com.example.procon34_CYBER_WARS_backend.utility.rooms.RandomNumberGenerator;
+import com.example.procon34_CYBER_WARS_backend.utility.rooms.RoomCloser;
+import com.example.procon34_CYBER_WARS_backend.utility.rooms.RoomIdFetcher;
+import com.example.procon34_CYBER_WARS_backend.utility.users.UserIdFetcher;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -24,79 +24,62 @@ import lombok.RequiredArgsConstructor;
 @Transactional
 public class RoomService {
 
-    private final RoomRepository roomRepository;
-    private final UserManager userManager;
-    private final RoomManager roomManager;
-    private final GameManager gameManager;
+    private final RoomsRepository roomsRepository;
+    private final AllocationsRepository allocationsRepository;
+    private final UserIdFetcher userIdFetcher;
+    private final RoomCloser roomCloser;
+    private final RoomIdFetcher roomIdFetcher;
+    private final RandomNumberGenerator randomNumberGenerator;
+    private final OpponentNameFetcher opponentNameFetcher;
 
     // ルーム作成
-    public CreateResponse create(final CreateRequest createRequest,
-            final HttpServletRequest httpServletRequest) {
-        final short inviteId = generate4DigitRandomNumber();
+    public CreateResponse create(final CreateRequest createRequest, final HttpServletRequest httpServletRequest) {
+        final short inviteId = randomNumberGenerator.generateRandomNumber();
 
-        roomRepository.create(inviteId, createRequest.isDifficult());
-        roomRepository.allocate(userManager.getUserId(httpServletRequest));
+        roomsRepository.create(inviteId, createRequest.isDifficult());
+        allocationsRepository.join(userIdFetcher.fetchUserId(httpServletRequest), inviteId, true);
 
         return new CreateResponse(inviteId);
     }
 
     // ルーム参加
-    public JoinResponse join(final JoinRequest joinRequest,
-            final HttpServletRequest httpServletRequest) {
+    public JoinResponse join(final JoinRequest joinRequest, final HttpServletRequest httpServletRequest) {
         final short inviteId = joinRequest.getInviteId();
 
         // ルームが存在しない場合
-        if (roomRepository.getRoom(inviteId) == null) {
+        if (roomsRepository.fetchRoom(inviteId) == null) {
             return new JoinResponse(false);
         }
 
-        roomRepository.join(userManager.getUserId(httpServletRequest), joinRequest.getInviteId());
+        allocationsRepository.join(userIdFetcher.fetchUserId(httpServletRequest), joinRequest.getInviteId(), false);
 
         return new JoinResponse(true);
     }
 
     // ルーム情報取得
-    public GetInformationResponse getInformation(final HttpServletRequest httpServletRequest) {
-        final int userId = userManager.getUserId(httpServletRequest);
-        final int roomId = roomManager.getRoomId(userId);
-        final String opponentName = gameManager.getOpponentName(userId, roomId);
+    public FetchInformationResponse fetchInformation(final HttpServletRequest httpServletRequest) {
+        final int userId = userIdFetcher.fetchUserId(httpServletRequest);
+        final int roomId = roomIdFetcher.fetchRoomId(userId);
+        final String opponentName = opponentNameFetcher.fetchOpponentName(userId, roomId);
 
         // ルームが動作をしていない場合 and 相手ユーザー名が存在する場合
-        if (!roomRepository.isActive(roomId) && opponentName != null) {
-            return new GetInformationResponse(opponentName, roomRepository.isHost(userId), true);
+        if (!roomsRepository.isActive(roomId) && opponentName != null) {
+            return new FetchInformationResponse(opponentName, allocationsRepository.isHost(userId), true);
         }
 
-        return new GetInformationResponse(opponentName, roomRepository.isHost(userId), false);
+        return new FetchInformationResponse(opponentName, allocationsRepository.isHost(userId), false);
     }
 
     // ルーム退出
     public void exit(final HttpServletRequest httpServletRequest) {
-        final int userId = userManager.getUserId(httpServletRequest);
+        final int userId = userIdFetcher.fetchUserId(httpServletRequest);
 
         // ユーザーがホストである場合
-        if (roomRepository.isHost(userId)) {
-            roomManager.close(roomManager.getRoomId(userId));
+        if (allocationsRepository.isHost(userId)) {
+            roomCloser.close(roomIdFetcher.fetchRoomId(userId));
         }
 
-        roomRepository.exit(userId);
-    }
-
-    // 4桁乱数生成
-    public short generate4DigitRandomNumber() {
-        short inviteId;
-
-        while (true) {
-            inviteId = (short) (new Random().nextInt(9000) + 1000);
-            for (final Rooms room : roomRepository.getActiveRooms()) {
-                // 招待IDが等しい場合
-                if (inviteId == room.getInviteId()) {
-                    continue;
-                }
-            }
-            break;
-        }
-
-        return inviteId;
+        allocationsRepository.exit(userId);
     }
 
 }

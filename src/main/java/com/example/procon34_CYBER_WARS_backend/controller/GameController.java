@@ -35,39 +35,39 @@ public class GameController {
     }
 
     // ゲーム開始時刻取得
-    @GetMapping("start-time")
+    @GetMapping("/start-time")
     @ResponseBody
-    public ResponseEntity<?> getInformation(final HttpServletRequest httpServletRequest) {
+    public ResponseEntity<?> fetchInformation(final HttpServletRequest httpServletRequest) {
         final HttpClientErrorHandlerResponse httpClientErrorHandlerResponse = httpClientErrorHandler
                 .handle(null, httpServletRequest);
         if (httpClientErrorHandlerResponse.isError()) {
             return httpClientErrorHandlerResponse.getResponseEntity();
         }
-        return ResponseEntity.ok(gameService.getStartTime(httpServletRequest));
+        return ResponseEntity.ok(gameService.fetchStartTime(httpServletRequest));
     }
 
     // 相手ユーザー名取得
-    @GetMapping("opponent-name")
+    @GetMapping("/opponent-name")
     @ResponseBody
-    public ResponseEntity<?> getOpponentName(final HttpServletRequest httpServletRequest) {
+    public ResponseEntity<?> fetchOpponentName(final HttpServletRequest httpServletRequest) {
         final HttpClientErrorHandlerResponse httpClientErrorHandlerResponse = httpClientErrorHandler
                 .handle(null, httpServletRequest);
         if (httpClientErrorHandlerResponse.isError()) {
             return httpClientErrorHandlerResponse.getResponseEntity();
         }
-        return ResponseEntity.ok(gameService.getOpponentName(httpServletRequest));
+        return ResponseEntity.ok(gameService.fetchOpponentName(httpServletRequest));
     }
 
     // スコア取得
-    @GetMapping("scores")
+    @GetMapping("/scores")
     @ResponseBody
-    public ResponseEntity<?> getScores(final HttpServletRequest httpServletRequest) {
+    public ResponseEntity<?> fetchScores(final HttpServletRequest httpServletRequest) {
         final HttpClientErrorHandlerResponse httpClientErrorHandlerResponse = httpClientErrorHandler
                 .handle(null, httpServletRequest);
         if (httpClientErrorHandlerResponse.isError()) {
             return httpClientErrorHandlerResponse.getResponseEntity();
         }
-        return ResponseEntity.ok(gameService.getScores(httpServletRequest));
+        return ResponseEntity.ok(gameService.fetchScores(httpServletRequest));
     }
 
 }

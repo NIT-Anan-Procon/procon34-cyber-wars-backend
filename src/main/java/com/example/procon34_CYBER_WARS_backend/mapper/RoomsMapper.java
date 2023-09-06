@@ -1,8 +1,8 @@
 package com.example.procon34_CYBER_WARS_backend.mapper;
 
+import java.sql.Timestamp;
 import java.util.List;
 
-import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Result;
@@ -14,7 +14,7 @@ import org.apache.ibatis.annotations.Update;
 import com.example.procon34_CYBER_WARS_backend.entity.Rooms;
 
 @Mapper
-public interface RoomMapper {
+public interface RoomsMapper {
 
     // ルーム作成
     @Insert("""
@@ -32,17 +32,6 @@ public interface RoomMapper {
                 1
             """)
     void create(final short inviteId, final boolean difficult);
-
-    // ルーム割り当て
-    @Insert("""
-            INSERT INTO
-                allocations(room_id, user_id)
-            SELECT
-                MAX(room_id), #{userId}
-            FROM
-                rooms
-            """)
-    void allocate(final int userId);
 
     // ルーム取得
     @Select("""
@@ -62,33 +51,30 @@ public interface RoomMapper {
             @Result(column = "started_at", property = "startedAt"),
             @Result(column = "active", property = "active")
     })
-    Rooms getRoom(final short inviteId);
+    Rooms fetchRoom(final short inviteId);
 
-    // ルーム参加
-    @Insert("""
-            INSERT INTO
-                allocations(room_id, user_id, host)
+    // 動作ルーム取得
+    @Select("""
             SELECT
-                room_id, #{userId}, FALSE
+                *
             FROM
                 rooms
             WHERE
-                invite_id = #{inviteId}
-            AND
                 active = TRUE
             """)
-    void join(final int userId, final short inviteId);
+    @ResultMap("Rooms")
+    List<Rooms> fetchActiveRooms();
 
-    // ルームID取得
+    // ゲーム開始時刻取得
     @Select("""
             SELECT
-                room_id
+                start_time
             FROM
-                allocations
+                rooms
             WHERE
-                user_id = #{userId}
+                room_id = #{roomId}
             """)
-    int getRoomId(final int userId);
+    Timestamp fetchStartTime(final int roomId);
 
     // ルーム動作判定
     @Select("""
@@ -101,16 +87,16 @@ public interface RoomMapper {
             """)
     boolean isActive(final int roomId);
 
-    // ルームホスト判定
-    @Select("""
-            SELECT
-                host
-            FROM
-                allocations
+    // ゲーム開始時刻更新
+    @Update("""
+            UPDATE
+                rooms
+            SET
+                start_time = CURRENT_TIMESTAMP()
             WHERE
-                user_id = #{userId}
+                room_id = #{roomId}
             """)
-    boolean isHost(final int userId);
+    void updateStartTime(final int roomId);
 
     // ルーム閉鎖
     @Update("""
@@ -122,26 +108,5 @@ public interface RoomMapper {
                 room_id = #{roomId}
             """)
     void close(final int roomId);
-
-    // ルーム退出
-    @Delete("""
-            DELETE FROM
-                allocations
-            WHERE
-                user_id = #{userId}
-            """)
-    void exit(final int userId);
-
-    // 動作ルーム取得
-    @Select("""
-            SELECT
-                *
-            FROM
-                rooms
-            WHERE
-                active = TRUE
-            """)
-    @ResultMap("Rooms")
-    List<Rooms> getActiveRooms();
 
 }

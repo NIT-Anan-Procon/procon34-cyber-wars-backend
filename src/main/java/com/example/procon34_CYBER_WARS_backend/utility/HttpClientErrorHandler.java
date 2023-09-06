@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
 
 import com.example.procon34_CYBER_WARS_backend.dto.utility.HttpClientErrorHandlerResponse;
+import com.example.procon34_CYBER_WARS_backend.utility.credential.LoggedInChecker;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +15,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class HttpClientErrorHandler {
 
-    private final UserManager userManager;
+    private final LoggedInChecker loggedInChecker;
 
     // HTTPクライアントエラー処理
     public HttpClientErrorHandlerResponse handle(final BindingResult bindingResult,
@@ -26,7 +27,7 @@ public class HttpClientErrorHandler {
         }
 
         // ユーザーログインをしていない場合
-        if (httpServletRequest != null && !userManager.isLoggedIn(httpServletRequest)) {
+        if (httpServletRequest != null && !loggedInChecker.isLoggedIn(httpServletRequest)) {
             return new HttpClientErrorHandlerResponse(true,
                     ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Authentication Error"));
         }
