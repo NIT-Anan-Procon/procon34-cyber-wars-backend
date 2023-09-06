@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class IsLoggedInResponse {
 
-    private final boolean loggedIn;
+    private final boolean isLoggedIn;
 
     private final String name;
 
