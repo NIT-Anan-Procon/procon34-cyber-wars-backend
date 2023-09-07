@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.procon34_CYBER_WARS_backend.dto.game.battle.SendKeyRequest;
 import com.example.procon34_CYBER_WARS_backend.dto.utility.HttpClientErrorHandlerResponse;
-import com.example.procon34_CYBER_WARS_backend.service.GameService;
+import com.example.procon34_CYBER_WARS_backend.service.GameBattleService;
 import com.example.procon34_CYBER_WARS_backend.utility.HttpClientErrorHandler;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -24,7 +24,7 @@ import lombok.RequiredArgsConstructor;
 public class GameBattleController {
 
     private final HttpClientErrorHandler httpClientErrorHandler;
-    private final GameService gameService;
+    private final GameBattleService gameBattleService;
 
     // バトルフェーズ：修正課題取得
     @GetMapping("/revision")
@@ -35,7 +35,7 @@ public class GameBattleController {
         if (httpClientErrorHandlerResponse.isError()) {
             return httpClientErrorHandlerResponse.getResponseEntity();
         }
-        return ResponseEntity.ok(gameService);
+        return ResponseEntity.ok(gameBattleService.fetchRevision(httpServletRequest));
     }
 
     // バトルフェーズ：キー送信
@@ -48,7 +48,7 @@ public class GameBattleController {
         if (httpClientErrorHandlerResponse.isError()) {
             return httpClientErrorHandlerResponse.getResponseEntity();
         }
-        return ResponseEntity.ok(gameService);
+        return ResponseEntity.ok(gameBattleService.sendKey(sendKeyRequest, httpServletRequest));
     }
 
 }
