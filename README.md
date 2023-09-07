@@ -31,5 +31,6 @@ gradle clean build
 - [MyBatis 3.0.0](https://blog.mybatis.org/)
 - [Jakarta Persistence 3.1.0](https://jakarta.ee/specifications/persistence/)
 - [Apache Commons Text 1.10.0](https://commons.apache.org/proper/commons-text/)
+- [JavaParser 3.25.5](https://javaparser.org/)
 - [MariaDB 10.6.12](https://mariadb.org/)
 - [PHP 8.1.2](https://www.php.net/)
