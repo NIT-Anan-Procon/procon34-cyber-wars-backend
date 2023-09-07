@@ -27,6 +27,11 @@ public class AllocationsRepository {
         return allocationsMapper.isHost(userId);
     }
 
+    // 相手ユーザーID取得
+    public String fetchOpponentUserId(final int userId, final int roomId) {
+        return allocationsMapper.fetchOpponentUserId(userId, roomId);
+    }
+
     // 相手ユーザー名取得
     public String fetchOpponentName(final int userId, final int roomId) {
         return allocationsMapper.fetchOpponentName(userId, roomId);

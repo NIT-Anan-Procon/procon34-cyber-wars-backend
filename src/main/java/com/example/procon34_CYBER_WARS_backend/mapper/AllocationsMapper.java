@@ -45,6 +45,21 @@ public interface AllocationsMapper {
             """)
     boolean isHost(final int userId);
 
+    // 相手ユーザーID取得
+    @Select("""
+            SELECT
+                user_id
+            FROM
+                allocations
+            NATURAL JOIN
+                users
+            WHERE
+                room_id = #{roomId}
+            AND
+                user_id != #{userId}
+            """)
+    String fetchOpponentUserId(final int userId, final int roomId);
+
     // 相手ユーザー名取得
     @Select("""
             SELECT

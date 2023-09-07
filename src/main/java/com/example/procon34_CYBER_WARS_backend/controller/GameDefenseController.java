@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.procon34_CYBER_WARS_backend.dto.game.defense.SendCodeRequest;
 import com.example.procon34_CYBER_WARS_backend.dto.utility.HttpClientErrorHandlerResponse;
-import com.example.procon34_CYBER_WARS_backend.service.GameService;
+import com.example.procon34_CYBER_WARS_backend.service.GameDefenseService;
 import com.example.procon34_CYBER_WARS_backend.utility.HttpClientErrorHandler;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -24,7 +24,7 @@ import lombok.RequiredArgsConstructor;
 public class GameDefenseController {
 
     private final HttpClientErrorHandler httpClientErrorHandler;
-    private final GameService gameService;
+    private final GameDefenseService gameDefenseService;
 
     // ディフェンスフェーズ：コード取得
     @GetMapping("/code")
@@ -35,7 +35,7 @@ public class GameDefenseController {
         if (httpClientErrorHandlerResponse.isError()) {
             return httpClientErrorHandlerResponse.getResponseEntity();
         }
-        return ResponseEntity.ok(gameService);
+        return ResponseEntity.ok(gameDefenseService.fetchCode(httpServletRequest));
     }
 
     // ディフェンスフェーズ：コード送信
@@ -48,7 +48,7 @@ public class GameDefenseController {
         if (httpClientErrorHandlerResponse.isError()) {
             return httpClientErrorHandlerResponse.getResponseEntity();
         }
-        return ResponseEntity.ok(gameService);
+        return ResponseEntity.ok(gameDefenseService.sendCode(sendCodeRequest, httpServletRequest));
     }
 
 }
