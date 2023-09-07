@@ -39,7 +39,7 @@ public class GameBattleService {
     public FetchRevisionResponse fetchRevision(final HttpServletRequest httpServletRequest) {
         final int userId = userIdFetcher.fetchUserId(httpServletRequest);
         final int roomId = roomIdFetcher.fetchRoomId(userId);
-        final String path = "defense" + roomId + "-" + allocationsRepository.fetchOpponentUserId(userId, roomId)
+        final String path = "revision" + roomId + "-" + allocationsRepository.fetchOpponentUserId(userId, roomId)
                 + ".php";
 
         try {
