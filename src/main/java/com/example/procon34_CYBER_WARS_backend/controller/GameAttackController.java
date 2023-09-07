@@ -62,7 +62,7 @@ public class GameAttackController {
         if (httpClientErrorHandlerResponse.isError()) {
             return httpClientErrorHandlerResponse.getResponseEntity();
         }
-        return ResponseEntity.ok(gameAttackService);
+        return ResponseEntity.ok(gameAttackService.sendKey(sendKeyRequest, httpServletRequest));
     }
 
 }
