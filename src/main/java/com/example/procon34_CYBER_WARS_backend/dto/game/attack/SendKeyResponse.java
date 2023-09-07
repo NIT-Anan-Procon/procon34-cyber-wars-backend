@@ -5,10 +5,10 @@ import lombok.Data;
 @Data
 public class SendKeyResponse {
 
-    private final boolean valid;
+    private final Boolean valid;
 
     private final boolean correct;
 
-    private final int score;
+    private final Byte score;
 
 }

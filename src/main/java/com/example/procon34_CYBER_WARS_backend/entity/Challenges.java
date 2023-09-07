@@ -10,7 +10,7 @@ import lombok.Data;
 @Entity
 @Table(name = "challenges")
 @Data
-public class Vulnerabilities {
+public class Challenges {
 
     private final int challengeId;
 

@@ -47,7 +47,7 @@ public class RoomService {
         final short inviteId = joinRequest.getInviteId();
 
         // ルームが存在しない場合
-        if (roomsRepository.fetchRoom(inviteId) == null) {
+        if (roomsRepository.fetchRoomByInviteId(inviteId) == null) {
             return new JoinResponse(false);
         }
 

@@ -21,14 +21,19 @@ public class RoomsRepository {
         roomsMapper.create(inviteId, difficult);
     }
 
-    // ルーム取得
-    public Rooms fetchRoom(final short inviteId) {
-        return roomsMapper.fetchRoom(inviteId);
+    // ルーム取得 by 招待ID
+    public Rooms fetchRoomByInviteId(final short inviteId) {
+        return roomsMapper.fetchRoomByInviteId(inviteId);
     }
 
     // 動作ルーム取得
     public List<Rooms> fetchActiveRooms() {
         return roomsMapper.fetchActiveRooms();
+    }
+
+    // 課題ID取得
+    public int fetchChallengeId(final int roomId) {
+        return roomsMapper.fetchChallengeId(roomId);
     }
 
     // ゲーム開始時刻取得

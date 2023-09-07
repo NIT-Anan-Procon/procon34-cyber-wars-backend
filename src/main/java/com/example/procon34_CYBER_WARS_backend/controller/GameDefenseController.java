@@ -4,65 +4,51 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.procon34_CYBER_WARS_backend.dto.game.attack.SendKeyRequest;
-import com.example.procon34_CYBER_WARS_backend.dto.game.attack.UseHintRequest;
+import com.example.procon34_CYBER_WARS_backend.dto.game.defense.SendCodeRequest;
 import com.example.procon34_CYBER_WARS_backend.dto.utility.HttpClientErrorHandlerResponse;
-import com.example.procon34_CYBER_WARS_backend.service.GameAttackService;
+import com.example.procon34_CYBER_WARS_backend.service.GameService;
 import com.example.procon34_CYBER_WARS_backend.utility.HttpClientErrorHandler;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/game/attack")
+@RequestMapping("/game/defense")
 @RequiredArgsConstructor
-public class GameAttackController {
+public class GameDefenseController {
 
     private final HttpClientErrorHandler httpClientErrorHandler;
-    private final GameAttackService gameAttackService;
+    private final GameService gameService;
 
-    // アタックフェーズ：課題取得
-    @GetMapping("/challenge")
+    // ディフェンスフェーズ：コード取得
+    @GetMapping("/code")
     @ResponseBody
-    public ResponseEntity<?> fetchChallenge(final HttpServletRequest httpServletRequest) {
+    public ResponseEntity<?> fetchCode(final HttpServletRequest httpServletRequest) {
         final HttpClientErrorHandlerResponse httpClientErrorHandlerResponse = httpClientErrorHandler
                 .handle(null, httpServletRequest);
         if (httpClientErrorHandlerResponse.isError()) {
             return httpClientErrorHandlerResponse.getResponseEntity();
         }
-        return ResponseEntity.ok(gameAttackService.fetchChallenge(httpServletRequest));
+        return ResponseEntity.ok(gameService);
     }
 
-    // アタックフェーズ：ヒント使用
-    @PostMapping("/hint")
-    public ResponseEntity<?> useHint(@Validated @RequestBody final UseHintRequest useHintRequest,
-            final BindingResult bindingResult, final HttpServletRequest httpServletRequest) {
-        final HttpClientErrorHandlerResponse httpClientErrorHandlerResponse = httpClientErrorHandler
-                .handle(bindingResult, httpServletRequest);
-        if (httpClientErrorHandlerResponse.isError()) {
-            return httpClientErrorHandlerResponse.getResponseEntity();
-        }
-        gameAttackService.useHint(useHintRequest, httpServletRequest);
-        return ResponseEntity.ok().build();
-    }
-
-    // アタックフェーズ：キー送信
-    @PostMapping("/key")
+    // ディフェンスフェーズ：コード送信
+    @PutMapping("/code")
     @ResponseBody
-    public ResponseEntity<?> sendKey(@Validated @RequestBody final SendKeyRequest sendKeyRequest,
+    public ResponseEntity<?> sendCode(@Validated @RequestBody final SendCodeRequest sendCodeRequest,
             final BindingResult bindingResult, final HttpServletRequest httpServletRequest) {
         final HttpClientErrorHandlerResponse httpClientErrorHandlerResponse = httpClientErrorHandler
                 .handle(bindingResult, httpServletRequest);
         if (httpClientErrorHandlerResponse.isError()) {
             return httpClientErrorHandlerResponse.getResponseEntity();
         }
-        return ResponseEntity.ok(gameAttackService);
+        return ResponseEntity.ok(gameService);
     }
 
 }

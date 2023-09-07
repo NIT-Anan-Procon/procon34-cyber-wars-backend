@@ -54,8 +54,8 @@ public class GameService {
     public FetchScoresResponse fetchScores(final HttpServletRequest httpServletRequest) {
         final int userId = userIdFetcher.fetchUserId(httpServletRequest);
         final int roomId = roomIdFetcher.fetchRoomId(userId);
-        final short scores[] = { gamesRepository.fetchMyScore(userId, roomId),
-                gamesRepository.fetchOpponentScore(userId, roomId) };
+        final short scores[] = { gamesRepository.fetchScore(userId, roomId, true),
+                gamesRepository.fetchScore(userId, roomId, false) };
         return new FetchScoresResponse(scores);
     }
 

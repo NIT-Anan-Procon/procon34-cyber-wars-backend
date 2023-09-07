@@ -33,7 +33,7 @@ public interface RoomsMapper {
             """)
     void create(final short inviteId, final boolean difficult);
 
-    // ルーム取得
+    // ルーム取得 by 招待ID
     @Select("""
             SELECT
                 *
@@ -51,7 +51,7 @@ public interface RoomsMapper {
             @Result(column = "started_at", property = "startedAt"),
             @Result(column = "active", property = "active")
     })
-    Rooms fetchRoom(final short inviteId);
+    Rooms fetchRoomByInviteId(final short inviteId);
 
     // 動作ルーム取得
     @Select("""
@@ -64,6 +64,17 @@ public interface RoomsMapper {
             """)
     @ResultMap("Rooms")
     List<Rooms> fetchActiveRooms();
+
+    // 課題ID取得
+    @Select("""
+            SELECT
+                challenge_id
+            FROM
+                rooms
+            WHERE
+                room_id = #{roomId}
+            """)
+    int fetchChallengeId(final int roomId);
 
     // ゲーム開始時刻取得
     @Select("""
