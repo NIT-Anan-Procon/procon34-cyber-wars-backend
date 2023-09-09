@@ -7,6 +7,6 @@ import lombok.Data;
 public class SendCodeRequest {
 
     @NotBlank
-    private String code;
+    private final String code;
 
 }

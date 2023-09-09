@@ -7,6 +7,6 @@ import lombok.Data;
 public class UseHintRequest {
 
     @NotBlank
-    private byte vulnerabilityId;
+    private final byte vulnerabilityId;
 
 }

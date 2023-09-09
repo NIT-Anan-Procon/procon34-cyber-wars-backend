@@ -9,6 +9,6 @@ public class UpdateNameRequest {
 
     @NotBlank
     @Size(max = 20)
-    private String name;
+    private final String name;
 
 }

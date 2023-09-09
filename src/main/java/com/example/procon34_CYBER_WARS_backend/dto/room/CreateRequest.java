@@ -7,6 +7,6 @@ import lombok.Data;
 public class CreateRequest {
 
     @NotNull
-    private boolean difficult;
+    private final boolean difficult;
 
 }

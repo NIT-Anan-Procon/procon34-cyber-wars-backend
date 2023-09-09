@@ -5,6 +5,6 @@ import lombok.Data;
 @Data
 public class JoinRequest {
 
-    private short inviteId;
+    private final short inviteId;
 
 }

@@ -9,6 +9,6 @@ public class SendKeyRequest {
 
     @NotBlank
     @Size(max = 20)
-    private String flag;
+    private final String flag;
 
 }

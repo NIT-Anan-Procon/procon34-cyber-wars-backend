@@ -9,6 +9,6 @@ public class UpdatePasswordRequest {
 
     @NotBlank
     @Size(max = 100)
-    private String password;
+    private final String password;
 
 }
