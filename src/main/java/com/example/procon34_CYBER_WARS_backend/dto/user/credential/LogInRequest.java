@@ -9,10 +9,10 @@ public class LogInRequest {
 
     @NotBlank
     @Size(max = 20)
-    private String name;
+    private final String name;
 
     @NotBlank
     @Size(max = 100)
-    private String password;
+    private final String password;
 
 }
