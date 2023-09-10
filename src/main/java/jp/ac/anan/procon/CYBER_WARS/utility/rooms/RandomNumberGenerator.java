@@ -4,9 +4,8 @@ import java.util.Random;
 
 import org.springframework.stereotype.Component;
 
-import com.example.procon34_CYBER_WARS_backend.entity.Rooms;
-import com.example.procon34_CYBER_WARS_backend.repository.RoomsRepository;
-
+import jp.ac.anan.procon.CYBER_WARS.entity.Rooms;
+import jp.ac.anan.procon.CYBER_WARS.repository.RoomsRepository;
 import lombok.RequiredArgsConstructor;
 
 @Component

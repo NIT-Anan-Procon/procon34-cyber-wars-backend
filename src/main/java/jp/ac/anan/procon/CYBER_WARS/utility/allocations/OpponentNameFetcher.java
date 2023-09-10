@@ -2,8 +2,7 @@ package jp.ac.anan.procon.CYBER_WARS.utility.allocations;
 
 import org.springframework.stereotype.Component;
 
-import com.example.procon34_CYBER_WARS_backend.repository.AllocationsRepository;
-
+import jp.ac.anan.procon.CYBER_WARS.repository.AllocationsRepository;
 import lombok.RequiredArgsConstructor;
 
 @Component

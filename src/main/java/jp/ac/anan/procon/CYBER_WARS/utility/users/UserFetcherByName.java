@@ -2,9 +2,8 @@ package jp.ac.anan.procon.CYBER_WARS.utility.users;
 
 import org.springframework.stereotype.Component;
 
-import com.example.procon34_CYBER_WARS_backend.entity.Users;
-import com.example.procon34_CYBER_WARS_backend.repository.UsersRepository;
-
+import jp.ac.anan.procon.CYBER_WARS.entity.Users;
+import jp.ac.anan.procon.CYBER_WARS.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
 
 @Component

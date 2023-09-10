@@ -5,10 +5,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
 
-import com.example.procon34_CYBER_WARS_backend.dto.utility.HttpClientErrorHandlerResponse;
-import com.example.procon34_CYBER_WARS_backend.utility.credential.LoggedInChecker;
-
 import jakarta.servlet.http.HttpServletRequest;
+import jp.ac.anan.procon.CYBER_WARS.dto.utility.HttpClientErrorHandlerResponse;
+import jp.ac.anan.procon.CYBER_WARS.utility.credential.LoggedInChecker;
 import lombok.RequiredArgsConstructor;
 
 @Component
