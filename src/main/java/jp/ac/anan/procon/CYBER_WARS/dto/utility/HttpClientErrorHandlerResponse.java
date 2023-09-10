@@ -1,14 +1,12 @@
 package jp.ac.anan.procon.CYBER_WARS.dto.utility;
 
-import org.springframework.http.ResponseEntity;
-
 import lombok.Data;
+import org.springframework.http.ResponseEntity;
 
 @Data
 public class HttpClientErrorHandlerResponse {
 
-    private final boolean Error;
+  private final boolean Error;
 
-    private final ResponseEntity<?> responseEntity;
-
+  private final ResponseEntity<?> responseEntity;
 }

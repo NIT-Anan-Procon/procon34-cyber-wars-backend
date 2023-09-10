@@ -7,12 +7,11 @@ import lombok.Data;
 @Data
 public class RegisterRequest {
 
-    @NotBlank
-    @Size(max = 20)
-    private final String name;
+  @NotBlank
+  @Size(max = 20)
+  private final String name;
 
-    @NotBlank
-    @Size(max = 100)
-    private final String password;
-
+  @NotBlank
+  @Size(max = 100)
+  private final String password;
 }

@@ -10,12 +10,9 @@ import lombok.Data;
 @Data
 public class Allocations {
 
-    @EmbeddedId
-    private final int roomId;
+  @EmbeddedId private final int roomId;
 
-    @EmbeddedId
-    private final int userId;
+  @EmbeddedId private final int userId;
 
-    private final boolean host;
-
+  private final boolean host;
 }

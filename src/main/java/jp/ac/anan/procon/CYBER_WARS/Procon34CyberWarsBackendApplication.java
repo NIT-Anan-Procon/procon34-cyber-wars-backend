@@ -6,8 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class Procon34CyberWarsBackendApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(Procon34CyberWarsBackendApplication.class, args);
-	}
-
+  public static void main(String[] args) {
+    SpringApplication.run(Procon34CyberWarsBackendApplication.class, args);
+  }
 }

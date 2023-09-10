@@ -12,18 +12,17 @@ import lombok.Data;
 @Data
 public class Challenges {
 
-    private final int challengeId;
+  private final int challengeId;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private final byte vulnerabilityId;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private final byte vulnerabilityId;
 
-    private final String choice;
+  private final String choice;
 
-    private final String hint;
+  private final String hint;
 
-    private final String flag;
+  private final String flag;
 
-    private final boolean difficult;
-
+  private final boolean difficult;
 }

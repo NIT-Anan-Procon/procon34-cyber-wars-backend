@@ -6,8 +6,9 @@ import org.apache.ibatis.annotations.Select;
 @Mapper
 public interface ScoresMapper {
 
-    // スコア取得
-    @Select("""
+  // スコア取得
+  @Select(
+      """
             SELECT
                 score
             FROM
@@ -17,6 +18,5 @@ public interface ScoresMapper {
             AND
                 difficult = #{difficult}
             """)
-    byte fetchScore(final byte scoreType, final boolean difficult);
-
+  byte fetchScore(final byte scoreType, final boolean difficult);
 }

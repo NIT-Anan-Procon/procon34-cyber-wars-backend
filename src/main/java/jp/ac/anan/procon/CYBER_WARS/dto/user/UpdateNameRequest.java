@@ -7,8 +7,7 @@ import lombok.Data;
 @Data
 public class UpdateNameRequest {
 
-    @NotBlank
-    @Size(max = 20)
-    private final String name;
-
+  @NotBlank
+  @Size(max = 20)
+  private final String name;
 }

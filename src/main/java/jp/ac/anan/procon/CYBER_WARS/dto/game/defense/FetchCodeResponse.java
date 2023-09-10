@@ -5,8 +5,7 @@ import lombok.Data;
 @Data
 public class FetchCodeResponse {
 
-    private final String path;
+  private final String path;
 
-    private final String code;
-
+  private final String code;
 }

@@ -11,13 +11,10 @@ import lombok.Data;
 @Data
 public class Scores {
 
-    @EmbeddedId
-    private final byte scoreType;
+  @EmbeddedId private final byte scoreType;
 
-    @EmbeddedId
-    private final boolean difficult;
+  @EmbeddedId private final boolean difficult;
 
-    @Column(unique = true)
-    private final byte score;
-
+  @Column(unique = true)
+  private final byte score;
 }

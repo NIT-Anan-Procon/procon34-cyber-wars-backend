@@ -5,6 +5,5 @@ import lombok.Data;
 @Data
 public class JoinResponse {
 
-    private final boolean success;
-
+  private final boolean success;
 }

@@ -2,7 +2,7 @@ package jp.ac.anan.procon.CYBER_WARS.mapper;
 
 import java.sql.Timestamp;
 import java.util.List;
-
+import jp.ac.anan.procon.CYBER_WARS.entity.Rooms;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Result;
@@ -11,13 +11,12 @@ import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
-import jp.ac.anan.procon.CYBER_WARS.entity.Rooms;
-
 @Mapper
 public interface RoomsMapper {
 
-    // ルーム作成
-    @Insert("""
+  // ルーム作成
+  @Insert(
+      """
             INSERT INTO
                 rooms(invite_id, challenge_id)
             SELECT
@@ -31,10 +30,11 @@ public interface RoomsMapper {
             LIMIT
                 1
             """)
-    void create(final short inviteId, final boolean difficult);
+  void create(final short inviteId, final boolean difficult);
 
-    // ルーム取得 by 招待ID
-    @Select("""
+  // ルーム取得 by 招待ID
+  @Select(
+      """
             SELECT
                 *
             FROM
@@ -44,17 +44,20 @@ public interface RoomsMapper {
             AND
                 active = TRUE
             """)
-    @Results(id = "Rooms", value = {
-            @Result(column = "room_id", property = "roomId"),
-            @Result(column = "invite_id", property = "inviteId"),
-            @Result(column = "challenge_id", property = "challengeId"),
-            @Result(column = "started_at", property = "startedAt"),
-            @Result(column = "active", property = "active")
-    })
-    Rooms fetchRoomByInviteId(final short inviteId);
+  @Results(
+      id = "Rooms",
+      value = {
+        @Result(column = "room_id", property = "roomId"),
+        @Result(column = "invite_id", property = "inviteId"),
+        @Result(column = "challenge_id", property = "challengeId"),
+        @Result(column = "started_at", property = "startedAt"),
+        @Result(column = "active", property = "active")
+      })
+  Rooms fetchRoomByInviteId(final short inviteId);
 
-    // 動作ルーム取得
-    @Select("""
+  // 動作ルーム取得
+  @Select(
+      """
             SELECT
                 *
             FROM
@@ -62,11 +65,12 @@ public interface RoomsMapper {
             WHERE
                 active = TRUE
             """)
-    @ResultMap("Rooms")
-    List<Rooms> fetchActiveRooms();
+  @ResultMap("Rooms")
+  List<Rooms> fetchActiveRooms();
 
-    // 課題ID取得
-    @Select("""
+  // 課題ID取得
+  @Select(
+      """
             SELECT
                 challenge_id
             FROM
@@ -74,10 +78,11 @@ public interface RoomsMapper {
             WHERE
                 room_id = #{roomId}
             """)
-    int fetchChallengeId(final int roomId);
+  int fetchChallengeId(final int roomId);
 
-    // ゲーム開始時刻取得
-    @Select("""
+  // ゲーム開始時刻取得
+  @Select(
+      """
             SELECT
                 start_time
             FROM
@@ -85,10 +90,11 @@ public interface RoomsMapper {
             WHERE
                 room_id = #{roomId}
             """)
-    Timestamp fetchStartTime(final int roomId);
+  Timestamp fetchStartTime(final int roomId);
 
-    // ルーム動作判定
-    @Select("""
+  // ルーム動作判定
+  @Select(
+      """
             SELECT
                 active
             FROM
@@ -96,10 +102,11 @@ public interface RoomsMapper {
             WHERE
                 room_id = #{roomId}
             """)
-    boolean isActive(final int roomId);
+  boolean isActive(final int roomId);
 
-    // ゲーム開始時刻更新
-    @Update("""
+  // ゲーム開始時刻更新
+  @Update(
+      """
             UPDATE
                 rooms
             SET
@@ -107,10 +114,11 @@ public interface RoomsMapper {
             WHERE
                 room_id = #{roomId}
             """)
-    void updateStartTime(final int roomId);
+  void updateStartTime(final int roomId);
 
-    // ルーム閉鎖
-    @Update("""
+  // ルーム閉鎖
+  @Update(
+      """
             UPDATE
                 rooms
             SET
@@ -118,6 +126,5 @@ public interface RoomsMapper {
             WHERE
                 room_id = #{roomId}
             """)
-    void close(final int roomId);
-
+  void close(final int roomId);
 }

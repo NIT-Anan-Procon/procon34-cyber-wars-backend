@@ -7,8 +7,7 @@ import lombok.Data;
 @Data
 public class UpdatePasswordRequest {
 
-    @NotBlank
-    @Size(max = 100)
-    private final String password;
-
+  @NotBlank
+  @Size(max = 100)
+  private final String password;
 }

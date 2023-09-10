@@ -7,8 +7,7 @@ import lombok.Data;
 @Data
 public class SendKeyRequest {
 
-    @NotBlank
-    @Size(max = 20)
-    private final String flag;
-
+  @NotBlank
+  @Size(max = 20)
+  private final String flag;
 }

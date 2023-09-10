@@ -5,6 +5,5 @@ import lombok.Data;
 @Data
 public class SendCodeResponse {
 
-    private final boolean valid;
-
+  private final boolean valid;
 }

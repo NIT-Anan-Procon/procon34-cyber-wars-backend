@@ -6,7 +6,5 @@ import lombok.Data;
 @Data
 public class SendCodeRequest {
 
-    @NotBlank
-    private final String code;
-
+  @NotBlank private final String code;
 }

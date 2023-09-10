@@ -10,16 +10,11 @@ import lombok.Data;
 @Data
 public class Games {
 
-    @EmbeddedId
-    private final int roomId;
+  @EmbeddedId private final int roomId;
 
-    @EmbeddedId
-    private final int userId;
+  @EmbeddedId private final int userId;
 
-    @EmbeddedId
-    private final byte vulnerabilityId;
+  @EmbeddedId private final byte vulnerabilityId;
 
-    @EmbeddedId
-    private final byte scoreType;
-
+  @EmbeddedId private final byte scoreType;
 }

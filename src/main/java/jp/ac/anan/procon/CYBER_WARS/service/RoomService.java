@@ -1,8 +1,5 @@
 package jp.ac.anan.procon.CYBER_WARS.service;
 
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import jakarta.servlet.http.HttpServletRequest;
 import jp.ac.anan.procon.CYBER_WARS.dto.room.CreateRequest;
 import jp.ac.anan.procon.CYBER_WARS.dto.room.CreateResponse;
@@ -17,68 +14,72 @@ import jp.ac.anan.procon.CYBER_WARS.utility.rooms.RoomCloser;
 import jp.ac.anan.procon.CYBER_WARS.utility.rooms.RoomIdFetcher;
 import jp.ac.anan.procon.CYBER_WARS.utility.users.UserIdFetcher;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
 public class RoomService {
 
-    private final RoomsRepository roomsRepository;
-    private final AllocationsRepository allocationsRepository;
-    private final UserIdFetcher userIdFetcher;
-    private final RoomCloser roomCloser;
-    private final RoomIdFetcher roomIdFetcher;
-    private final RandomNumberGenerator randomNumberGenerator;
-    private final OpponentNameFetcher opponentNameFetcher;
+  private final RoomsRepository roomsRepository;
+  private final AllocationsRepository allocationsRepository;
+  private final UserIdFetcher userIdFetcher;
+  private final RoomCloser roomCloser;
+  private final RoomIdFetcher roomIdFetcher;
+  private final RandomNumberGenerator randomNumberGenerator;
+  private final OpponentNameFetcher opponentNameFetcher;
 
-    // ルーム作成
-    public CreateResponse create(final CreateRequest createRequest, final HttpServletRequest httpServletRequest) {
-        final short inviteId = randomNumberGenerator.generateRandomNumber();
+  // ルーム作成
+  public CreateResponse create(
+      final CreateRequest createRequest, final HttpServletRequest httpServletRequest) {
+    final short inviteId = randomNumberGenerator.generateRandomNumber();
 
-        roomsRepository.create(inviteId, createRequest.isDifficult());
-        allocationsRepository.join(userIdFetcher.fetchUserId(httpServletRequest), inviteId, true);
+    roomsRepository.create(inviteId, createRequest.isDifficult());
+    allocationsRepository.join(userIdFetcher.fetchUserId(httpServletRequest), inviteId, true);
 
-        return new CreateResponse(inviteId);
+    return new CreateResponse(inviteId);
+  }
+
+  // ルーム参加
+  public JoinResponse join(
+      final JoinRequest joinRequest, final HttpServletRequest httpServletRequest) {
+    final short inviteId = joinRequest.getInviteId();
+
+    // ルームが存在しない場合
+    if (roomsRepository.fetchRoomByInviteId(inviteId) == null) {
+      return new JoinResponse(false);
     }
 
-    // ルーム参加
-    public JoinResponse join(final JoinRequest joinRequest, final HttpServletRequest httpServletRequest) {
-        final short inviteId = joinRequest.getInviteId();
+    allocationsRepository.join(
+        userIdFetcher.fetchUserId(httpServletRequest), joinRequest.getInviteId(), false);
 
-        // ルームが存在しない場合
-        if (roomsRepository.fetchRoomByInviteId(inviteId) == null) {
-            return new JoinResponse(false);
-        }
+    return new JoinResponse(true);
+  }
 
-        allocationsRepository.join(userIdFetcher.fetchUserId(httpServletRequest), joinRequest.getInviteId(), false);
+  // ルーム情報取得
+  public FetchInformationResponse fetchInformation(final HttpServletRequest httpServletRequest) {
+    final int userId = userIdFetcher.fetchUserId(httpServletRequest);
+    final int roomId = roomIdFetcher.fetchRoomId(userId);
+    final String opponentName = opponentNameFetcher.fetchOpponentName(userId, roomId);
 
-        return new JoinResponse(true);
+    // ルームが動作をしていない場合 and 相手ユーザー名が存在する場合
+    if (!roomsRepository.isActive(roomId) && opponentName != null) {
+      return new FetchInformationResponse(opponentName, allocationsRepository.isHost(userId), true);
     }
 
-    // ルーム情報取得
-    public FetchInformationResponse fetchInformation(final HttpServletRequest httpServletRequest) {
-        final int userId = userIdFetcher.fetchUserId(httpServletRequest);
-        final int roomId = roomIdFetcher.fetchRoomId(userId);
-        final String opponentName = opponentNameFetcher.fetchOpponentName(userId, roomId);
+    return new FetchInformationResponse(opponentName, allocationsRepository.isHost(userId), false);
+  }
 
-        // ルームが動作をしていない場合 and 相手ユーザー名が存在する場合
-        if (!roomsRepository.isActive(roomId) && opponentName != null) {
-            return new FetchInformationResponse(opponentName, allocationsRepository.isHost(userId), true);
-        }
+  // ルーム退出
+  public void exit(final HttpServletRequest httpServletRequest) {
+    final int userId = userIdFetcher.fetchUserId(httpServletRequest);
 
-        return new FetchInformationResponse(opponentName, allocationsRepository.isHost(userId), false);
+    // ユーザーがホストである場合
+    if (allocationsRepository.isHost(userId)) {
+      roomCloser.close(roomIdFetcher.fetchRoomId(userId));
     }
 
-    // ルーム退出
-    public void exit(final HttpServletRequest httpServletRequest) {
-        final int userId = userIdFetcher.fetchUserId(httpServletRequest);
-
-        // ユーザーがホストである場合
-        if (allocationsRepository.isHost(userId)) {
-            roomCloser.close(roomIdFetcher.fetchRoomId(userId));
-        }
-
-        allocationsRepository.exit(userId);
-    }
-
+    allocationsRepository.exit(userId);
+  }
 }

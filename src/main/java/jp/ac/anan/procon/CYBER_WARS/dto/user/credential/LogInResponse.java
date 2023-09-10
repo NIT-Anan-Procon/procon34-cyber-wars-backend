@@ -5,6 +5,5 @@ import lombok.Data;
 @Data
 public class LogInResponse {
 
-    private final boolean success;
-
+  private final boolean success;
 }

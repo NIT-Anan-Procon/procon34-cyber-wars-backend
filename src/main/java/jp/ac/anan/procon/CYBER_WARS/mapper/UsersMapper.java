@@ -1,5 +1,6 @@
 package jp.ac.anan.procon.CYBER_WARS.mapper;
 
+import jp.ac.anan.procon.CYBER_WARS.entity.Users;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Result;
@@ -8,22 +9,22 @@ import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
-import jp.ac.anan.procon.CYBER_WARS.entity.Users;
-
 @Mapper
 public interface UsersMapper {
 
-    // ユーザー登録
-    @Insert("""
+  // ユーザー登録
+  @Insert(
+      """
             INSERT INTO
                 users(name, password)
             VALUES
                 (#{name}, #{password})
             """)
-    void register(final String name, final String password);
+  void register(final String name, final String password);
 
-    // ユーザー取得 by ユーザーID
-    @Select("""
+  // ユーザー取得 by ユーザーID
+  @Select(
+      """
             SELECT
                 *
             FROM
@@ -31,15 +32,18 @@ public interface UsersMapper {
             WHERE
                 user_id = #{userId}
             """)
-    @Results(id = "Users", value = {
-            @Result(column = "user_id", property = "userId"),
-            @Result(column = "name", property = "name"),
-            @Result(column = "password", property = "password")
-    })
-    Users fetchUserByUserId(final int userId);
+  @Results(
+      id = "Users",
+      value = {
+        @Result(column = "user_id", property = "userId"),
+        @Result(column = "name", property = "name"),
+        @Result(column = "password", property = "password")
+      })
+  Users fetchUserByUserId(final int userId);
 
-    // ユーザー取得 by ユーザー名
-    @Select("""
+  // ユーザー取得 by ユーザー名
+  @Select(
+      """
             SELECT
                 *
             FROM
@@ -47,11 +51,12 @@ public interface UsersMapper {
             WHERE
                 name = #{name}
             """)
-    @ResultMap("Users")
-    Users fetchUserByName(final String name);
+  @ResultMap("Users")
+  Users fetchUserByName(final String name);
 
-    // ユーザー名更新
-    @Update("""
+  // ユーザー名更新
+  @Update(
+      """
             UPDATE
                 users
             SET
@@ -59,10 +64,11 @@ public interface UsersMapper {
             WHERE
                 user_id = #{userId}
             """)
-    void updateName(final int userId, final String name);
+  void updateName(final int userId, final String name);
 
-    // ユーザーパスワード更新
-    @Update("""
+  // ユーザーパスワード更新
+  @Update(
+      """
             UPDATE
                 users
             SET
@@ -70,6 +76,5 @@ public interface UsersMapper {
             WHERE
                 user_id = #{userId}
             """)
-    void updatePassword(final int userId, final String password);
-
+  void updatePassword(final int userId, final String password);
 }
