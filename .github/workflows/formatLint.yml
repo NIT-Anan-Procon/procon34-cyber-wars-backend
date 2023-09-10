@@ -1,8 +1,6 @@
-name: build-test
+name: formatLint
 on:
   pull_request:
-    branches:
-      - main
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -22,5 +20,8 @@ jobs:
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
 
-      - name: build
-        run: ./gradlew clean build
+      - name: check style
+        run: ./gradlew checkstyleMain
+
+      - name: spotless
+        run: ./gradlew spotlessCheck
