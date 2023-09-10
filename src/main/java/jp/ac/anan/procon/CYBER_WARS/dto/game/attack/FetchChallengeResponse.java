@@ -2,7 +2,7 @@ package jp.ac.anan.procon.CYBER_WARS.dto.game.attack;
 
 import java.util.List;
 
-import jp.ac.anan_nct.procon.procon34_CYBER_WARS_backend.pojo.Vulnerability;
+import jp.ac.anan.procon.CYBER_WARS.pojo.Vulnerability;
 import lombok.Data;
 
 @Data
