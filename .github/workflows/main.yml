@@ -19,4 +19,4 @@ jobs:
           script: |
             cd /var/www/procon34_CYBER_WARS_backend/
             git pull origin main
-            /opt/gradle/gradle-8.1.1/bin/gradle clean build
+            ./gradlew clean build
