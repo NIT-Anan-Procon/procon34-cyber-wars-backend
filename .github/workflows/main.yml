@@ -17,6 +17,6 @@ jobs:
           proxy_username: ${{ secrets.USERNAME }}
           proxy_password: ${{ secrets.PROXY_PASSWORD }}
           script: |
-            cd /var/www/procon34_CYBER_WARS_backend/
+            cd /var/www/procon34-cyber-wars-backend/
             git pull origin main
             ./gradlew clean build

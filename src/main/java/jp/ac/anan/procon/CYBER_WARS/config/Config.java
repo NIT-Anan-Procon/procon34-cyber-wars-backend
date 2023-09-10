@@ -1,4 +1,4 @@
-package jp.ac.anan.procon.CYBER_WARS.config;
+package jp.ac.anan.procon.cyber_wars.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

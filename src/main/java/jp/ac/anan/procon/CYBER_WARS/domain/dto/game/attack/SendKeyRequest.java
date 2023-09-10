@@ -1,0 +1,13 @@
+package jp.ac.anan.procon.cyber_wars.domain.dto.game.attack;
+
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+import lombok.Data;
+
+@Data
+public class SendKeyRequest {
+
+  @NotBlank
+  @Size(max = 20)
+  private final String flag;
+}

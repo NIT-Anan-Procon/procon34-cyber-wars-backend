@@ -1,4 +1,4 @@
-# procon34_CYBER_WARS_backend
+# procon34-cyber-wars-backend
 
 ## 環境変数
 
