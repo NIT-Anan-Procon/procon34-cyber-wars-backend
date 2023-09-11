@@ -1,22 +1,15 @@
 package com.example.procon34_CYBER_WARS_backend.service;
 
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import com.example.procon34_CYBER_WARS_backend.dto.user.RegisterRequest;
-import com.example.procon34_CYBER_WARS_backend.dto.user.RegisterResponse;
-import com.example.procon34_CYBER_WARS_backend.dto.user.UpdateNameRequest;
-import com.example.procon34_CYBER_WARS_backend.dto.user.UpdateNameResponse;
-import com.example.procon34_CYBER_WARS_backend.dto.user.UpdatePasswordRequest;
-import com.example.procon34_CYBER_WARS_backend.dto.user.UpdatePasswordResponse;
+import com.example.procon34_CYBER_WARS_backend.dto.user.*;
 import com.example.procon34_CYBER_WARS_backend.repository.UsersRepository;
 import com.example.procon34_CYBER_WARS_backend.utility.StringFormatter;
 import com.example.procon34_CYBER_WARS_backend.utility.users.PasswordEncoder;
 import com.example.procon34_CYBER_WARS_backend.utility.users.UserFetcherByName;
 import com.example.procon34_CYBER_WARS_backend.utility.users.UserIdFetcher;
-
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -71,7 +64,6 @@ public class UserService {
         }
 
         usersRepository.updateName(userIdFetcher.fetchUserId(httpServletRequest), formattedName);
-
         return new UpdateNameResponse(true);
     }
 
