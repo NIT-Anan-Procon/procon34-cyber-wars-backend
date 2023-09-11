@@ -1,14 +1,11 @@
-name: CI
+name: Lint Format
 on:
   pull_request:
-    branches:
-      - main
-      - develop
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 jobs:
-  ci:
+  lint-format:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -22,5 +19,8 @@ jobs:
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
 
-      - name: Build
-        run: ./gradlew clean build
+      - name: checkstyle Main
+        run: ./gradlew checkstyleMain
+
+      - name: spotless Check
+        run: ./gradlew spotlessCheck
