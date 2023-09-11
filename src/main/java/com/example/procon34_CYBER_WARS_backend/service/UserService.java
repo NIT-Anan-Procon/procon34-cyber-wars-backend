@@ -64,6 +64,7 @@ public class UserService {
         }
 
         usersRepository.updateName(userIdFetcher.fetchUserId(httpServletRequest), formattedName);
+
         return new UpdateNameResponse(true);
     }
 
