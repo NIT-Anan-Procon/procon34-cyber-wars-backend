@@ -1,13 +1,13 @@
-name: main
+name: main CD
 on:
   push:
     branches:
       - main
 jobs:
-  build:
-    runs-on: ubuntu-22.04
+  main-cd:
+    runs-on: ubuntu-latest
     steps:
-      - name: main
+      - name: main CD
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SERVER_HOST }}
@@ -17,6 +17,6 @@ jobs:
           proxy_username: ${{ secrets.USERNAME }}
           proxy_password: ${{ secrets.PROXY_PASSWORD }}
           script: |
-            cd /var/www/procon34_CYBER_WARS_backend/
+            cd /var/www/procon34-cyber-wars-backend/main/
             git pull origin main
-            /opt/gradle/gradle-8.1.1/bin/gradle clean build
+            ./gradlew clean build
