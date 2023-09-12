@@ -1,13 +1,15 @@
-name: build-test
+name: CI
 on:
   pull_request:
+    branches:
+      - main
+      - develop
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 jobs:
   ci:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v3
 
@@ -20,5 +22,11 @@ jobs:
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
 
-      - name: build
+      - name: checkstyle Main
+        run: ./gradlew checkstyleMain
+
+      - name: spotless Check
+        run: ./gradlew spotlessCheck
+
+      - name: Build
         run: ./gradlew clean build
