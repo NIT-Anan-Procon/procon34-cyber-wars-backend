@@ -35,9 +35,9 @@ tasks.named('test') {
 }
 
 bootRun {
-	if (project.hasProperty('args')) {
-		args project.args.split('\\s+')
-	}
+    if (project.hasProperty('args')) {
+        args project.args.split('\\s+')
+    }
 }
 
 checkstyle {
@@ -45,7 +45,7 @@ checkstyle {
 }
 
 spotless {
-	java {
-		googleJavaFormat()
-	}
+    java {
+        googleJavaFormat()
+    }
 }
