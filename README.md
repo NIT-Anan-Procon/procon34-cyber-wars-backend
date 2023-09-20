@@ -32,7 +32,7 @@ gradle clean build
 - [Lombok 1.18.28](https://projectlombok.org/)
 - [Jakarta Persistence 3.1.0](https://jakarta.ee/specifications/persistence/)
 - [Apache Commons Text 1.10.0](https://commons.apache.org/proper/commons-text/)
-- [JavaParser 3.25.5](https://javaparser.org/)
+- [Apache Commons IO 2.13.0](https://commons.apache.org/proper/commons-io/)
 - [checkstyle 10.12.3](https://checkstyle.sourceforge.io/)
 - [spotless 6.21.0](https://plugins.gradle.org/plugin/com.diffplug.gradle.spotless)
 - [MariaDB 10.6.12](https://mariadb.org/)
