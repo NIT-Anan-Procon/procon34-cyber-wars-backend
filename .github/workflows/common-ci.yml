@@ -12,7 +12,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  feature-ci:
+  common-ci:
     runs-on: ubuntu-latest
     steps:
       - name: spotless Check
