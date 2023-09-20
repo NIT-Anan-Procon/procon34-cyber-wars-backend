@@ -12,6 +12,9 @@ jobs:
   main-cd:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
       - name: CD
         uses: ./.github/actions/cd
         with:
