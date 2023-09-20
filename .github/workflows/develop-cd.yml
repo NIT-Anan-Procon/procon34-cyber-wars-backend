@@ -22,6 +22,5 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.SERVER_PASSWORD }}
           proxy_host: ${{ secrets.PROXY_HOST }}
-          proxy_username: ${{ secrets.USERNAME }}
           proxy_password: ${{ secrets.PROXY_PASSWORD }}
           branch-name: develop
