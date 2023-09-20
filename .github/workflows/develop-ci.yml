@@ -10,7 +10,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  main-ci:
+  develop-ci:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
