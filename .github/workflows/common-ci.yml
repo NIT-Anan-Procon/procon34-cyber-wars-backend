@@ -1,0 +1,19 @@
+name: Common CI
+
+on:
+  pull_request:
+    branches:
+      - "!main"
+      - "!develop"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  feature-ci:
+    runs-on: ubuntu-latest
+    steps:
+      - name: spotless Check
+        run: ./gradlew spotlessCheck
+        shell: bash
