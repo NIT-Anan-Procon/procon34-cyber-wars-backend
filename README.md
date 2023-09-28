@@ -29,7 +29,7 @@ gradle clean build
 - [Spring Boot CLI 3.1.4](https://spring.io/projects/spring-boot)
 - [Spring Dependency Management 1.1.3](https://docs.spring.io/dependency-management-plugin/docs/current/reference/html/)
 - [MySQL Connector Java 8.0.33](https://www.mysql.com/jp/products/connector/)
-- [MyBatis 3.0.0](https://blog.mybatis.org/)
+- [MyBatis 3.0.2](https://blog.mybatis.org/)
 - [Lombok 1.18.28](https://projectlombok.org/)
 - [Jakarta Persistence 3.1.0](https://jakarta.ee/specifications/persistence/)
 - [Apache Commons Text 1.10.0](https://commons.apache.org/proper/commons-text/)
