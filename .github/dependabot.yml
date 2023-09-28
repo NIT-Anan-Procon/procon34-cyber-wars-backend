@@ -7,5 +7,5 @@ updates:
     target-branch: "develop"
     reviewers:
       - "ORIKAMIxNEP"
-    labels:
-      - "help wanted"
+    assignees:
+      - "ORIKAMIxNEP"
