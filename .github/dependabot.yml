@@ -4,8 +4,3 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
-    target_branch: "develop"
-    reviewers:
-      - "ORIKAMIxNEP"
-    labels:
-      - "help wanted"
