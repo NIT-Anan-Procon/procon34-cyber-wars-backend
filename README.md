@@ -1,15 +1,15 @@
-# procon34_CYBER_WARS_backend
+# procon34-cyber-wars-backend
 
 ## 環境変数
 
 > .env
 >
 > ```dotenv:.env
-> DATABASE=「DATABASE NAME」
-> DB_HOST=「DB HOST」
-> DB_PORT=「DB PORT」
-> DB_USER=「DB USER」
-> OPENAI_API_KEY=「OPENAI API KEY」
+> DATABASE=「Database Name」
+> DB_HOST=「Database Host」
+> DB_PORT=「Database Port」
+> DB_USER=「Database User」
+> OPENAI_API_KEY=「OpenAI API Key」
 > ```
 
 ## 実行方法
