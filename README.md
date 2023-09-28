@@ -3,8 +3,7 @@
 ## 実行方法
 
 「Database Password」にデータベースのユーザーパスワードを入れる<br>
-「Server Port」に起動するポート番号を入れる<br>
-※「Server Port」のデフォルト値は `8080`
+必要であれば「Server Port」に起動するポート番号を入れる（デフォルト値は`8080`）
 
 ```
 gradle clean build
