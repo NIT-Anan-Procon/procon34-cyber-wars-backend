@@ -1,24 +1,14 @@
 # procon34-cyber-wars-backend
 
-## 環境変数
-
-> .env
->
-> ```dotenv:.env
-> DATABASE=「Database Name」
-> DB_HOST=「Database Host」
-> DB_PORT=「Database Port」
-> DB_USER=「Database User」
-> OPENAI_API_KEY=「OpenAI API Key」
-> ```
-
 ## 実行方法
 
-「Database Password」にデータベースのユーザーパスワードを入れて実行
+「Database Password」にデータベースのユーザーパスワードを入れる<br>
+「Server Port」に起動するポート番号を入れる<br>
+※「Server Port」のデフォルト値は `8080`
 
 ```
 gradle clean build
-./gradlew bootRun -Pargs="--spring.datasource.password=「Database Password」"
+./gradlew bootRun -Pargs="--spring.datasource.password=「Database Password」 --server.port=「Server Port」"
 ```
 
 ## 開発環境
