@@ -5,8 +5,10 @@
 「Database Password」にデータベースのユーザーパスワードを入れる<br>
 必要であれば「Server Port」に起動するポート番号を入れる（デフォルト値は`8080`）
 
-```
+```console
 gradle clean build
+```
+```console
 ./gradlew bootRun -Pargs="--spring.datasource.password=「Database Password」 --server.port=「Server Port」"
 ```
 
