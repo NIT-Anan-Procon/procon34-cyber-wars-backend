@@ -26,6 +26,6 @@ gradle clean build
 - [Apache Commons Text 1.10.0](https://commons.apache.org/proper/commons-text/)
 - [Apache Commons IO 2.13.0](https://commons.apache.org/proper/commons-io/)
 - [checkstyle 10.12.3](https://checkstyle.sourceforge.io/)
-- [spotless 6.21.0](https://plugins.gradle.org/plugin/com.diffplug.gradle.spotless)
+- [spotless 6.22.0](https://plugins.gradle.org/plugin/com.diffplug.gradle.spotless)
 - [MariaDB 10.6.12](https://mariadb.org/)
 - [PHP 8.1.2](https://www.php.net/)
