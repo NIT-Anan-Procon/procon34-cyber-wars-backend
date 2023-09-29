@@ -1,6 +1,9 @@
 name: auto-assign
 
 on:
+  issues:
+    types:
+      - opened
   pull_request:
     types:
       - opened
@@ -16,9 +19,9 @@ jobs:
       - uses: actions/github-script@main
         with:
           script: |
-            github.issues.addAssignees({
+            github.rest.issues.addAssignees({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.issue.number,
-              assignees: ${{ github.actor }}
+              assignees: `${{ github.actor }}`
             });
