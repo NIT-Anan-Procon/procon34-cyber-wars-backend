@@ -15,6 +15,7 @@ jobs:
 
       - uses: actions/github-script@main
         with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             github.issues.addAssignees({
               owner: context.repo.owner,
