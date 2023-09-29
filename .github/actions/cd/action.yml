@@ -34,6 +34,7 @@ runs:
         proxy_username: ${{ inputs.username }}
         proxy_password: ${{ inputs.proxy_password }}
         script: |
+          cd /var/www/procon34-cyber-wars-backend/${{ inputs.branch-name }}/
           git fetch origin ${{ inputs.branch-name }}
           git reset --hard origin/${{ inputs.branch-name }}
           ./gradlew clean build
