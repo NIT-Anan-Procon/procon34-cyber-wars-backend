@@ -1,6 +1,9 @@
 name: auto-assign
 
 on:
+  issues:
+    types:
+      - opened
   pull_request:
     types:
       - opened
