@@ -16,7 +16,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@main
 
-      - uses: actions/github-script@main
+      - uses: actions/github-script@v6
         with:
           script: |
             github.issues.addAssignees({
