@@ -1,8 +1,12 @@
 name: auto-assign
 
 on:
+  issues:
+    types:
+      - opened
   pull_request:
-    types: [opened]
+    types:
+      - opened
 
 jobs:
   auto-assign:
@@ -13,7 +17,6 @@ jobs:
         uses: actions/checkout@main
 
       - uses: actions/github-script@main
-        if: github.event_name == "pull_request"
         with:
           script: |
             github.issues.addAssignees({
