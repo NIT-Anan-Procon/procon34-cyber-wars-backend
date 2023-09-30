@@ -7,15 +7,13 @@ import lombok.Data;
 @Entity
 @Data
 public class Challenges {
-  private final int challengeId;
+  @Id private final int challengeId;
 
   @Id private final byte vulnerabilityId;
+
+  private final String goal;
 
   private final String choice;
 
   private final String hint;
-
-  private final String flag;
-
-  private final boolean difficult;
 }
