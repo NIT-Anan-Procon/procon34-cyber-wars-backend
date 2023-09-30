@@ -9,7 +9,5 @@ import lombok.Data;
 public class Scores {
   @Id private final byte scoreType;
 
-  @Id private final boolean difficult;
-
   private final byte score;
 }
