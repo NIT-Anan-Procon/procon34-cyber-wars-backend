@@ -26,7 +26,7 @@ gradle clean build
 - [MyBatis 3.0.2](https://blog.mybatis.org/)
 - [Jakarta Persistence 3.1.0](https://jakarta.ee/specifications/persistence/)
 - [Apache Commons Text 1.10.0](https://commons.apache.org/proper/commons-text/)
-- [Apache Commons IO 2.13.0](https://commons.apache.org/proper/commons-io/)
+- [Apache Commons IO 2.14.0](https://commons.apache.org/proper/commons-io/)
 
 ## Linter / Formatter
 - [checkstyle 10.12.3](https://checkstyle.sourceforge.io/)
