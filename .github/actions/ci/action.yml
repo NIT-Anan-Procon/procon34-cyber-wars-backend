@@ -5,13 +5,13 @@ runs:
   using: composite
   steps:
     - name: Setup JDK 17
-      uses: actions/setup-java@v3
+      uses: actions/setup-java@main
       with:
         java-version: 17
         distribution: microsoft
 
     - name: Setup Gradle
-      uses: gradle/gradle-build-action@v2
+      uses: gradle/gradle-build-action@main
 
     - name: checkstyle Main
       run: ./gradlew checkstyleMain
