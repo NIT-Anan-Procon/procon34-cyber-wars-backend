@@ -17,4 +17,3 @@ jobs:
     steps:
       - name: spotless Check
         run: ./gradlew spotlessCheck
-        shell: bash
