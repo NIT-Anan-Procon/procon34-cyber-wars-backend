@@ -1,13 +1,12 @@
 package jp.ac.anan.procon.cyber_wars.application.utility;
 
-import org.springframework.stereotype.Component;
-
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
+import org.springframework.stereotype.Component;
 
 @Component
 public class CodeReplacer {
