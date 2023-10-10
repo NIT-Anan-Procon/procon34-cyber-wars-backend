@@ -9,11 +9,15 @@ import lombok.Data;
 public class Challenges {
   @Id private final int challengeId;
 
-  @Id private final byte vulnerabilityId;
-
   private final String goal;
 
   private final String choice;
 
   private final String hint;
+
+  private final String explanation;
+
+  private final String targetTable;
+
+  private final boolean available;
 }
