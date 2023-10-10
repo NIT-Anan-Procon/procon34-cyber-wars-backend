@@ -27,6 +27,7 @@ gradle clean build
 - [Jakarta Persistence 3.1.0](https://jakarta.ee/specifications/persistence/)
 - [Apache Commons Text 1.10.0](https://commons.apache.org/proper/commons-text/)
 - [Apache Commons IO 2.14.0](https://commons.apache.org/proper/commons-io/)
+- [Apache HttpComponents HttpClient 4.5.14](https://hc.apache.org/httpcomponents-client-4.5.x/)
 
 ## Linter / Formatter
 - [checkstyle 10.12.3](https://checkstyle.sourceforge.io/)
