@@ -9,9 +9,9 @@ import lombok.Data;
 public class Games {
   @Id private final int roomId;
 
-  @Id private final int userId;
+  @Id private final int challengeId;
 
-  @Id private final byte vulnerabilityId;
+  @Id private final int userId;
 
   @Id private final byte scoreType;
 }
