@@ -1,4 +1,4 @@
-name: main CD
+name: Main CD
 
 on:
   push:

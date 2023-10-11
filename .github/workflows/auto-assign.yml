@@ -16,6 +16,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@main
 
+      - name: Assign
       - uses: actions/github-script@main
         with:
           script: |
