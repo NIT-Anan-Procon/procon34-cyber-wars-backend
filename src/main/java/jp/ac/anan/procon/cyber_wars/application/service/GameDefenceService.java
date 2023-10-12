@@ -9,8 +9,8 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import jp.ac.anan.procon.cyber_wars.application.utility.CodeReplacer;
 import jp.ac.anan.procon.cyber_wars.application.utility.UserIdFetcher;
-import jp.ac.anan.procon.cyber_wars.domain.dto.game.defense.SendCodeRequest;
-import jp.ac.anan.procon.cyber_wars.domain.dto.game.defense.SendCodeResponse;
+import jp.ac.anan.procon.cyber_wars.domain.dto.game.defence.SendCodeRequest;
+import jp.ac.anan.procon.cyber_wars.domain.dto.game.defence.SendCodeResponse;
 import jp.ac.anan.procon.cyber_wars.infrastructure.repository.cyber_wars.AllocationsRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.http.client.methods.HttpGet;
@@ -23,7 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class GameDefenseService {
+public class GameDefenceService {
   private final AllocationsRepository allocationsRepository;
   private final UserIdFetcher userIdFetcher;
   private final CodeReplacer codeReplacer;
@@ -39,13 +39,7 @@ public class GameDefenseService {
 
     try {
       Files.writeString(temporaryPhpPath, sendCodeRequest.code());
-    } catch (final Exception exception) {
-      exception.printStackTrace();
 
-      return new SendCodeResponse(false);
-    }
-
-    try {
       codeReplacer.replace(temporaryPhpPath, "shell_exec(", "safe_shell_exec(");
     } catch (final Exception exception) {
       exception.printStackTrace();

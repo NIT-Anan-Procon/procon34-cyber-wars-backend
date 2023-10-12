@@ -86,11 +86,11 @@ public class GameBattleService {
       return new SendKeyResponse(null, false, null);
     }
 
-    if (gamesRepository.fetchGame(userId, roomId, challengeId, (byte) 0) != null) {
+    if (gamesRepository.fetchGame(userId, roomId, challengeId, (byte) 2) != null) {
       return new SendKeyResponse(false, true, null);
     }
 
-    gamesRepository.addScore(userId, roomId, challengeId, (byte) 0);
+    gamesRepository.addScore(userId, roomId, challengeId, (byte) 2);
 
     return new SendKeyResponse(true, true, scoresRepository.fetchScore((byte) 2));
   }
