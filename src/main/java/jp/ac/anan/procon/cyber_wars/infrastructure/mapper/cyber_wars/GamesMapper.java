@@ -13,11 +13,11 @@ public interface GamesMapper {
   @Insert(
       """
       INSERT INTO
-        games(room_id,challenge_id, user_id, score_type)
+        games(room_id,challenge_id, user_id, game_id)
       VALUES
-        (#{roomId},#{challengeId}, #{userId}, #{scoreType})
+        (#{roomId},#{challengeId}, #{userId}, #{gameId})
       """)
-  void addScore(final int userId, final int challengeId, final int roomId, final byte scoreType);
+  void addScore(final int userId, final int challengeId, final int roomId, final byte gameId);
 
   // ゲーム取得
   @Select(
@@ -33,7 +33,7 @@ public interface GamesMapper {
       AND
         user_id = #{userId}
       AND
-        score_type = #{scoreType}
+        game_id = #{gameId}
       """)
   @Results(
       id = "Games",
@@ -41,9 +41,23 @@ public interface GamesMapper {
         @Result(column = "room_id", property = "roomId"),
         @Result(column = "challenge_id", property = "challengeId"),
         @Result(column = "user_id", property = "userId"),
-        @Result(column = "score_type", property = "scoreType")
+        @Result(column = "game_id", property = "gameId")
       })
-  Games fetchGame(final int userId, final int roomId, final int challengeId, final byte scoreType);
+  Games fetchGame(final int userId, final int roomId, final int challengeId, final byte gameId);
+
+  // 課題ID取得
+  @Select(
+      """
+      SELECT
+        challenge_id
+      FROM
+        games
+      WHERE
+        room_id = #{roomId}
+      AND
+        game_id = 0
+      """)
+  int[] fetchChallengeIds(final int roomId);
 
   // スコア取得
   @Select(

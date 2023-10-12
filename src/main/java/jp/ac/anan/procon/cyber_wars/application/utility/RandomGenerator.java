@@ -33,7 +33,7 @@ public class RandomGenerator {
     return inviteId;
   }
 
-  // フラグ生成
+  // キー生成
   public String generateKey() {
     final StringBuilder key = new StringBuilder();
     final Random random = new Random();

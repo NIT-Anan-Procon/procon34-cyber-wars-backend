@@ -12,14 +12,19 @@ public class GamesRepository {
 
   // スコア追加
   public void addScore(
-      final int userId, final int roomId, final int challengeId, final byte scoreType) {
-    gamesMapper.addScore(userId, roomId, challengeId, scoreType);
+      final int userId, final int roomId, final int challengeId, final byte gameId) {
+    gamesMapper.addScore(userId, roomId, challengeId, gameId);
   }
 
   // ゲーム取得
   public Games fetchGame(
-      final int userId, final int roomId, final int challengeId, final byte scoreType) {
-    return gamesMapper.fetchGame(userId, roomId, challengeId, scoreType);
+      final int userId, final int roomId, final int challengeId, final byte gameId) {
+    return gamesMapper.fetchGame(userId, roomId, challengeId, gameId);
+  }
+
+  // 課題ID取得
+  public int[] fetchChallengeIds(final int roomId) {
+    return gamesMapper.fetchChallengeIds(roomId);
   }
 
   // スコア取得

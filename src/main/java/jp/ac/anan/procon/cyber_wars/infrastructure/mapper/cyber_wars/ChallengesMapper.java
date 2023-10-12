@@ -31,6 +31,42 @@ public interface ChallengesMapper {
       })
   Challenges fetchChallenge(final int challengeId);
 
+  // 有効課題ID取得
+  @Select(
+      """
+      SELECT
+        challenge_id
+      FROM
+        challenges
+      WHERE
+        available = TRUE
+      ORDER BY
+        RAND()
+      LIMIT
+        1
+      """)
+  int fetchAvailableChallengeId();
+
+  // 未使用課題ID取得
+  @Select(
+      """
+      SELECT
+        challenge_id
+      FROM
+        challenges
+      WHERE
+        challenge_id = #{challengeId}
+      AND
+        challenge_id
+      NOT IN
+        (${challengeIds})
+      ORDER BY
+        RAND()
+      LIMIT
+        1
+      """)
+  Integer fetchUnusedChallengeId(final String challengeIds);
+
   // 解説取得
   @Select(
       """

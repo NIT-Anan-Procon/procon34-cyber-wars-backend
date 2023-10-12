@@ -16,5 +16,11 @@ public class Rooms {
 
   private final Timestamp startTime;
 
+  private final short attack_phase_time_limit;
+
+  private final short defence_phase_time_limit;
+
+  private final short battle_phase_time_limit;
+
   private final boolean active;
 }

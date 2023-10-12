@@ -33,7 +33,7 @@ public class GameBattleService {
   private final UserIdFetcher userIdFetcher;
   private final TableUtility tableUtility;
 
-  // 修正課題取得
+  // バトルフェーズ：修正課題取得
   public FetchRevisionResponse fetchRevision(final HttpServletRequest httpServletRequest) {
     final int userId = userIdFetcher.fetch(httpServletRequest);
     final int roomId = allocationsRepository.fetchRoomId(userId);
@@ -45,6 +45,8 @@ public class GameBattleService {
           tableUtility.generateKey(),
           tableUtility.generateId(
               challengesRepository.fetchTargetTable(roomsRepository.fetchChallengeId(roomId))));
+
+      roomsRepository.open(roomId);
     }
 
     final int opponentUserId = allocationsRepository.fetchOpponentUserId(userId, roomId);
@@ -64,7 +66,7 @@ public class GameBattleService {
     return new FetchRevisionResponse(opponentUserId, revisionCode);
   }
 
-  // フラグ送信
+  // バトルフェーズ：キー送信
   public SendKeyResponse sendKey(
       final SendKeyRequest sendKeyRequest, final HttpServletRequest httpServletRequest) {
     final int userId = userIdFetcher.fetch(httpServletRequest);
@@ -72,7 +74,7 @@ public class GameBattleService {
     final int challengeId = roomsRepository.fetchChallengeId(roomId);
     String key = sendKeyRequest.key();
 
-    // フラグにFLAG{が含まれない場合
+    // キーにFLAG{が含まれない場合
     if (!key.contains("KEY{")) {
       key = "KEY{" + key + "}";
     }
@@ -86,12 +88,13 @@ public class GameBattleService {
       return new SendKeyResponse(null, false, null);
     }
 
-    if (gamesRepository.fetchGame(userId, roomId, challengeId, (byte) 2) != null) {
+    // ゲームが存在する場合
+    if (gamesRepository.fetchGame(userId, roomId, challengeId, (byte) 5) != null) {
       return new SendKeyResponse(false, true, null);
     }
 
-    gamesRepository.addScore(userId, roomId, challengeId, (byte) 2);
+    gamesRepository.addScore(userId, roomId, challengeId, (byte) 5);
 
-    return new SendKeyResponse(true, true, scoresRepository.fetchScore((byte) 2));
+    return new SendKeyResponse(true, true, scoresRepository.fetchScore((byte) 5));
   }
 }

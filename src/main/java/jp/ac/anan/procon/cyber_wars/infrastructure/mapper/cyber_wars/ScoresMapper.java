@@ -13,7 +13,7 @@ public interface ScoresMapper {
       FROM
         scores
       WHERE
-        score_type = #{scoreType}
+        game_id = #{gameId}
       """)
-  short fetchScore(final byte scoreType);
+  short fetchScore(final byte gameId);
 }

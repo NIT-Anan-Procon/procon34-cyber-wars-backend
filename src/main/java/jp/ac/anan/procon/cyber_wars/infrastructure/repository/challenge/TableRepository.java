@@ -19,7 +19,7 @@ public class TableRepository {
     usersTableMapper.create(originalTargetTable, targetTable);
   }
 
-  // フラグ挿入
+  // キー挿入
   public void updateKey(final String targetTable, final String key, final String mainId) {
     usersTableMapper.updateKey(targetTable, key, mainId);
   }

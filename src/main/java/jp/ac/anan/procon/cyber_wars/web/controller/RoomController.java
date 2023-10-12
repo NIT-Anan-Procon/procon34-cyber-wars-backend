@@ -3,7 +3,9 @@ package jp.ac.anan.procon.cyber_wars.web.controller;
 import jakarta.servlet.http.HttpServletRequest;
 import jp.ac.anan.procon.cyber_wars.application.service.RoomService;
 import jp.ac.anan.procon.cyber_wars.application.utility.HttpClientErrorHandler;
+import jp.ac.anan.procon.cyber_wars.domain.dto.room.CreateRequest;
 import jp.ac.anan.procon.cyber_wars.domain.dto.room.JoinRequest;
+import jp.ac.anan.procon.cyber_wars.domain.dto.room.UpdateTimeLimitRequest;
 import jp.ac.anan.procon.cyber_wars.domain.dto.utility.HttpClientErrorHandlerResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +13,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,13 +34,15 @@ public class RoomController {
   @ResponseBody
   public ResponseEntity<?> create(
       @RequestHeader("X-CSRF-Token") String clientCsrfToken,
+      @RequestBody @Validated final CreateRequest createRequest,
+      final BindingResult bindingResult,
       final HttpServletRequest httpServletRequest) {
     final HttpClientErrorHandlerResponse httpClientErrorHandlerResponse =
-        httpClientErrorHandler.handle(clientCsrfToken, null, httpServletRequest);
+        httpClientErrorHandler.handle(clientCsrfToken, bindingResult, httpServletRequest);
     if (httpClientErrorHandlerResponse.error()) {
       return httpClientErrorHandlerResponse.responseEntity();
     }
-    return ResponseEntity.ok(roomService.create(httpServletRequest));
+    return ResponseEntity.ok(roomService.create(createRequest, httpServletRequest));
   }
 
   // ルーム参加
@@ -68,6 +73,22 @@ public class RoomController {
       return httpClientErrorHandlerResponse.responseEntity();
     }
     return ResponseEntity.ok(roomService.fetchInformation(httpServletRequest));
+  }
+
+  // ルーム制限時間更新
+  @PatchMapping
+  public ResponseEntity<?> updateTimeLimit(
+      @RequestHeader("X-CSRF-Token") String clientCsrfToken,
+      @RequestBody @Validated final UpdateTimeLimitRequest updateTimeLimitRequest,
+      final BindingResult bindingResult,
+      final HttpServletRequest httpServletRequest) {
+    final HttpClientErrorHandlerResponse httpClientErrorHandlerResponse =
+        httpClientErrorHandler.handle(clientCsrfToken, bindingResult, httpServletRequest);
+    if (httpClientErrorHandlerResponse.error()) {
+      return httpClientErrorHandlerResponse.responseEntity();
+    }
+    roomService.updateTimeLimit(updateTimeLimitRequest, httpServletRequest);
+    return ResponseEntity.ok().build();
   }
 
   // ルーム退出

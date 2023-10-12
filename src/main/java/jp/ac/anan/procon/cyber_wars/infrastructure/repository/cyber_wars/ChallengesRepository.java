@@ -10,9 +10,19 @@ import org.springframework.stereotype.Repository;
 public class ChallengesRepository {
   private final ChallengesMapper challengesMapper;
 
-  // 課題取得 by 課題ID
+  // 課題取得
   public Challenges fetchChallenge(final int challengeId) {
     return challengesMapper.fetchChallenge(challengeId);
+  }
+
+  // 有効課題ID取得
+  public int fetchAvailableChallengeId() {
+    return challengesMapper.fetchAvailableChallengeId();
+  }
+
+  // 未使用課題ID取得
+  public Integer fetchUnusedChallengeId(final String challengeIds) {
+    return challengesMapper.fetchUnusedChallengeId(challengeIds);
   }
 
   // 解説取得

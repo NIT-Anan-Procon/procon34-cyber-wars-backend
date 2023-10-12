@@ -32,7 +32,7 @@ public class GameAttackService {
   private final TableRepository tableRepository;
   private final UserIdFetcher userIdFetcher;
 
-  // 課題取得
+  // アタックフェーズ：課題取得
   public FetchChallengeResponse fetchChallenge(final HttpServletRequest httpServletRequest) {
     final int roomId = allocationsRepository.fetchRoomId(userIdFetcher.fetch(httpServletRequest));
     final int challengeId = roomsRepository.fetchChallengeId(roomId);
@@ -55,18 +55,18 @@ public class GameAttackService {
         challenges.getGoal(),
         challenges.getChoices().split(","),
         challenges.getHint(),
-        scoresRepository.fetchScore((byte) 1));
+        scoresRepository.fetchScore((byte) 2));
   }
 
-  // ヒント使用
+  // アタックフェーズ：ヒント使用
   public void useHint(final HttpServletRequest httpServletRequest) {
     final int userId = userIdFetcher.fetch(httpServletRequest);
     final int roomId = allocationsRepository.fetchRoomId(userId);
 
-    gamesRepository.addScore(userId, roomId, roomsRepository.fetchChallengeId(roomId), (byte) 1);
+    gamesRepository.addScore(userId, roomId, roomsRepository.fetchChallengeId(roomId), (byte) 2);
   }
 
-  // フラグ送信
+  // アタックフェーズ：キー送信
   public SendKeyResponse sendKey(
       final SendKeyRequest sendKeyRequest, final HttpServletRequest httpServletRequest) {
     final int userId = userIdFetcher.fetch(httpServletRequest);
@@ -74,7 +74,7 @@ public class GameAttackService {
     final int challengeId = roomsRepository.fetchChallengeId(roomId);
     String key = sendKeyRequest.key();
 
-    // フラグにKEY{が含まれない場合
+    // キーにKEY{が含まれない場合
     if (!key.contains("KEY{")) {
       key = "KEY{" + key + "}";
     }
@@ -89,12 +89,12 @@ public class GameAttackService {
     }
 
     // ゲームが存在する場合
-    if (gamesRepository.fetchGame(userId, roomId, challengeId, (byte) 0) != null) {
+    if (gamesRepository.fetchGame(userId, roomId, challengeId, (byte) 1) != null) {
       return new SendKeyResponse(false, true, null);
     }
 
-    gamesRepository.addScore(userId, roomId, challengeId, (byte) 0);
+    gamesRepository.addScore(userId, roomId, challengeId, (byte) 1);
 
-    return new SendKeyResponse(true, true, scoresRepository.fetchScore((byte) 0));
+    return new SendKeyResponse(true, true, scoresRepository.fetchScore((byte) 1));
   }
 }

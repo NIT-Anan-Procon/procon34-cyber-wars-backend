@@ -13,5 +13,5 @@ public class Games {
 
   @Id private final int userId;
 
-  @Id private final byte scoreType;
+  @Id private final byte gameId;
 }
