@@ -72,7 +72,7 @@ public class GameAttackService {
     final int userId = userIdFetcher.fetch(httpServletRequest);
     final int roomId = allocationsRepository.fetchRoomId(userId);
     final int challengeId = roomsRepository.fetchChallengeId(roomId);
-    String key = sendKeyRequest.flag();
+    String key = sendKeyRequest.key();
 
     // フラグにKEY{が含まれない場合
     if (!key.contains("KEY{")) {
