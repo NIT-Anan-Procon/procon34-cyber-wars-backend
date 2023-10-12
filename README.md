@@ -1,13 +1,15 @@
 # procon34-cyber-wars-backend
 
 ## 実行方法
-「Database Password」にデータベースのユーザーパスワードを入れる<br>
-必要であれば「Server Port」に起動するポート番号を入れる（デフォルト値は`8080`）
+必要であれば「Server Port」に起動するポート番号を入れる（デフォルト値は `8080` ）<br>
+「CSRF Token」に設定したいCSRFトークンを入れる<br>
+「CYBER WARS Database Password」にシステムデータベースのユーザーパスワードを入れる<br>
+「Challenge Database Password」に課題用データベースのユーザーパスワードを入れる
 ```console
 gradle clean build
 ```
 ```console
-./gradlew bootRun -Pargs="--spring.datasource.password=「Database Password」 --server.port=「Server Port」"
+./gradlew bootRun -Pargs="--server.port=「Server Port」 --csrf.token=「CSRF Token」 --spring.datasource.cyber-wars.password=「CYBER WARS Database Dassword」 --spring.datasource.challenge.password=「Challenge Database Password」"
 ```
 
 ## 開発環境
