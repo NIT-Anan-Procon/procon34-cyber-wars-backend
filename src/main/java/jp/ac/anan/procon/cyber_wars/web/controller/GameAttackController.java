@@ -53,7 +53,7 @@ public class GameAttackController {
   }
 
   // アタックフェーズ：フラグ送信
-  @PostMapping("/flag")
+  @PostMapping("/key")
   @ResponseBody
   public ResponseEntity<?> sendKey(
       @RequestHeader("X-CSRF-Token") String clientCsrfToken,
