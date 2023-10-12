@@ -24,7 +24,7 @@ public interface ChallengesMapper {
       value = {
         @Result(column = "challenge_id", property = "challengeId"),
         @Result(column = "goal", property = "goal"),
-        @Result(column = "choice", property = "choice"),
+        @Result(column = "choices", property = "choices"),
         @Result(column = "hint", property = "hint"),
         @Result(column = "explanation", property = "explanation"),
         @Result(column = "target_table", property = "targetTable")

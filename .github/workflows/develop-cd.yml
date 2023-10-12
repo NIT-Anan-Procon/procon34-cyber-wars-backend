@@ -24,4 +24,4 @@ jobs:
           password: ${{ secrets.SERVER_PASSWORD }}
           proxy_host: ${{ secrets.PROXY_HOST }}
           proxy_password: ${{ secrets.PROXY_PASSWORD }}
-          branch-name: develop
+          branch_name: develop

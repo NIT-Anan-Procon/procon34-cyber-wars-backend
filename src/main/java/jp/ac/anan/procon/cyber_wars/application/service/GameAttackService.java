@@ -53,7 +53,7 @@ public class GameAttackService {
         roomId,
         targetCode,
         challenges.getGoal(),
-        challenges.getChoice().split(","),
+        challenges.getChoices().split(","),
         challenges.getHint(),
         scoresRepository.fetchScore((byte) 1));
   }

@@ -11,7 +11,7 @@ public class Challenges {
 
   private final String goal;
 
-  private final String choice;
+  private final String choices;
 
   private final String hint;
 

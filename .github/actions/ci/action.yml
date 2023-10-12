@@ -7,8 +7,8 @@ runs:
     - name: Setup JDK
       uses: actions/setup-java@main
       with:
+        distribution: 'microsoft'
         java-version: 17
-        distribution: microsoft
 
     - name: Setup Gradle
       uses: gradle/gradle-build-action@main
