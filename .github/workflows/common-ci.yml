@@ -22,7 +22,6 @@ jobs:
         uses: actions/setup-java@main
         with:
           java-version: 17
-          distribution: microsoft
 
       - name: Spotless
         run: ./gradlew spotlessCheck
