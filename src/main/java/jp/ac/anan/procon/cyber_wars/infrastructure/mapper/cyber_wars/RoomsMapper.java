@@ -132,7 +132,7 @@ public interface RoomsMapper {
       UPDATE
         rooms
       SET
-        start_time = CURRENT_TIMESTAMP()
+        start_time = CURRENT_TIMESTAMP() - INTERVAL 87 SECOND
       WHERE
         room_id = #{roomId}
       """)
