@@ -1,9 +1,9 @@
 package jp.ac.anan.procon.cyber_wars.web.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jp.ac.anan.procon.cyber_wars.application.service.GameDefenseService;
+import jp.ac.anan.procon.cyber_wars.application.service.GameDefenceService;
 import jp.ac.anan.procon.cyber_wars.application.utility.HttpClientErrorHandler;
-import jp.ac.anan.procon.cyber_wars.domain.dto.game.defense.SendCodeRequest;
+import jp.ac.anan.procon.cyber_wars.domain.dto.game.defence.SendCodeRequest;
 import jp.ac.anan.procon.cyber_wars.domain.dto.utility.HttpClientErrorHandlerResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,11 +17,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/game/defense")
+@RequestMapping("/game/defence")
 @RequiredArgsConstructor
-public class GameDefenseController {
+public class GameDefenceController {
   private final HttpClientErrorHandler httpClientErrorHandler;
-  private final GameDefenseService gameDefenseService;
+  private final GameDefenceService gameDefenceService;
 
   // ディフェンスフェーズ：コード送信
   @PutMapping("/code")
@@ -36,6 +36,6 @@ public class GameDefenseController {
     if (httpClientErrorHandlerResponse.error()) {
       return httpClientErrorHandlerResponse.responseEntity();
     }
-    return ResponseEntity.ok(gameDefenseService.sendCode(sendCodeRequest, httpServletRequest));
+    return ResponseEntity.ok(gameDefenceService.sendCode(sendCodeRequest, httpServletRequest));
   }
 }

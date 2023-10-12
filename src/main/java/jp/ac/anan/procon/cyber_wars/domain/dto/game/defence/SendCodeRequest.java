@@ -1,4 +1,4 @@
-package jp.ac.anan.procon.cyber_wars.domain.dto.game.defense;
+package jp.ac.anan.procon.cyber_wars.domain.dto.game.defence;
 
 import jakarta.validation.constraints.NotBlank;
 
