@@ -18,16 +18,26 @@ public interface RoomsMapper {
   @Insert(
       """
       INSERT INTO
-        rooms(invite_id, challenge_id, attack_phase_time_limit, defence_phase_time_limit, battle_phase_time_limit)
+        rooms(
+          invite_id,
+          challenge_id,
+          attack_phase_time_limit,
+          defence_phase_time_limit,
+          battle_phase_time_limit
+        )
       VALUES
-        (#{inviteId}, #{challengeId}, #{attack_phase_time_limit}, #{defence_phase_time_limit}, #{battle_phase_time_limit})
+        (#{inviteId},
+        #{challengeId},
+        #{attackPhaseTimeLimit},
+        #{defencePhaseTimeLimit},
+        #{battlePhaseTimeLimit})
       """)
   void create(
       final short inviteId,
       final int challengeId,
-      final short attack_phase_time_limit,
-      final short defence_phase_time_limit,
-      final short battle_phase_time_limit);
+      final short attackPhaseTimeLimit,
+      final short defencePhaseTimeLimit,
+      final short battlePhaseTimeLimit);
 
   // ルーム取得 by 招待ID
   @Select(
