@@ -33,7 +33,7 @@ public interface TableMapper {
       """)
   void create(final String originalTargetTable, final String targetTable);
 
-  // フラグ更新
+  // キー更新
   @Update(
       """
       UPDATE

@@ -38,7 +38,7 @@ public class GameBattleController {
     return ResponseEntity.ok(gameBattleService.fetchRevision(httpServletRequest));
   }
 
-  // バトルフェーズ：フラグ送信
+  // バトルフェーズ：キー送信
   @PostMapping("/key")
   @ResponseBody
   public ResponseEntity<?> sendKey(

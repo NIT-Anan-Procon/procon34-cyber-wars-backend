@@ -52,7 +52,7 @@ public class GameAttackController {
     return ResponseEntity.ok().build();
   }
 
-  // アタックフェーズ：フラグ送信
+  // アタックフェーズ：キー送信
   @PostMapping("/key")
   @ResponseBody
   public ResponseEntity<?> sendKey(

@@ -5,10 +5,12 @@ import static jp.ac.anan.procon.cyber_wars.application.Constant.PHP_DIRECTORY_PA
 import jakarta.servlet.http.HttpServletRequest;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import jp.ac.anan.procon.cyber_wars.application.utility.KeySender;
 import jp.ac.anan.procon.cyber_wars.application.utility.UserIdFetcher;
 import jp.ac.anan.procon.cyber_wars.domain.dto.game.attack.FetchChallengeResponse;
 import jp.ac.anan.procon.cyber_wars.domain.dto.game.attack.SendKeyRequest;
 import jp.ac.anan.procon.cyber_wars.domain.dto.game.attack.SendKeyResponse;
+import jp.ac.anan.procon.cyber_wars.domain.dto.utility.SendResponse;
 import jp.ac.anan.procon.cyber_wars.domain.entity.Challenges;
 import jp.ac.anan.procon.cyber_wars.infrastructure.repository.challenge.TableRepository;
 import jp.ac.anan.procon.cyber_wars.infrastructure.repository.cyber_wars.AllocationsRepository;
@@ -31,8 +33,9 @@ public class GameAttackService {
   private final ScoresRepository scoresRepository;
   private final TableRepository tableRepository;
   private final UserIdFetcher userIdFetcher;
+  private final KeySender keySender;
 
-  // 課題取得
+  // アタックフェーズ：課題取得
   public FetchChallengeResponse fetchChallenge(final HttpServletRequest httpServletRequest) {
     final int roomId = allocationsRepository.fetchRoomId(userIdFetcher.fetch(httpServletRequest));
     final int challengeId = roomsRepository.fetchChallengeId(roomId);
@@ -55,46 +58,24 @@ public class GameAttackService {
         challenges.getGoal(),
         challenges.getChoices().split(","),
         challenges.getHint(),
-        scoresRepository.fetchScore((byte) 1));
+        scoresRepository.fetchHintScore());
   }
 
-  // ヒント使用
+  // アタックフェーズ：ヒント使用
   public void useHint(final HttpServletRequest httpServletRequest) {
     final int userId = userIdFetcher.fetch(httpServletRequest);
     final int roomId = allocationsRepository.fetchRoomId(userId);
 
-    gamesRepository.addScore(userId, roomId, roomsRepository.fetchChallengeId(roomId), (byte) 1);
+    gamesRepository.addScore(
+        userId, roomId, roomsRepository.fetchChallengeId(roomId), (byte) 2, (short) 100);
   }
 
-  // フラグ送信
+  // アタックフェーズ：キー送信
   public SendKeyResponse sendKey(
       final SendKeyRequest sendKeyRequest, final HttpServletRequest httpServletRequest) {
-    final int userId = userIdFetcher.fetch(httpServletRequest);
-    final int roomId = allocationsRepository.fetchRoomId(userId);
-    final int challengeId = roomsRepository.fetchChallengeId(roomId);
-    String key = sendKeyRequest.key();
+    final SendResponse sendResponse =
+        keySender.send(sendKeyRequest.key(), "attack", httpServletRequest);
 
-    // フラグにKEY{が含まれない場合
-    if (!key.contains("KEY{")) {
-      key = "KEY{" + key + "}";
-    }
-
-    // レコードが存在しない場合
-    if (tableRepository.fetchRecord(
-            challengesRepository.fetchTargetTable(roomsRepository.fetchChallengeId(roomId))
-                + roomId,
-            key)
-        == null) {
-      return new SendKeyResponse(null, false, null);
-    }
-
-    // ゲームが存在する場合
-    if (gamesRepository.fetchGame(userId, roomId, challengeId, (byte) 0) != null) {
-      return new SendKeyResponse(false, true, null);
-    }
-
-    gamesRepository.addScore(userId, roomId, challengeId, (byte) 0);
-
-    return new SendKeyResponse(true, true, scoresRepository.fetchScore((byte) 0));
+    return new SendKeyResponse(sendResponse.valid(), sendResponse.correct(), sendResponse.score());
   }
 }

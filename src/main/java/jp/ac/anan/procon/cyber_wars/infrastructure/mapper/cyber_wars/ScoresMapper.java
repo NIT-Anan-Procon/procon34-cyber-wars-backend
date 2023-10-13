@@ -5,7 +5,7 @@ import org.apache.ibatis.annotations.Select;
 
 @Mapper
 public interface ScoresMapper {
-  // スコア取得
+  // ヒントスコア取得
   @Select(
       """
       SELECT
@@ -13,7 +13,7 @@ public interface ScoresMapper {
       FROM
         scores
       WHERE
-        score_type = #{scoreType}
+        game_id = 2
       """)
-  short fetchScore(final byte scoreType);
+  short fetchHintScore();
 }

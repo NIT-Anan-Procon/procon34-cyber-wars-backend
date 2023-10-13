@@ -7,10 +7,12 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import jp.ac.anan.procon.cyber_wars.application.utility.ArrayToStringConverter;
 import jp.ac.anan.procon.cyber_wars.application.utility.CodeReplacer;
 import jp.ac.anan.procon.cyber_wars.application.utility.TableUtility;
 import jp.ac.anan.procon.cyber_wars.application.utility.UserIdFetcher;
-import jp.ac.anan.procon.cyber_wars.domain.dto.game.EndGameRequest;
+import jp.ac.anan.procon.cyber_wars.domain.dto.game.EndRequest;
+import jp.ac.anan.procon.cyber_wars.domain.dto.game.EndResponse;
 import jp.ac.anan.procon.cyber_wars.domain.dto.game.FetchExplanationResponse;
 import jp.ac.anan.procon.cyber_wars.domain.dto.game.FetchScoresResponse;
 import jp.ac.anan.procon.cyber_wars.domain.dto.game.FetchStartTimeResponse;
@@ -36,6 +38,7 @@ public class GameService {
   private final UserIdFetcher userIdFetcher;
   private final TableUtility tableUtility;
   private final CodeReplacer codeReplacer;
+  private final ArrayToStringConverter arrayToStringConverter;
 
   // ゲーム開始
   public void start(final HttpServletRequest httpServletRequest) {
@@ -45,6 +48,11 @@ public class GameService {
 
     roomsRepository.close(roomId);
     roomsRepository.updateStartTime(roomId);
+
+    // ユーザーがホストである場合
+    if (allocationsRepository.isHost(userId)) {
+      gamesRepository.addGame(userId, roomId, challengeId, (byte) 0);
+    }
 
     try {
       final String challengeDirectoryPath = PHP_DIRECTORY_PATH + "challenge/" + challengeId;
@@ -64,20 +72,6 @@ public class GameService {
       Files.copy(challengeEnvPath, Paths.get(targetDirectoryPath + ".env"));
       FileUtils.copyDirectory(challengeVendorFile, new File(targetDirectoryPath + "vendor"));
 
-      final String revisionDirectoryPath = gameDirectoryPath + "/revision/";
-
-      Files.createDirectory(Paths.get(revisionDirectoryPath));
-      Files.copy(challengePhpPath, Paths.get(revisionDirectoryPath + userId + ".php"));
-      Files.copy(
-          challengePhpPath,
-          Paths.get(
-              revisionDirectoryPath
-                  + allocationsRepository.fetchOpponentUserId(userId, roomId)
-                  + ".php"));
-      Files.copy(challengeCssPath, Paths.get(revisionDirectoryPath + "style.css"));
-      Files.copy(challengeEnvPath, Paths.get(revisionDirectoryPath + ".env"));
-      FileUtils.copyDirectory(challengeVendorFile, new File(revisionDirectoryPath + "vendor"));
-
       final String originalTargetTable = challengesRepository.fetchTargetTable(challengeId);
 
       // 標的テーブルが存在する場合
@@ -95,6 +89,20 @@ public class GameService {
         Files.createFile(targetKeyPath);
         Files.writeString(targetKeyPath, tableUtility.generateKey());
       }
+
+      final String revisionDirectoryPath = gameDirectoryPath + "/revision/";
+
+      Files.createDirectory(Paths.get(revisionDirectoryPath));
+      Files.copy(targetPhpPath, Paths.get(revisionDirectoryPath + userId + ".php"));
+      Files.copy(
+          targetPhpPath,
+          Paths.get(
+              revisionDirectoryPath
+                  + allocationsRepository.fetchOpponentUserId(userId, roomId)
+                  + ".php"));
+      Files.copy(challengeCssPath, Paths.get(revisionDirectoryPath + "style.css"));
+      Files.copy(challengeEnvPath, Paths.get(revisionDirectoryPath + ".env"));
+      FileUtils.copyDirectory(challengeVendorFile, new File(revisionDirectoryPath + "vendor"));
     } catch (final Exception exception) {
       exception.printStackTrace();
     }
@@ -114,8 +122,8 @@ public class GameService {
     final int challengeId = roomsRepository.fetchChallengeId(roomId);
 
     final short[] scores = {
-      gamesRepository.fetchScore(userId, roomId, challengeId, true),
-      gamesRepository.fetchScore(userId, roomId, challengeId, false)
+      gamesRepository.fetchTotalScore(userId, roomId, challengeId, true),
+      gamesRepository.fetchTotalScore(userId, roomId, challengeId, false)
     };
 
     return new FetchScoresResponse(scores);
@@ -130,20 +138,37 @@ public class GameService {
   }
 
   // ゲーム終了
-  public void endGame(
-      final EndGameRequest endGameRequest, final HttpServletRequest httpServletRequest) {
+  public EndResponse end(
+      final EndRequest endGameRequest, final HttpServletRequest httpServletRequest) {
     final int roomId = allocationsRepository.fetchRoomId(userIdFetcher.fetch(httpServletRequest));
-
-    if (endGameRequest.rematch()) {
-      try {
-        FileUtils.forceDelete(new File(PHP_DIRECTORY_PATH + "game/" + roomId));
-      } catch (final Exception exception) {
-        exception.printStackTrace();
-      }
-    }
 
     tableRepository.drop(
         challengesRepository.fetchTargetTable(roomsRepository.fetchChallengeId(roomId)) + roomId);
-    roomsRepository.updateChallengeId(roomId);
+
+    // 再戦しない場合
+    if (!endGameRequest.rematch()) {
+      return new EndResponse(null);
+    }
+
+    final Integer unusedChallengeId =
+        challengesRepository.fetchUnusedChallengeId(
+            arrayToStringConverter.convert(gamesRepository.fetchChallengeIds(roomId)));
+
+    // 未使用課題IDが存在しない場合
+    if (unusedChallengeId == null) {
+      return new EndResponse(false);
+    }
+
+    roomsRepository.updateChallengeId(roomId, unusedChallengeId);
+
+    try {
+      FileUtils.forceDelete(new File(PHP_DIRECTORY_PATH + "game/" + roomId));
+    } catch (final Exception exception) {
+      exception.printStackTrace();
+
+      return new EndResponse(false);
+    }
+
+    return new EndResponse(true);
   }
 }

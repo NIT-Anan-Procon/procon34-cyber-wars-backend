@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 public class TableUtility {
   private final RandomGenerator randomGenerator;
 
-  // フラグ生成
+  // キー生成
   public String generateKey() {
     return "KEY{" + randomGenerator.generateKey() + "}";
   }
