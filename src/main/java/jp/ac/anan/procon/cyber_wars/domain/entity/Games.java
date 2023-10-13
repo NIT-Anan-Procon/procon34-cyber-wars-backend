@@ -14,4 +14,6 @@ public class Games {
   @Id private final int userId;
 
   @Id private final byte gameId;
+
+  private final short scoreMultiplier;
 }

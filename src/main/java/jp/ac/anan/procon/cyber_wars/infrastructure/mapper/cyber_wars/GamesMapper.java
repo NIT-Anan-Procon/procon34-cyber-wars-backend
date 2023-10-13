@@ -9,15 +9,36 @@ import org.apache.ibatis.annotations.Select;
 
 @Mapper
 public interface GamesMapper {
+  // ゲーム追加
+  @Insert(
+      """
+      INSERT INTO
+        games(
+          room_id,challenge_id, user_id, game_id
+        )
+      VALUES(
+        #{roomId},#{challengeId}, #{userId}, #{gameId}
+      )
+      """)
+  void addGame(final int userId, final int challengeId, final int roomId, final byte gameId);
+
   // スコア追加
   @Insert(
       """
       INSERT INTO
-        games(room_id,challenge_id, user_id, game_id)
-      VALUES
-        (#{roomId},#{challengeId}, #{userId}, #{gameId})
+        games(
+          room_id,challenge_id, user_id, game_id,score_multiplier
+        )
+      VALUES(
+        #{roomId},#{challengeId}, #{userId}, #{gameId},#{scoreMultiplier}
+      )
       """)
-  void addScore(final int userId, final int challengeId, final int roomId, final byte gameId);
+  void addScore(
+      final int userId,
+      final int challengeId,
+      final int roomId,
+      final byte gameId,
+      final short scoreMultiplier);
 
   // ゲーム取得
   @Select(
@@ -41,7 +62,8 @@ public interface GamesMapper {
         @Result(column = "room_id", property = "roomId"),
         @Result(column = "challenge_id", property = "challengeId"),
         @Result(column = "user_id", property = "userId"),
-        @Result(column = "game_id", property = "gameId")
+        @Result(column = "game_id", property = "gameId"),
+        @Result(column = "score_multiplier", property = "scoreMultiplier")
       })
   Games fetchGame(final int userId, final int roomId, final int challengeId, final byte gameId);
 
@@ -63,7 +85,14 @@ public interface GamesMapper {
   @Select(
       """
       SELECT
-        COALESCE(SUM(score), 0)
+        COALESCE(
+          FLOOR(
+            SUM(
+              score * score_multiplier
+            ) / 100
+          ),
+          0
+        )
       FROM
         games
       NATURAL JOIN

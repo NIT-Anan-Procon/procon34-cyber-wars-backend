@@ -1,12 +1,13 @@
 package jp.ac.anan.procon.cyber_wars.infrastructure.repository.cyber_wars;
 
-import java.sql.Timestamp;
-import java.util.List;
 import jp.ac.anan.procon.cyber_wars.domain.entity.Rooms;
 import jp.ac.anan.procon.cyber_wars.domain.pojo.TimeLimit;
 import jp.ac.anan.procon.cyber_wars.infrastructure.mapper.cyber_wars.RoomsMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+
+import java.sql.Timestamp;
+import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
@@ -47,6 +48,11 @@ public class RoomsRepository {
   // 制限時間取得
   public TimeLimit fetchTimeLimit(final int roomId) {
     return roomsMapper.fetchTimeLimit(roomId);
+  }
+
+  // スコア倍率取得
+  public short fetchScoreMultiplier(final int roomId, final String phase, final short timeOffset) {
+    return roomsMapper.fetchScoreMultiplier(roomId, phase, timeOffset);
   }
 
   // ルーム動作判定

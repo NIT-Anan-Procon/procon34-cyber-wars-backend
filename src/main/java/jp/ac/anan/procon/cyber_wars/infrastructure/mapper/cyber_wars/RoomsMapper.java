@@ -1,7 +1,5 @@
 package jp.ac.anan.procon.cyber_wars.infrastructure.mapper.cyber_wars;
 
-import java.sql.Timestamp;
-import java.util.List;
 import jp.ac.anan.procon.cyber_wars.domain.entity.Rooms;
 import jp.ac.anan.procon.cyber_wars.domain.pojo.TimeLimit;
 import org.apache.ibatis.annotations.Insert;
@@ -11,6 +9,9 @@ import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
+
+import java.sql.Timestamp;
+import java.util.List;
 
 @Mapper
 public interface RoomsMapper {
@@ -25,12 +26,13 @@ public interface RoomsMapper {
           defence_phase_time_limit,
           battle_phase_time_limit
         )
-      VALUES
-        (#{inviteId},
+      VALUES(
+        #{inviteId},
         #{challengeId},
         #{attackPhaseTimeLimit},
         #{defencePhaseTimeLimit},
-        #{battlePhaseTimeLimit})
+        #{battlePhaseTimeLimit}
+      )
       """)
   void create(
       final short inviteId,
@@ -114,6 +116,24 @@ public interface RoomsMapper {
       """)
   TimeLimit fetchTimeLimit(final int roomId);
 
+  // スコア倍率取得
+  @Select(
+      """
+      SELECT
+        100 + FLOOR(
+          (UNIX_TIMESTAMP(CURRENT_TIMESTAMP)
+          - UNIX_TIMESTAMP(start_time)
+          - #{timeOffset})
+          / ${pahse}_phase_time_limit
+          * 100
+        )
+      FROM
+        rooms
+      WHERE
+        room_id = #{roomId}
+      """)
+  short fetchScoreMultiplier(final int roomId, final String phase, final short timeOffset);
+
   // ルーム動作判定
   @Select(
       """
@@ -144,7 +164,7 @@ public interface RoomsMapper {
       UPDATE
         rooms
       SET
-        start_time = CURRENT_TIMESTAMP() - INTERVAL 77 SECOND
+        start_time = CURRENT_TIMESTAMP
       WHERE
         room_id = #{roomId}
       """)

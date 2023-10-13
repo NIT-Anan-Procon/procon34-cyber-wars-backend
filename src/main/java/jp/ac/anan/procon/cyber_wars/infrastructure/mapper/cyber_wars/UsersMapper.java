@@ -15,9 +15,12 @@ public interface UsersMapper {
   @Insert(
       """
       INSERT INTO
-        users(name, password)
-      VALUES
-        (#{name}, #{password})
+        users(
+          name, password
+        )
+      VALUES(
+        #{name}, #{password}
+      )
       """)
   void register(final String name, final String password);
 

@@ -11,7 +11,9 @@ public interface AllocationsMapper {
   @Insert(
       """
       INSERT INTO
-        allocations(room_id, user_id, host)
+        allocations(
+          room_id, user_id, host
+        )
       SELECT
         room_id, #{userId}, #{host}
       FROM

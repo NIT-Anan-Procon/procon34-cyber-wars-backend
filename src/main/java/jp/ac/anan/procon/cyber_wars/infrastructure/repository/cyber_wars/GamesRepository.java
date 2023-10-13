@@ -10,10 +10,20 @@ import org.springframework.stereotype.Repository;
 public class GamesRepository {
   private final GamesMapper gamesMapper;
 
+  // ゲーム追加
+  public void addGame(
+      final int userId, final int roomId, final int challengeId, final byte gameId) {
+    gamesMapper.addGame(userId, roomId, challengeId, gameId);
+  }
+
   // スコア追加
   public void addScore(
-      final int userId, final int roomId, final int challengeId, final byte gameId) {
-    gamesMapper.addScore(userId, roomId, challengeId, gameId);
+      final int userId,
+      final int challengeId,
+      final int roomId,
+      final byte gameId,
+      final short scoreMultiplier) {
+    gamesMapper.addScore(userId, challengeId, roomId, gameId, scoreMultiplier);
   }
 
   // ゲーム取得

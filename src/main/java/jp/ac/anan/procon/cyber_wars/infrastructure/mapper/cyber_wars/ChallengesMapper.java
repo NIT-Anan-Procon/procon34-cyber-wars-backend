@@ -58,8 +58,9 @@ public interface ChallengesMapper {
         challenge_id = #{challengeId}
       AND
         challenge_id
-      NOT IN
-        (${challengeIds})
+      NOT IN(
+        ${challengeIds}
+      )
       ORDER BY
         RAND()
       LIMIT
@@ -118,8 +119,9 @@ public interface ChallengesMapper {
         available = TRUE
       WHERE
         challenge_id
-      IN
-        (${challengeIds})
+      IN(
+        ${challengeIds}
+      )
       """)
   void enableChallenges(final String challengeIds);
 }
