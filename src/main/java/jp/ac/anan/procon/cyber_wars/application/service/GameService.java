@@ -11,8 +11,8 @@ import jp.ac.anan.procon.cyber_wars.application.utility.ArrayToStringConverter;
 import jp.ac.anan.procon.cyber_wars.application.utility.CodeReplacer;
 import jp.ac.anan.procon.cyber_wars.application.utility.TableUtility;
 import jp.ac.anan.procon.cyber_wars.application.utility.UserIdFetcher;
-import jp.ac.anan.procon.cyber_wars.domain.dto.game.EndGameRequest;
-import jp.ac.anan.procon.cyber_wars.domain.dto.game.EndGameResponse;
+import jp.ac.anan.procon.cyber_wars.domain.dto.game.EndRequest;
+import jp.ac.anan.procon.cyber_wars.domain.dto.game.EndResponse;
 import jp.ac.anan.procon.cyber_wars.domain.dto.game.FetchExplanationResponse;
 import jp.ac.anan.procon.cyber_wars.domain.dto.game.FetchScoresResponse;
 import jp.ac.anan.procon.cyber_wars.domain.dto.game.FetchStartTimeResponse;
@@ -122,8 +122,8 @@ public class GameService {
     final int challengeId = roomsRepository.fetchChallengeId(roomId);
 
     final short[] scores = {
-      gamesRepository.fetchScore(userId, roomId, challengeId, true),
-      gamesRepository.fetchScore(userId, roomId, challengeId, false)
+      gamesRepository.fetchTotalScore(userId, roomId, challengeId, true),
+      gamesRepository.fetchTotalScore(userId, roomId, challengeId, false)
     };
 
     return new FetchScoresResponse(scores);
@@ -138,8 +138,8 @@ public class GameService {
   }
 
   // ゲーム終了
-  public EndGameResponse endGame(
-      final EndGameRequest endGameRequest, final HttpServletRequest httpServletRequest) {
+  public EndResponse end(
+      final EndRequest endGameRequest, final HttpServletRequest httpServletRequest) {
     final int roomId = allocationsRepository.fetchRoomId(userIdFetcher.fetch(httpServletRequest));
 
     tableRepository.drop(
@@ -147,7 +147,7 @@ public class GameService {
 
     // 再戦しない場合
     if (!endGameRequest.rematch()) {
-      return new EndGameResponse(null);
+      return new EndResponse(null);
     }
 
     final Integer unusedChallengeId =
@@ -156,7 +156,7 @@ public class GameService {
 
     // 未使用課題IDが存在しない場合
     if (unusedChallengeId == null) {
-      return new EndGameResponse(false);
+      return new EndResponse(false);
     }
 
     roomsRepository.updateChallengeId(roomId, unusedChallengeId);
@@ -166,9 +166,9 @@ public class GameService {
     } catch (final Exception exception) {
       exception.printStackTrace();
 
-      return new EndGameResponse(false);
+      return new EndResponse(false);
     }
 
-    return new EndGameResponse(true);
+    return new EndResponse(true);
   }
 }
