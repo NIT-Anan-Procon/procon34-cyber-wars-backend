@@ -50,8 +50,8 @@ public class KeySender {
 
     // バトルフェーズである場合
     if (phase.equals("battle")) {
-      gameId = 5;
-      timeOffset = (short) (timeLimit.attackPhaseTimeLimit() + timeLimit.defencePhaseTimeLimit());
+      gameId = 3;
+      timeOffset = (short) (timeLimit.attackPhase() + timeLimit.defencePhase());
     }
 
     // ゲームが存在する場合
@@ -66,6 +66,7 @@ public class KeySender {
         gameId,
         roomsRepository.fetchScoreMultiplier(roomId, phase, timeOffset));
 
-    return new SendResponse(true, true, scoresRepository.fetchScore(gameId));
+    return new SendResponse(
+        true, true, gamesRepository.fetchScore(userId, roomId, challengeId, gameId));
   }
 }

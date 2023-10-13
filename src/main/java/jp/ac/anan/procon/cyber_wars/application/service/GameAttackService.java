@@ -58,7 +58,7 @@ public class GameAttackService {
         challenges.getGoal(),
         challenges.getChoices().split(","),
         challenges.getHint(),
-        scoresRepository.fetchScore((byte) 2));
+        scoresRepository.fetchHintScore());
   }
 
   // アタックフェーズ：ヒント使用

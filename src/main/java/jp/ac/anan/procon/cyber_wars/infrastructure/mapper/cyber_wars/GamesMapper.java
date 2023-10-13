@@ -14,29 +14,29 @@ public interface GamesMapper {
       """
       INSERT INTO
         games(
-          room_id,challenge_id, user_id, game_id
+          room_id, challenge_id, user_id, game_id
         )
       VALUES(
-        #{roomId},#{challengeId}, #{userId}, #{gameId}
+        #{roomId}, #{challengeId}, #{userId}, #{gameId}
       )
       """)
-  void addGame(final int userId, final int challengeId, final int roomId, final byte gameId);
+  void addGame(final int userId, final int roomId, final int challengeId, final byte gameId);
 
   // スコア追加
   @Insert(
       """
       INSERT INTO
         games(
-          room_id,challenge_id, user_id, game_id,score_multiplier
+          room_id, challenge_id, user_id, game_id, score_multiplier
         )
       VALUES(
-        #{roomId},#{challengeId}, #{userId}, #{gameId},#{scoreMultiplier}
+        #{roomId}, #{challengeId}, #{userId}, #{gameId}, #{scoreMultiplier}
       )
       """)
   void addScore(
       final int userId,
-      final int challengeId,
       final int roomId,
+      final int challengeId,
       final byte gameId,
       final short scoreMultiplier);
 
@@ -85,11 +85,33 @@ public interface GamesMapper {
   @Select(
       """
       SELECT
+        FLOOR(
+          score * (score_multiplier / 100)
+        )
+      FROM
+        games
+      NATURAL JOIN
+        scores
+      WHERE
+        room_id = #{roomId}
+      AND
+        challenge_id = #{challengeId}
+      AND
+        user_id = #{userId}
+      AND
+        game_id = #{gameId}
+      """)
+  short fetchScore(final int userId, final int roomId, final int challengeId, final byte gameId);
+
+  // 合計スコア取得
+  @Select(
+      """
+      SELECT
         COALESCE(
           FLOOR(
             SUM(
-              score * score_multiplier
-            ) / 100
+              score * (score_multiplier / 100)
+            )
           ),
           0
         )
@@ -108,5 +130,6 @@ public interface GamesMapper {
           user_id != #{userId}
         END
       """)
-  short fetchScore(final int userId, final int roomId, final int challengeId, final boolean self);
+  short fetchTotalScore(
+      final int userId, final int roomId, final int challengeId, final boolean self);
 }

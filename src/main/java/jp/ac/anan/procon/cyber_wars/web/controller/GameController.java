@@ -3,7 +3,7 @@ package jp.ac.anan.procon.cyber_wars.web.controller;
 import jakarta.servlet.http.HttpServletRequest;
 import jp.ac.anan.procon.cyber_wars.application.service.GameService;
 import jp.ac.anan.procon.cyber_wars.application.utility.HttpClientErrorHandler;
-import jp.ac.anan.procon.cyber_wars.domain.dto.game.EndGameRequest;
+import jp.ac.anan.procon.cyber_wars.domain.dto.game.EndRequest;
 import jp.ac.anan.procon.cyber_wars.domain.dto.utility.HttpClientErrorHandlerResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -84,9 +84,9 @@ public class GameController {
   // ゲーム終了
   @DeleteMapping
   @ResponseBody
-  public ResponseEntity<?> endGame(
+  public ResponseEntity<?> end(
       @RequestHeader("X-CSRF-Token") String clientCsrfToken,
-      @RequestBody @Validated final EndGameRequest endGameRequest,
+      @RequestBody @Validated final EndRequest endGameRequest,
       final BindingResult bindingResult,
       final HttpServletRequest httpServletRequest) {
     final HttpClientErrorHandlerResponse httpClientErrorHandlerResponse =
@@ -94,6 +94,6 @@ public class GameController {
     if (httpClientErrorHandlerResponse.error()) {
       return httpClientErrorHandlerResponse.responseEntity();
     }
-    return ResponseEntity.ok(gameService.endGame(endGameRequest, httpServletRequest));
+    return ResponseEntity.ok(gameService.end(endGameRequest, httpServletRequest));
   }
 }

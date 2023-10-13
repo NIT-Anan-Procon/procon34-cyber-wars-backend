@@ -36,9 +36,9 @@ public class RoomService {
     roomsRepository.create(
         inviteId,
         challengesRepository.fetchAvailableChallengeId(),
-        timeLimit.attackPhaseTimeLimit(),
-        timeLimit.defencePhaseTimeLimit(),
-        timeLimit.battlePhaseTimeLimit());
+        timeLimit.attackPhase(),
+        timeLimit.defencePhase(),
+        timeLimit.battlePhase());
     allocationsRepository.join(userIdFetcher.fetch(httpServletRequest), inviteId, true);
 
     return new CreateResponse(inviteId);
@@ -81,9 +81,13 @@ public class RoomService {
   public void updateTimeLimit(
       final UpdateTimeLimitRequest updateTimeLimitRequest,
       final HttpServletRequest httpServletRequest) {
+    final TimeLimit timeLimit = updateTimeLimitRequest.timeLimit();
+
     roomsRepository.updateTimeLimit(
         allocationsRepository.fetchRoomId(userIdFetcher.fetch(httpServletRequest)),
-        updateTimeLimitRequest.timeLimit());
+        timeLimit.attackPhase(),
+        timeLimit.defencePhase(),
+        timeLimit.battlePhase());
   }
 
   // ルーム退出
