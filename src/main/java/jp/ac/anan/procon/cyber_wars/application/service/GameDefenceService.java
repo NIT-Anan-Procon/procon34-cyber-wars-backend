@@ -9,6 +9,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import jp.ac.anan.procon.cyber_wars.application.utility.CodeReplacer;
 import jp.ac.anan.procon.cyber_wars.application.utility.UserIdFetcher;
+import jp.ac.anan.procon.cyber_wars.domain.dto.game.defence.FetchRevisionPathResponse;
 import jp.ac.anan.procon.cyber_wars.domain.dto.game.defence.SendCodeRequest;
 import jp.ac.anan.procon.cyber_wars.domain.dto.game.defence.SendCodeResponse;
 import jp.ac.anan.procon.cyber_wars.infrastructure.repository.cyber_wars.AllocationsRepository;
@@ -28,7 +29,12 @@ public class GameDefenceService {
   private final UserIdFetcher userIdFetcher;
   private final CodeReplacer codeReplacer;
 
-  // コード送信
+  // ディフェンスフェーズ：修正課題パス取得
+  public FetchRevisionPathResponse fetchRevisionPath(final HttpServletRequest httpServletRequest) {
+    return new FetchRevisionPathResponse(userIdFetcher.fetch(httpServletRequest));
+  }
+
+  // ディフェンスフェーズ：コード送信
   public SendCodeResponse sendCode(
       final SendCodeRequest sendCodeRequest, final HttpServletRequest httpServletRequest) {
     final int userId = userIdFetcher.fetch(httpServletRequest);

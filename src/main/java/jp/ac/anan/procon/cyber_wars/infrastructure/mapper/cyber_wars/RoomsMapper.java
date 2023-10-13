@@ -3,6 +3,7 @@ package jp.ac.anan.procon.cyber_wars.infrastructure.mapper.cyber_wars;
 import java.sql.Timestamp;
 import java.util.List;
 import jp.ac.anan.procon.cyber_wars.domain.entity.Rooms;
+import jp.ac.anan.procon.cyber_wars.domain.pojo.TimeLimit;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Result;
@@ -17,19 +18,27 @@ public interface RoomsMapper {
   @Insert(
       """
       INSERT INTO
-        rooms(invite_id, challenge_id)
-      SELECT
-        #{inviteId}, challenge_id
-      FROM
-        challenges
-      WHERE
-        available = TRUE
-      ORDER BY
-        RAND()
-      LIMIT
-        1
+        rooms(
+          invite_id,
+          challenge_id,
+          attack_phase_time_limit,
+          defence_phase_time_limit,
+          battle_phase_time_limit
+        )
+      VALUES(
+        #{inviteId},
+        #{challengeId},
+        #{attackPhaseTimeLimit},
+        #{defencePhaseTimeLimit},
+        #{battlePhaseTimeLimit}
+      )
       """)
-  void create(final short inviteId);
+  void create(
+      final short inviteId,
+      final int challengeId,
+      final short attackPhaseTimeLimit,
+      final short defencePhaseTimeLimit,
+      final short battlePhaseTimeLimit);
 
   // ルーム取得 by 招待ID
   @Select(
@@ -50,6 +59,9 @@ public interface RoomsMapper {
         @Result(column = "invite_id", property = "inviteId"),
         @Result(column = "challenge_id", property = "challengeId"),
         @Result(column = "start_time", property = "startTime"),
+        @Result(column = "attack_phase_time_limit", property = "attackPhaseTimeLimit"),
+        @Result(column = "defence_phase_time_limit", property = "defencePhaseTimeLimit"),
+        @Result(column = "battle_phase_time_limit", property = "battlePhaseTimeLimit"),
         @Result(column = "active", property = "active")
       })
   Rooms fetchRoomByInviteId(final short inviteId);
@@ -91,6 +103,36 @@ public interface RoomsMapper {
       """)
   Timestamp fetchStartTime(final int roomId);
 
+  // 制限時間取得
+  @Select(
+      """
+      SELECT
+        attack_phase_time_limit, defence_phase_time_limit, battle_phase_time_limit
+      FROM
+        rooms
+      WHERE
+        room_id = #{roomId}
+      """)
+  TimeLimit fetchTimeLimit(final int roomId);
+
+  // スコア倍率取得
+  @Select(
+      """
+      SELECT
+        100 + FLOOR(
+          (UNIX_TIMESTAMP(CURRENT_TIMESTAMP)
+          - UNIX_TIMESTAMP(start_time)
+          - #{timeOffset})
+          / ${pahse}_phase_time_limit
+          * 100
+        )
+      FROM
+        rooms
+      WHERE
+        room_id = #{roomId}
+      """)
+  short fetchScoreMultiplier(final int roomId, final String phase, final short timeOffset);
+
   // ルーム動作判定
   @Select(
       """
@@ -109,22 +151,11 @@ public interface RoomsMapper {
       UPDATE
         rooms
       SET
-        challenge_id = (
-          SELECT
-            challenge_id
-          FROM
-            challenges
-          WHERE
-            available = TRUE
-          ORDER BY
-            RAND()
-          LIMIT
-            1
-        )
+        challenge_id = #{challengeId}
       WHERE
         room_id = #{roomId}
       """)
-  void updateChallengeId(final int roomId);
+  void updateChallengeId(final int roomId, final int challengeId);
 
   // ゲーム開始時刻更新
   @Update(
@@ -132,11 +163,37 @@ public interface RoomsMapper {
       UPDATE
         rooms
       SET
-        start_time = CURRENT_TIMESTAMP() - INTERVAL 77 SECOND
+        start_time = CURRENT_TIMESTAMP
       WHERE
         room_id = #{roomId}
       """)
   void updateStartTime(final int roomId);
+
+  // 制限時間更新
+  @Update(
+      """
+      UPDATE
+        rooms
+      SET
+        attack_phase_time_limit = #{timeLimit.attackPhaseTimeLimit()},
+        defence_phase_time_limit = #{timeLimit.defencePhaseTimeLimit()},
+        battle_phase_time_limit = #{timeLimit.battlePhaseTimeLimit()}
+      WHERE
+        room_id = #{roomId}
+      """)
+  void updateTimeLimit(final int roomId, final TimeLimit timeLimit);
+
+  // ルーム開放
+  @Update(
+      """
+      UPDATE
+        rooms
+      SET
+        active = TRUE
+      WHERE
+        room_id = #{roomId}
+      """)
+  void open(final int roomId);
 
   // ルーム閉鎖
   @Update(

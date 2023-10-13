@@ -10,7 +10,7 @@ public class ScoresRepository {
   private final ScoresMapper scoresMapper;
 
   // スコア取得
-  public short fetchScore(final byte scoreType) {
-    return scoresMapper.fetchScore(scoreType);
+  public short fetchScore(final byte gameId) {
+    return scoresMapper.fetchScore(gameId);
   }
 }
