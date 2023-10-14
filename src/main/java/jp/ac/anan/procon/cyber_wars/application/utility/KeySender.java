@@ -39,7 +39,18 @@ public class KeySender {
       key = "KEY{" + key + "}";
     }
 
+    String directory = "target";
+    byte gameId = 1;
+    short timeOffset = 0;
+    final TimeLimit timeLimit = roomsRepository.fetchTimeLimit(roomId);
     final String originalTargetTable = challengesRepository.fetchTargetTable(challengeId);
+
+    // バトルフェーズである場合
+    if (phase.equals("battle")) {
+      directory = "revision";
+      gameId = 3;
+      timeOffset = (short) (timeLimit.attackPhase() + timeLimit.defencePhase());
+    }
 
     // 標的テーブルが存在する場合
     if (originalTargetTable != null) {
@@ -56,7 +67,7 @@ public class KeySender {
         // キーが異なる場合
         if (!key.equals(
             Files.readString(
-                Paths.get(PHP_DIRECTORY_PATH + "game/" + roomId + "/revision/key.txt")))) {
+                Paths.get(PHP_DIRECTORY_PATH + "game/" + roomId + "/" + directory + "/key.txt")))) {
           return new SendResponse(null, false, null);
         }
       } catch (final Exception exception) {
@@ -64,16 +75,6 @@ public class KeySender {
 
         return new SendResponse(null, false, null);
       }
-    }
-
-    byte gameId = 1;
-    short timeOffset = 0;
-    final TimeLimit timeLimit = roomsRepository.fetchTimeLimit(roomId);
-
-    // バトルフェーズである場合
-    if (phase.equals("battle")) {
-      gameId = 3;
-      timeOffset = (short) (timeLimit.attackPhase() + timeLimit.defencePhase());
     }
 
     // ゲームが存在する場合
