@@ -1,6 +1,10 @@
 package jp.ac.anan.procon.cyber_wars.application.utility;
 
+import static jp.ac.anan.procon.cyber_wars.application.Constant.PHP_DIRECTORY_PATH;
+
 import jakarta.servlet.http.HttpServletRequest;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import jp.ac.anan.procon.cyber_wars.domain.dto.utility.SendResponse;
 import jp.ac.anan.procon.cyber_wars.domain.pojo.TimeLimit;
 import jp.ac.anan.procon.cyber_wars.infrastructure.repository.challenge.TableRepository;
@@ -35,13 +39,31 @@ public class KeySender {
       key = "KEY{" + key + "}";
     }
 
-    // レコードが存在しない場合
-    if (tableRepository.fetchRecord(
-            challengesRepository.fetchTargetTable(roomsRepository.fetchChallengeId(roomId))
-                + roomId,
-            key)
-        == null) {
-      return new SendResponse(null, false, null);
+    final String originalTargetTable = challengesRepository.fetchTargetTable(challengeId);
+
+    // 標的テーブルが存在する場合
+    if (originalTargetTable != null) {
+      // レコードが存在しない場合
+      if (tableRepository.fetchRecord(
+              challengesRepository.fetchTargetTable(roomsRepository.fetchChallengeId(roomId))
+                  + roomId,
+              key)
+          == null) {
+        return new SendResponse(null, false, null);
+      }
+    } else {
+      try {
+        // キーが異なる場合
+        if (!key.equals(
+            Files.readString(
+                Paths.get(PHP_DIRECTORY_PATH + "game/" + roomId + "/revision/key.txt")))) {
+          return new SendResponse(null, false, null);
+        }
+      } catch (final Exception exception) {
+        exception.printStackTrace();
+
+        return new SendResponse(null, false, null);
+      }
     }
 
     byte gameId = 1;
