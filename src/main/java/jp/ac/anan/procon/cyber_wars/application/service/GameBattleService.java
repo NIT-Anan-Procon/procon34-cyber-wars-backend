@@ -52,14 +52,6 @@ public class GameBattleService {
             originalTargetTable + roomId,
             tableUtility.generateKey(),
             tableUtility.generateId(originalTargetTable));
-      } else {
-        try {
-          Files.writeString(
-              Paths.get(PHP_DIRECTORY_PATH + "game/" + roomId + "/revision/key.txt"),
-              tableUtility.generateKey());
-        } catch (final Exception exception) {
-          exception.printStackTrace();
-        }
       }
 
       roomsRepository.open(roomId);

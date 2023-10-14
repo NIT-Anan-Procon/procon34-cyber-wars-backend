@@ -72,24 +72,6 @@ public class GameService {
       Files.copy(challengeEnvPath, Paths.get(targetDirectoryPath + ".env"));
       FileUtils.copyDirectory(challengeVendorFile, new File(targetDirectoryPath + "vendor"));
 
-      final String originalTargetTable = challengesRepository.fetchTargetTable(challengeId);
-
-      // 標的テーブルが存在する場合
-      if (originalTargetTable != null) {
-        final String targetTable = originalTargetTable + roomId;
-
-        codeReplacer.replace(targetPhpPath, originalTargetTable, targetTable);
-
-        tableRepository.create(originalTargetTable, targetTable);
-        tableRepository.updateKey(
-            targetTable, tableUtility.generateKey(), tableUtility.generateId(originalTargetTable));
-      } else {
-        final Path targetKeyPath = Paths.get(targetDirectoryPath + "key.txt");
-
-        Files.createFile(targetKeyPath);
-        Files.writeString(targetKeyPath, tableUtility.generateKey());
-      }
-
       final String revisionDirectoryPath = gameDirectoryPath + "/revision/";
 
       Files.createDirectory(Paths.get(revisionDirectoryPath));
@@ -103,6 +85,29 @@ public class GameService {
       Files.copy(challengeCssPath, Paths.get(revisionDirectoryPath + "style.css"));
       Files.copy(challengeEnvPath, Paths.get(revisionDirectoryPath + ".env"));
       FileUtils.copyDirectory(challengeVendorFile, new File(revisionDirectoryPath + "vendor"));
+
+      final String originalTargetTable = challengesRepository.fetchTargetTable(challengeId);
+
+      // 標的テーブルが存在する場合
+      if (originalTargetTable != null) {
+        final String targetTable = originalTargetTable + roomId;
+
+        codeReplacer.replace(targetPhpPath, originalTargetTable, targetTable);
+
+        tableRepository.create(originalTargetTable, targetTable);
+        tableRepository.updateKey(
+            targetTable, tableUtility.generateKey(), tableUtility.generateId(originalTargetTable));
+      } else {
+        final String targetKey = tableUtility.generateKey();
+        final String revisionKey = tableUtility.generateKey();
+        final Path targetKeyPath = Paths.get(targetDirectoryPath + targetKey);
+        final Path revisionKeyPath = Paths.get(revisionDirectoryPath + revisionKey);
+
+        Files.createFile(targetKeyPath);
+        Files.writeString(targetKeyPath, targetKey);
+        Files.createFile(revisionKeyPath);
+        Files.writeString(revisionKeyPath, revisionKey);
+      }
     } catch (final Exception exception) {
       exception.printStackTrace();
     }

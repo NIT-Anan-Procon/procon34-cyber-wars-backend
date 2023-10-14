@@ -64,10 +64,9 @@ public class KeySender {
       }
     } else {
       try {
-        // キーが異なる場合
-        if (!key.equals(
-            Files.readString(
-                Paths.get(PHP_DIRECTORY_PATH + "game/" + roomId + "/" + directory + "/key.txt")))) {
+        // キーファイルが存在しない場合
+        if (!Files.exists(
+            Paths.get(PHP_DIRECTORY_PATH + "game/" + roomId + "/" + directory + "/" + key))) {
           return new SendResponse(null, false, null);
         }
       } catch (final Exception exception) {
