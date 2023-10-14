@@ -43,11 +43,24 @@ public class GameBattleService {
 
     // ユーザーがホストである場合
     if (allocationsRepository.isHost(userId)) {
-      tableRepository.updateKey(
-          challengesRepository.fetchTargetTable(roomsRepository.fetchChallengeId(roomId)) + roomId,
-          tableUtility.generateKey(),
-          tableUtility.generateId(
-              challengesRepository.fetchTargetTable(roomsRepository.fetchChallengeId(roomId))));
+      final String originalTargetTable =
+          challengesRepository.fetchTargetTable(roomsRepository.fetchChallengeId(roomId));
+
+      // 標的テーブルが存在する場合
+      if (originalTargetTable != null) {
+        tableRepository.updateKey(
+            originalTargetTable + roomId,
+            tableUtility.generateKey(),
+            tableUtility.generateId(originalTargetTable));
+      } else {
+        try {
+          Files.writeString(
+              Paths.get(PHP_DIRECTORY_PATH + "game/" + roomId + "/revision/key.txt"),
+              tableUtility.generateKey());
+        } catch (final Exception exception) {
+          exception.printStackTrace();
+        }
+      }
 
       roomsRepository.open(roomId);
     }
