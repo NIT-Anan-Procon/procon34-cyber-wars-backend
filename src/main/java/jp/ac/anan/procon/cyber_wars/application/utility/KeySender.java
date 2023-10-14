@@ -1,6 +1,10 @@
 package jp.ac.anan.procon.cyber_wars.application.utility;
 
+import static jp.ac.anan.procon.cyber_wars.application.Constant.PHP_DIRECTORY_PATH;
+
 import jakarta.servlet.http.HttpServletRequest;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import jp.ac.anan.procon.cyber_wars.domain.dto.utility.SendResponse;
 import jp.ac.anan.procon.cyber_wars.domain.pojo.TimeLimit;
 import jp.ac.anan.procon.cyber_wars.infrastructure.repository.challenge.TableRepository;
@@ -35,23 +39,41 @@ public class KeySender {
       key = "KEY{" + key + "}";
     }
 
-    // レコードが存在しない場合
-    if (tableRepository.fetchRecord(
-            challengesRepository.fetchTargetTable(roomsRepository.fetchChallengeId(roomId))
-                + roomId,
-            key)
-        == null) {
-      return new SendResponse(null, false, null);
-    }
-
+    String directory = "target";
     byte gameId = 1;
     short timeOffset = 0;
     final TimeLimit timeLimit = roomsRepository.fetchTimeLimit(roomId);
+    final String originalTargetTable = challengesRepository.fetchTargetTable(challengeId);
 
     // バトルフェーズである場合
     if (phase.equals("battle")) {
+      directory = "revision";
       gameId = 3;
       timeOffset = (short) (timeLimit.attackPhase() + timeLimit.defencePhase());
+    }
+
+    // 標的テーブルが存在する場合
+    if (originalTargetTable != null) {
+      // レコードが存在しない場合
+      if (tableRepository.fetchRecord(
+              challengesRepository.fetchTargetTable(roomsRepository.fetchChallengeId(roomId))
+                  + roomId,
+              key)
+          == null) {
+        return new SendResponse(null, false, null);
+      }
+    } else {
+      try {
+        // キーファイルが存在しない場合
+        if (!Files.exists(
+            Paths.get(PHP_DIRECTORY_PATH + "game/" + roomId + "/" + directory + "/" + key))) {
+          return new SendResponse(null, false, null);
+        }
+      } catch (final Exception exception) {
+        exception.printStackTrace();
+
+        return new SendResponse(null, false, null);
+      }
     }
 
     // ゲームが存在する場合
