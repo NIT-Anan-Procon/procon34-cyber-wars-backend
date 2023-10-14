@@ -1,12 +1,6 @@
 package jp.ac.anan.procon.cyber_wars.application.service;
 
-import static jp.ac.anan.procon.cyber_wars.application.Constant.PHP_DIRECTORY_PATH;
-
 import jakarta.servlet.http.HttpServletRequest;
-import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import jp.ac.anan.procon.cyber_wars.application.utility.ArrayToStringConverter;
 import jp.ac.anan.procon.cyber_wars.application.utility.CodeReplacer;
 import jp.ac.anan.procon.cyber_wars.application.utility.TableUtility;
@@ -25,6 +19,13 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+import static jp.ac.anan.procon.cyber_wars.application.Constant.PHP_DIRECTORY_PATH;
 
 @Service
 @RequiredArgsConstructor
@@ -100,8 +101,8 @@ public class GameService {
       } else {
         final String targetKey = tableUtility.generateKey();
         final String revisionKey = tableUtility.generateKey();
-        final Path targetKeyPath = Paths.get(targetDirectoryPath + targetKey);
-        final Path revisionKeyPath = Paths.get(revisionDirectoryPath + revisionKey);
+        final Path targetKeyPath = Paths.get(targetDirectoryPath + targetKey + ".txt");
+        final Path revisionKeyPath = Paths.get(revisionDirectoryPath + revisionKey + ".txt");
 
         Files.createFile(targetKeyPath);
         Files.writeString(targetKeyPath, targetKey);
