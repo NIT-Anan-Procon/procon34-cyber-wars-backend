@@ -119,11 +119,11 @@ public interface RoomsMapper {
   @Select(
       """
       SELECT
-        100 + FLOOR(
+        200 - FLOOR(
           (UNIX_TIMESTAMP(CURRENT_TIMESTAMP)
           - UNIX_TIMESTAMP(start_time)
           - #{timeOffset})
-          / ${pahse}_phase_time_limit
+          / ${phase}_phase_time_limit
           * 100
         )
       FROM
@@ -175,13 +175,17 @@ public interface RoomsMapper {
       UPDATE
         rooms
       SET
-        attack_phase_time_limit = #{timeLimit.attackPhaseTimeLimit()},
-        defence_phase_time_limit = #{timeLimit.defencePhaseTimeLimit()},
-        battle_phase_time_limit = #{timeLimit.battlePhaseTimeLimit()}
+        attack_phase_time_limit = #{attackPhaseTimeLimit},
+        defence_phase_time_limit = #{defencePhaseTimeLimit},
+        battle_phase_time_limit = #{battlePhaseTimeLimit}
       WHERE
         room_id = #{roomId}
       """)
-  void updateTimeLimit(final int roomId, final TimeLimit timeLimit);
+  void updateTimeLimit(
+      final int roomId,
+      final short attackPhaseTimeLimit,
+      final short defencePhaseTimeLimit,
+      final short battlePhaseTimeLimit);
 
   // ルーム開放
   @Update(

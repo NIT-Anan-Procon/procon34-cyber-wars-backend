@@ -55,7 +55,7 @@ public interface ChallengesMapper {
       FROM
         challenges
       WHERE
-        challenge_id = #{challengeId}
+        available = TRUE
       AND
         challenge_id
       NOT IN(

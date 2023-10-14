@@ -70,8 +70,13 @@ public class RoomsRepository {
   }
 
   // 制限時間更新
-  public void updateTimeLimit(final int roomId, final TimeLimit timeLimit) {
-    roomsMapper.updateTimeLimit(roomId, timeLimit);
+  public void updateTimeLimit(
+      final int roomId,
+      final short attackPhaseTimeLimit,
+      final short defencePhaseTimeLimit,
+      final short battlePhaseTimeLimit) {
+    roomsMapper.updateTimeLimit(
+        roomId, attackPhaseTimeLimit, defencePhaseTimeLimit, battlePhaseTimeLimit);
   }
 
   // ルーム開放

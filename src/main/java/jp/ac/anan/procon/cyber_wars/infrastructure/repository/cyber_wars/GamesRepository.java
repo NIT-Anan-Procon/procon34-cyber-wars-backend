@@ -39,7 +39,13 @@ public class GamesRepository {
 
   // スコア取得
   public short fetchScore(
+      final int userId, final int roomId, final int challengeId, final byte gameId) {
+    return gamesMapper.fetchScore(userId, roomId, challengeId, gameId);
+  }
+
+  // 合計スコア取得
+  public short fetchTotalScore(
       final int userId, final int roomId, final int challengeId, final boolean self) {
-    return gamesMapper.fetchScore(userId, roomId, challengeId, self);
+    return gamesMapper.fetchTotalScore(userId, roomId, challengeId, self);
   }
 }

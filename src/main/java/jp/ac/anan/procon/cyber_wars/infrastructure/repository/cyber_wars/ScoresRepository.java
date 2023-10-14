@@ -9,8 +9,8 @@ import org.springframework.stereotype.Repository;
 public class ScoresRepository {
   private final ScoresMapper scoresMapper;
 
-  // スコア取得
-  public short fetchScore(final byte gameId) {
-    return scoresMapper.fetchScore(gameId);
+  // ヒントスコア取得
+  public short fetchHintScore() {
+    return scoresMapper.fetchHintScore();
   }
 }
