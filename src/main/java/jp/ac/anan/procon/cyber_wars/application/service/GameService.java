@@ -141,9 +141,13 @@ public class GameService {
   public EndResponse end(
       final EndRequest endGameRequest, final HttpServletRequest httpServletRequest) {
     final int roomId = allocationsRepository.fetchRoomId(userIdFetcher.fetch(httpServletRequest));
+    final int challengeId = roomsRepository.fetchChallengeId(roomId);
+    final String originalTargetTable = challengesRepository.fetchTargetTable(challengeId);
 
-    tableRepository.drop(
-        challengesRepository.fetchTargetTable(roomsRepository.fetchChallengeId(roomId)) + roomId);
+    // 標的テーブルが存在する場合
+    if (originalTargetTable != null) {
+      tableRepository.drop(challengesRepository.fetchTargetTable(challengeId) + roomId);
+    }
 
     // 再戦しない場合
     if (!endGameRequest.rematch()) {
