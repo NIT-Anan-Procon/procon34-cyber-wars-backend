@@ -74,15 +74,15 @@ public class GameService {
 
       final String revisionDirectoryPath = gameDirectoryPath + "/revision/";
       final Path revisionPhpPath = Paths.get(revisionDirectoryPath + userId + ".php");
-
-      Files.createDirectory(Paths.get(revisionDirectoryPath));
-      Files.copy(targetPhpPath, revisionPhpPath);
-      Files.copy(
-          targetPhpPath,
+      final Path opponentRevisionPhpPath =
           Paths.get(
               revisionDirectoryPath
                   + allocationsRepository.fetchOpponentUserId(userId, roomId)
-                  + ".php"));
+                  + ".php");
+
+      Files.createDirectory(Paths.get(revisionDirectoryPath));
+      Files.copy(targetPhpPath, revisionPhpPath);
+      Files.copy(targetPhpPath, opponentRevisionPhpPath);
       Files.copy(challengeCssPath, Paths.get(revisionDirectoryPath + "style.css"));
       Files.copy(challengeEnvPath, Paths.get(revisionDirectoryPath + ".env"));
       FileUtils.copyDirectory(challengeVendorFile, new File(revisionDirectoryPath + "vendor"));
@@ -95,6 +95,7 @@ public class GameService {
 
         codeReplacer.replace(targetPhpPath, originalTargetTable, targetTable);
         codeReplacer.replace(revisionPhpPath, originalTargetTable, targetTable);
+        codeReplacer.replace(opponentRevisionPhpPath, originalTargetTable, targetTable);
 
         tableRepository.create(originalTargetTable, targetTable);
         tableRepository.updateKey(
